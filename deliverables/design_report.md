@@ -853,7 +853,7 @@ pos_rep = pos_full + ((omega_pos × TAU_Q8) >> 8)
 
 1. **`cycle_cnt` distinct=2048 是本项目最容易被误读的数字**：它不是"精度 2048"，而是"一圈内电周期计数不丢"——角度分辨率仍是 **16 bit/电周期 = 0.0097″ 机械**；2048 只说明粗精融合的"粗"那一路终于和"精"对上了。
 2. **2.839° 的 `angle vs atan2` 常数偏移不是误差**：s/c 快照与 `angle` 之间有 **≈323 ns** 的流水线时差，转台 25 kHz 下正好折成 2.8°；v68 同样存在，不是 v70 引入。分箱后的 −0.13°…+0.13° 才是角度链路本身的系统误差。
-3. **这一节没有回答的两件事**：无 ±0.5″ 外部基准（§7 R15）；显示位流尚未下载（§7 R14）。报告不把"读回对"写成"精度已证"。
+3. **这一节没有回答的两件事**：无 ±0.5″ 外部基准（§7 R15）；显示位流当时尚未下载——该项已在 v90 轮次关闭（写 Flash、冷启动进入 P1、四页逐页核对通过，§7 R13）。报告不把"读回对"写成"精度已证"。
 
 **v90（2026-11-04）在同一台转台上的复测见 §6.8**：由于 v90 的 Z 改为"单次触发 + 1/8 圈布防"，转速判据统一改用 `z_rate.py`（7.62/7.65 Hz ⇒ 457–459 rpm，每转 1 个 Z），不再用 v70 的"电周期计数 ÷ 帧率"口径。上表保留为 v70 的逐项明细（`BUILD 0x0015`），是历史记录。
 
@@ -1574,7 +1574,7 @@ v74 之后板上只剩一个"停转时 Z 反复触发"的现象：转子停在 Z
 3. **原始域尖峰抑制**：在 `s_cor/c_cor` 之后、CORDIC 之前加 3 点中值（代价 2 拍延迟 + 比较器），
    把 ADC 坏样本在进入 CORDIC 之前消灭；
 4. **多轴参数化例化**：单轴生产版 **30.36% LUT**，双轴仍有余量；
-5. **RS-422 线驱动 + EMC + Flash 固化**：传感头已在 v70 真机闭环，"能用"还差电气层与掉电自启动（§7 R14 之外的 D7）。
+5. **RS-422 线驱动 + EMC + Flash 固化**：传感头已在 v70 真机闭环，"能用"还差电气层与 EMC 量产验证；掉电自启动已在 v90 显示位流上验证（Flash 固化 + 冷启动进入 P1）。
 
 ---
 
@@ -1712,7 +1712,7 @@ v74 之后板上只剩一个"停转时 Z 反复触发"的现象：转子停在 Z
   - 主机：`../host/lut_tool.py`（CSV → 整表写入 → 逐点回读）、`../host/regs.py --selftest`（51 项）；
   - 构建签核：`../deliverables/data/v66/prod_timing.rpt`（**WNS +0.186 / 0 失败端点 / 24,630**）、`../deliverables/data/v66/prod_util.rpt`（**LUT 52.48% / BRAM 32/50 / DSP 17**）、`../deliverables/data/v66/disp_timing.rpt`（**+0.229 / 0 失败 / 34,303**）、`../deliverables/data/v66/disp_util.rpt`（**83.82% / 48/50**）；位流本体与 20 件归档清单见 [`data/README.md`](data/README.md) §2.0a；
   - 闸门：`../tools/final_verify.ps1`（8 类，2026-10-28 实跑 ALL CHECKS PASSED）。
-  - **本章 v66 数字只到"仿真 + 构建签核"两级**；上板结论待 `docs/28` 七步走完后回填（§7 R14）。
+  - **本章 v66 数字只到"仿真 + 构建签核"两级**；上板结论已在 v90 轮次回填（§6.8；显示位流另见 §7 R13）。
    - v70 发布说明 [`../docs/33_v70_release_report.md`](../docs/33_v70_release_report.md)（缺陷四步定位 / 修法 / 构建签核 / 上板实测 / D1–D9 缺陷表 / 复现命令）；上板测试报告 [`../docs/32_board_test_report_2026-11-01.md`](../docs/32_board_test_report_2026-11-01.md)；Flash 固化流程 [`../docs/30_flash_program_guide.md`](../docs/30_flash_program_guide.md)；
    - v70 证据归档 [`data/README.md`](data/README.md) §2.0e（**24 件**：prod/disp 的 timing/util/drc/top_paths/io 报告、两个位流、`VARIANT_INFO.txt`、`SHA256SUMS.txt`），全局哈希 [`data/SHA256SUMS.txt`](data/SHA256SUMS.txt)（**323 条**，2026-11-04 复核 322/323）；
    - 真机脚本 `../_boardtest/check_v70.py`、`diag_pos3.py`、`soak_v68.py`、`calib_v68.py`、`angle_vs_sc.py`；定向仿真 `_boardtest/tb_acc2.v`、`tb_uvw.v`、`tb_uvw_rev.v`、`tb_dbg6.v`（ModelSim，xsim 本机不可用）；

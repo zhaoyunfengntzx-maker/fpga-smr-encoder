@@ -123,7 +123,7 @@ cscript //nologo tools\pptx2pdf.vbs "C:\Users\zhaoy\Desktop\FPGA\deliverables\po
 & E:\Anaconda\python.exe tools\md2pdf.py deliverables\design_report.md
 ```
 
-当前体积（Test-Path 实测）：`design_report.pdf` 1,677,401 B；`technical_doc.pdf` 988,465 B；`design_report_full.pdf` 5,607,882 B；`submission/design_report.pdf` 1,677,401 B。
+当前体积（Test-Path 实测）：`design_report.pdf` 1,677,401 B；`technical_doc.pdf` 988,465 B；`design_report_full.pdf` 5,607,751 B；`submission/design_report.pdf` 1,677,401 B。
 
 ## 7. 本轮（v90）文档改写的遗留
 
