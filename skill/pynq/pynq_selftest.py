@@ -67,36 +67,42 @@ def prep_json(tmp: Path) -> list:
 
 
 def cases():
-    hwh = ["skill/pynq/pynq_hwh.py"]
-    bundle = ["skill/pynq/pynq_bundle.py"]
-    overlay = ["skill/pynq/pynq_overlay.py"]
-    ex = "skill/pynq/examples"
+    """路径全部相对脚本自身的位置解析，因此在哪个目录下运行都一样。
+
+    早先这里写的是 "skill/pynq/pynq_hwh.py"，只有从仓库根运行才对；
+    在 skill/ 目录里一跑，13 个用例全红（0/13），看起来像判据坏了，
+    实际是路径假设坏了。改成 __file__ 相对之后，从 %TEMP% 的副本里也全绿。
+    """
+    hwh = [str(HERE / "pynq_hwh.py")]
+    bundle = [str(HERE / "pynq_bundle.py")]
+    overlay = [str(HERE / "pynq_overlay.py")]
+    ex = EX
     return [
         dict(name="地址表：正常 hwh 应 PASS", script=hwh,
-             args=[f"{ex}/addr_map/design_1.hwh", "-q"], rc=0, must=["PASS"]),
+             args=[str(ex / "addr_map" / "design_1.hwh"), "-q"], rc=0, must=["PASS"]),
         dict(name="地址表：重叠地址必须 FAIL", script=hwh,
-             args=[f"{ex}/addr_bad/design_1.hwh", "-q"], rc=1, must=["地址重叠"]),
+             args=[str(ex / "addr_bad" / "design_1.hwh"), "-q"], rc=1, must=["地址重叠"]),
         dict(name="地址表：没分配地址必须 FAIL", script=hwh,
-             args=[f"{ex}/real_bd/design_1.hwh", "-q"], rc=1, must=["没有任何 MEMRANGE"]),
+             args=[str(ex / "real_bd" / "design_1.hwh"), "-q"], rc=1, must=["没有任何 MEMRANGE"]),
         dict(name="地址表：--json 落盘且含 IP 清单", script=hwh,
-             args=[f"{ex}/addr_map/design_1.hwh", "--json"], rc=0, must=["PASS"],
+             args=[str(ex / "addr_map" / "design_1.hwh"), "--json"], rc=0, must=["PASS"],
              prep=lambda tmp: [str(tmp / "map.json")], json_file="map.json"),
         dict(name="地址表：--md 生成地址表文档", script=hwh,
-             args=[f"{ex}/addr_map/design_1.hwh", "--md"], rc=0, must=["PASS"],
+             args=[str(ex / "addr_map" / "design_1.hwh"), "--md"], rc=0, must=["PASS"],
              prep=lambda tmp: [str(tmp / "map.md")], md_file="map.md"),
         dict(name="地址表：两版对比要报地址变化", script=hwh,
-             args=[f"{ex}/addr_map/design_1.hwh", "--diff", f"{ex}/addr_bad/design_1.hwh", "-q"],
+             args=[str(ex / "addr_map" / "design_1.hwh"), "--diff", str(ex / "addr_bad" / "design_1.hwh"), "-q"],
              rc=0, must=["地址变化"]),
         dict(name="地址表：文件不存在应 EXIT 2", script=hwh,
-             args=[f"{ex}/nope.hwh"], rc=2, must=["找不到"]),
+             args=[str(ex / "nope.hwh")], rc=2, must=["找不到"]),
         dict(name="交付目录：位流与地址表配对应 PASS", script=bundle,
-             args=[f"{ex}/bundle", "-q"], rc=0, must=["配对"]),
+             args=[str(ex / "bundle"), "-q"], rc=0, must=["配对"]),
         dict(name="交付目录：缺 .hwh 必须 FAIL", script=bundle,
-             args=[f"{ex}/bundle_nohwh", "-q"], rc=1, must=["没有同名 .hwh"]),
+             args=[str(ex / "bundle_nohwh"), "-q"], rc=1, must=["没有同名 .hwh"]),
         dict(name="交付目录：.hwh 比 .bit 旧要报警", script=bundle,
              args=[], rc=1, must=["旧"], prep=prep_stale),
         dict(name="交付目录：与旧版对比要报地址变化", script=bundle,
-             args=[f"{ex}/bundle", "--diff", f"{ex}/addr_bad/design_1.hwh", "-q"],
+             args=[str(ex / "bundle"), "--diff", str(ex / "addr_bad" / "design_1.hwh"), "-q"],
              rc=0, must=["地址变了"]),
         dict(name="回环：内建自检 4/4（含 3 条负对照）", script=overlay,
              args=["--selftest"], rc=0, must=["自检 4/4"]),
@@ -151,8 +157,7 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     if not (HERE / "pynq_hwh.py").is_file() or not EX.is_dir():
-        print("[EXIT2] 找不到 pynq_hwh.py 或 examples/：请从仓库根运行 "
-              "`python skill/pynq/pynq_selftest.py`")
+        print("[EXIT2] 找不到 pynq_hwh.py 或 examples/：请确认 skill/pynq/ 目录完整")
         return 2
 
     items = cases()

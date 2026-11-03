@@ -59,6 +59,10 @@
 - `skill/` 与 `skill/prompts/` 里若干 `src: 记录 N` 引用是凭印象写的，与
   `docs/ai-collaboration-log.md` 的实际记录标题对不上，已逐条核到 86 条记录标题
   或 `deliverables/design_report.md` 的章节锚点；不可核验的改为文件锚点。
+- `skill/pynq/pynq_selftest.py` 原先用 `skill/pynq/...` 这类相对仓库根的路径，
+  从 `skill/` 目录调用时 13 个用例全红（0/13，看起来像判据坏了，其实是路径假设
+  坏了）。改为相对 `__file__` 解析后，从仓库根、从 `skill/pynq/`、从全新导出的
+  HEAD 副本运行都是 13/13；这条与 `pitfalls.md` P-14 同类，已把教训写进用例表注释。
 
 ## [1.0.0] — 2026-11-03
 
