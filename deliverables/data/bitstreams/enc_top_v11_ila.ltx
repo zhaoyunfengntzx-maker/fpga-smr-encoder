@@ -1,0 +1,1383 @@
+{
+    "ltx_root": {
+        "version": 4,
+        "minor": 0,
+        "ltx_data": [
+            {
+                "name": "EDA_PROBESET",
+                "active": true,
+                "debug_cores": [
+                    {
+                        "type": "XSDB_V3",
+                        "name": "dbg_hub",
+                        "spec": "labtools_xsdbm_v3",
+                        "clk_input_freq_hz": "50000000"
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "u_ila",
+                        "spec": "labtools_ila_v6",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 0,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "c30a833047ba52038dbc7e3e3214d902",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 0,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "dbg_a_out",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 1,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "dbg_adc_valid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 2,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "dbg_ang_delta",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_ang_delta[15]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[14]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[13]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[12]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[11]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[10]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[9]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[8]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[7]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[6]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[5]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[4]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[3]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[2]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[1]"
+                                            },
+                                            {
+                                                "name": "dbg_ang_delta[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 3,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "dbg_ang_glitch",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 4,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "dbg_angle",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_angle[15]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[14]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[13]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[12]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[11]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[10]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[9]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[8]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[7]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[6]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[5]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[4]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[3]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[2]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[1]"
+                                            },
+                                            {
+                                                "name": "dbg_angle[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 5,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "dbg_angle_raw",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_angle_raw[15]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[14]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[13]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[12]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[11]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[10]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[9]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[8]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[7]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[6]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[5]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[4]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[3]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[2]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[1]"
+                                            },
+                                            {
+                                                "name": "dbg_angle_raw[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 6,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "dbg_b_out",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe7",
+                                "id": 7,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "dbg_c_cor",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_c_cor[15]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[14]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[13]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[12]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[11]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[10]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[9]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[8]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[7]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[6]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[5]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[4]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[3]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[2]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[1]"
+                                            },
+                                            {
+                                                "name": "dbg_c_cor[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe8",
+                                "id": 8,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 8,
+                                "nets": [
+                                    {
+                                        "name": "dbg_c_dec",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_c_dec[15]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[14]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[13]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[12]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[11]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[10]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[9]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[8]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[7]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[6]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[5]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[4]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[3]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[2]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[1]"
+                                            },
+                                            {
+                                                "name": "dbg_c_dec[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe9",
+                                "id": 9,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 11,
+                                "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "dbg_c_raw",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_c_raw[11]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[10]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[9]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[8]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[7]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[6]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[5]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[4]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[3]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[2]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[1]"
+                                            },
+                                            {
+                                                "name": "dbg_c_raw[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe10",
+                                "id": 10,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 10,
+                                "nets": [
+                                    {
+                                        "name": "dbg_cor_sat",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe11",
+                                "id": 11,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 11,
+                                "nets": [
+                                    {
+                                        "name": "dbg_cor_valid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe12",
+                                "id": 12,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 17,
+                                "portIndex": 12,
+                                "nets": [
+                                    {
+                                        "name": "dbg_cordic_mag",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_cordic_mag[17]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[16]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[15]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[14]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[13]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[12]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[11]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[10]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[9]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[8]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[7]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[6]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[5]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[4]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[3]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[2]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[1]"
+                                            },
+                                            {
+                                                "name": "dbg_cordic_mag[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe13",
+                                "id": 13,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 13,
+                                "nets": [
+                                    {
+                                        "name": "dbg_cordic_valid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe14",
+                                "id": 14,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 14,
+                                "nets": [
+                                    {
+                                        "name": "dbg_cycle_cnt",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_cycle_cnt[15]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[14]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[13]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[12]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[11]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[10]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[9]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[8]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[7]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[6]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[5]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[4]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[3]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[2]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[1]"
+                                            },
+                                            {
+                                                "name": "dbg_cycle_cnt[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe15",
+                                "id": 15,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 15,
+                                "nets": [
+                                    {
+                                        "name": "dbg_dec_valid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe16",
+                                "id": 16,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 16,
+                                "nets": [
+                                    {
+                                        "name": "dbg_dir",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe17",
+                                "id": 17,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 17,
+                                "nets": [
+                                    {
+                                        "name": "dbg_edge_cnt",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_edge_cnt[31]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[30]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[29]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[28]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[27]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[26]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[25]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[24]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[23]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[22]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[21]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[20]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[19]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[18]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[17]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[16]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[15]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[14]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[13]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[12]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[11]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[10]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[9]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[8]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[7]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[6]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[5]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[4]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[3]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[2]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[1]"
+                                            },
+                                            {
+                                                "name": "dbg_edge_cnt[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe18",
+                                "id": 18,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 18,
+                                "nets": [
+                                    {
+                                        "name": "dbg_lag_fatal",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe19",
+                                "id": 19,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 19,
+                                "nets": [
+                                    {
+                                        "name": "dbg_lag_warn",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe20",
+                                "id": 20,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 20,
+                                "nets": [
+                                    {
+                                        "name": "dbg_limiter_active",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe21",
+                                "id": 21,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 21,
+                                "nets": [
+                                    {
+                                        "name": "dbg_otr_lat",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe22",
+                                "id": 22,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 5,
+                                "portIndex": 22,
+                                "nets": [
+                                    {
+                                        "name": "dbg_pole_pairs_eff",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_pole_pairs_eff[5]"
+                                            },
+                                            {
+                                                "name": "dbg_pole_pairs_eff[4]"
+                                            },
+                                            {
+                                                "name": "dbg_pole_pairs_eff[3]"
+                                            },
+                                            {
+                                                "name": "dbg_pole_pairs_eff[2]"
+                                            },
+                                            {
+                                                "name": "dbg_pole_pairs_eff[1]"
+                                            },
+                                            {
+                                                "name": "dbg_pole_pairs_eff[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe23",
+                                "id": 23,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 23,
+                                "nets": [
+                                    {
+                                        "name": "dbg_pos_full",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_pos_full[31]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[30]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[29]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[28]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[27]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[26]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[25]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[24]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[23]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[22]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[21]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[20]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[19]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[18]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[17]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[16]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[15]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[14]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[13]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[12]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[11]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[10]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[9]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[8]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[7]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[6]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[5]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[4]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[3]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[2]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[1]"
+                                            },
+                                            {
+                                                "name": "dbg_pos_full[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe24",
+                                "id": 24,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 24,
+                                "nets": [
+                                    {
+                                        "name": "dbg_s_cor",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_s_cor[15]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[14]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[13]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[12]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[11]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[10]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[9]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[8]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[7]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[6]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[5]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[4]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[3]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[2]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[1]"
+                                            },
+                                            {
+                                                "name": "dbg_s_cor[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe25",
+                                "id": 25,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 25,
+                                "nets": [
+                                    {
+                                        "name": "dbg_s_dec",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_s_dec[15]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[14]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[13]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[12]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[11]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[10]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[9]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[8]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[7]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[6]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[5]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[4]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[3]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[2]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[1]"
+                                            },
+                                            {
+                                                "name": "dbg_s_dec[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe26",
+                                "id": 26,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 11,
+                                "portIndex": 26,
+                                "nets": [
+                                    {
+                                        "name": "dbg_s_raw",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_s_raw[11]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[10]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[9]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[8]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[7]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[6]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[5]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[4]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[3]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[2]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[1]"
+                                            },
+                                            {
+                                                "name": "dbg_s_raw[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe27",
+                                "id": 27,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 7,
+                                "portIndex": 27,
+                                "nets": [
+                                    {
+                                        "name": "dbg_stat_byte",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "dbg_stat_byte[7]"
+                                            },
+                                            {
+                                                "name": "dbg_stat_byte[6]"
+                                            },
+                                            {
+                                                "name": "dbg_stat_byte[5]"
+                                            },
+                                            {
+                                                "name": "dbg_stat_byte[4]"
+                                            },
+                                            {
+                                                "name": "dbg_stat_byte[3]"
+                                            },
+                                            {
+                                                "name": "dbg_stat_byte[2]"
+                                            },
+                                            {
+                                                "name": "dbg_stat_byte[1]"
+                                            },
+                                            {
+                                                "name": "dbg_stat_byte[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe28",
+                                "id": 28,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 28,
+                                "nets": [
+                                    {
+                                        "name": "dbg_u_out",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe29",
+                                "id": 29,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 29,
+                                "nets": [
+                                    {
+                                        "name": "dbg_uvw_freq_warn",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe30",
+                                "id": 30,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 30,
+                                "nets": [
+                                    {
+                                        "name": "dbg_v_out",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe31",
+                                "id": 31,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 31,
+                                "nets": [
+                                    {
+                                        "name": "dbg_w_out",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe32",
+                                "id": 32,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 32,
+                                "nets": [
+                                    {
+                                        "name": "dbg_wrap_neg",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe33",
+                                "id": 33,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 33,
+                                "nets": [
+                                    {
+                                        "name": "dbg_wrap_pos",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe34",
+                                "id": 34,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 34,
+                                "nets": [
+                                    {
+                                        "name": "dbg_z_out",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe35",
+                                "id": 35,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 35,
+                                "nets": [
+                                    {
+                                        "name": "dbg_z_window",
+                                        "isBus": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

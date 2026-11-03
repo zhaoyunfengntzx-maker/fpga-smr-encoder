@@ -1,0 +1,273 @@
+# ============================================================================
+#  .gitignore  --  ABZ/BiSS 编码器项目
+#  原则：只跟踪"源码 + 权威输入文档 + 交付报告"，排除一切可再生的中间态。
+# ============================================================================
+
+# ---- Vivado / XSim 中间态 ------------------------------------------------
+_sim_work/
+_synth_work/
+#  LCD 测试程序（lcd_test/）的仿真/综合/实现产物：三个日志目录 + 位流，全部可再生
+_lcd_work/
+xsim.dir/
+.Xil/
+*.jou
+*.log
+*.pb
+*.str
+*.xpr
+*.dcp
+*.ltx
+*.bit
+usage_statistics_webtalk.*
+
+# ---- 本轮调试期间的一次性产物（可删） ------------------------------------
+_pdf_work/
+_pdf_work_tmp.txt
+_pdf_findings.md
+_pdf_out/
+_afg_work/
+_lint_tmp/
+#  disp/ 回归（tools/run_sim_disp.py）的日志：每次跑都会重写，属可再生的中间态
+disp/logs/
+_pipdl/
+_refs/
+_tools/
+_vivado_home/
+_viv_home/
+.vivado*
+2026.1/
+strategies/
+reportstrategies/
+tclapp/
+-p/
+.RUISDK/
+.appdata/
+#  tools/run_vivado.ps1 的 2b 段把 TEMP/TMP 重定向到这里（连 hw_server 时的沙箱绕行，见 §1.36）
+.tmp/
+AppData/
+Microsoft/
+
+# ---- 体积过大 / 与设计无直接关系的参考文档（留在本地，不进仓库） ----------
+#  正点原子开发板指南 43 MB：只用来查板级外设，结论已固化在 docs/04 与 tools/。
+【正点原子】达芬奇-lite之FPGA开发指南V1.0(1).pdf
+#  信号发生器 AFG-2225 手册（共 16 MB）：与 RTL/约束无关。
+信号发生器AFG-2225/
+#  泰克示波器手册（共约 39 MB，2026-10-13 起）：MSO/DPO2000B、DPO2024B 的数据手册/用户手册/SC 手册，
+#  只用来查示波器怎么操作；结论已固化在 docs/DPO2024B_user_guide.md 与 docs/DPO2024B_quick_ref.md。
+泰克示波器/
+
+# ---- 从权威输入文档导出的文本（可再生） ----------------------------------
+xls_all.txt
+xls_cells.txt
+xls_s7.txt
+xls_s8.txt
+xls_s11.txt
+_pin_work_xls_raw.txt
+_pin_work_xlsx.txt
+clockInfo.txt
+
+# ---- 波形与仿真输出 ------------------------------------------------------
+*.vcd
+*.wdb
+*.wcfg
+sim/logs/*.log
+#  U-57：两个回归汇总都是**构建产物**（每次跑重写），此前被跟踪 ⇒ 每轮提交前都要手工
+#  `git checkout --` 还原，U-55/U-56 各踩一次。现在一律不跟踪（文件仍写在盘上给人看）：
+#  disp/logs/ 整目录已在上面第 31 行忽略，这里补上 sim/ 那份。
+sim/logs/SUMMARY.md
+#  tools/uart_scope.py 每次跑都会重画这个图（2026-10-11 起不再跟踪）
+uart_scope.png
+
+# ---- 编辑器 / 操作系统 ---------------------------------------------------
+*.swp
+*~
+Thumbs.db
+desktop.ini
+.vscode/
+
+# ---- Python 字节码 -------------------------------------------------------
+__pycache__/
+*.pyc
+*.pyo
+
+# ---- 编辑器/调试期间留下的旧版本备份（不是源码，另有正式版本） -----------
+*.bak
+*.orig
+*.rej
+_commitmsg*.txt
+
+# ---- 上位机（host/）运行产物 -------------------------------------------------
+# 只忽略"跑一次就重新生成、且体积大"的数据文件；PNG 预览图与 *_run*.txt 长稳日志
+# 是有价值的证据，仍然入库（见 host/README.md）。
+host/_s5_out/*.csv
+host/_s5_soak/*.csv
+# 上位机的界面参数记忆（示波器量程/通道间距/日志级别/窗口尺寸）：每台机器一份，
+# 属运行态不是源码；坏了会自动回落默认值（见 host/ui_prefs.py）。
+host/ui_prefs.json
+_gitst.txt
+
+# ---- 上位机打包（S6）构建目录 -------------------------------------------------
+# exe 是产物不是源码（几十 MB，且随时可由 tools/build_host_exe.ps1 重出）；
+# 交付时按 host/README.md「打包」一节现打现给，不进仓库。
+host/_exe_work/
+host/_exe_work_onedir/
+host/_exe_work_diag/
+host/_exe_work_diag_onedir/
+host/dist/
+host/dist_onedir/
+host/dist_diag/
+host/_hold_diag/
+host/_exe_work_tmp/
+host/dist_tmp/
+*.spec.bak
+
+# ---- 上位机运行日志 / 现场诊断产物（2026-10-13 起） --------------------------
+# app.py 每次启动往 exe 旁边写一行运行日志（排查"双击没反应"），diag.py 会写一份
+# 现场诊断报告；两者都跟机器走、不进仓库。
+host/host_app_run.log
+host/host_app_run.log.1
+host/diag_report.txt
+host/_diag_run.txt
+host/_check_pyz.py
+
+# ---- 上位机界面批次 4 的取证实物（离屏截图 + 一次性脚本） ---------------------
+# `_shot_b4*.py` 是量版面用的临时脚本，`_b4b_*.png` 是放大态效果图（给用户看用，
+# 不是软件的一部分）；跑完即可删。
+host/_shot_b4.py
+host/_shot_b4b.py
+host/_b4_*.png
+host/_b4b_*.png
+
+# ---- 开源发布清理（2026-11-03） ------------------------------------------
+#  构建/调试工作目录：内容是 Vivado 报告与一次性脚本的副本，权威证据已归档到
+#  deliverables/data/<ver>/；留在仓库里既重复又含本机绝对路径。
+_disp_work/
+_p4_work/
+_impl_*/
+_synth_work*/
+_flash_work/
+_flash2_work/
+_hier_work/
+_merge_work/
+_sim_v64/
+_v11_verify/
+_vivado_run_ei58/
+_exe_rt_LEFTOVER_sandbox_MEI_delete_me/
+_rt_LEFTOVER_sandbox_MEI_delete_me/
+#  根目录一次性综合/烧写脚本（正式脚本在 tools/，见 docs/BASELINES.md）
+_impl_v59.tcl
+_impl_v60.tcl
+_impl_v61.tcl
+_impl_v62.tcl
+_prog_v59.tcl
+_prog_v60.tcl
+_prog_v61.tcl
+_prog_v62.tcl
+#  空白模板与早期需求稿：正文已并入 docs/，模板不再随仓库分发
+tech_doc_template.docx
+improvement_requirements.docx
+report_template.docx
+#  比赛现场照片（含人脸）与非源码素材，绝不入库
+照片/
+deliverables/video/assets/
+deliverables/video/assets_*/
+_teacher_brief/
+
+host/_b4_smoke.png
+
+# ---- 排障遗留目录（2026-10-13 单文件 exe 排障用，请手工删） ------------------
+# `--runtime-tmpdir` 试验时让引导器在仓库内建了 `_MEI*` 子目录，那些子目录的 ACL
+# 只给了"当前用户 SID"（没有 DSH 沙箱的令牌 SID），所以**在沙箱里删不掉**
+# （`Remove-Item` / `icacls /reset` / `rmdir /s /q` 全部 Access is denied）。
+# 目录名已改成 `*_LEFTOVER_sandbox_MEI_delete_me` 以便辨认，在资源管理器里手工删除即可。
+*_LEFTOVER_sandbox_MEI_delete_me/
+_exe_rt/
+_rt/
+
+# ---- 2026-10-23 新增：v59-v62 构建与调试产物 --------------------------------
+#  实现目录（.bit/.dcp/*.rpt 每次都重写；权威数字已写进 docs/ 与 deliverables/data）
+_impl_v*/
+_impl_opt60.tcl
+#  _disp_work/ 里早期报告已入库、作为历史证据保留；之后跑出来的中间态不再入库
+_disp_work/*
+#  DDR3 MIG 的输出（22 MB，由 tools/mig_build.tcl 重新生成）
+ip/
+#  共存实验目录（评估报告已归档为 docs/25_merge_feasibility.md）
+_merge_work/
+#  一次性实验/归档目录
+_archive/
+_preview/
+_simh/
+_simh2/
+_synth_work_ei58/
+_vivado_run_ei58/
+#  抓包数据与临时台账（现场产物，需要时另存）
+*.npy
+tight_setup_hold_pins.txt
+write_test_root.txt
+ddr3_sstl15_*.rpt
+#  MIG GUI 生成目录（23.9 MB，与 ip/ 同源）
+_mig_gui/
+#  烧写/救砖/一次性优化目录
+_flash_work/
+_acl_recovery/
+_impl_opt60/
+#  厂商数据手册（AD9238 ADC、AD8130 差分放大模块）：只用来查参数，结论已进 docs/
+AD9238/
+AD8130差分放大模块资料_V1.0/
+#  DSH 的 Office 预览缓存
+.dsh-office-preview/
+#  一次性文档补丁脚本（跑完即弃）
+tools/_fix_gain_doc.py
+
+# ---- 证据归档必须入库（覆盖上面的 *.bit / *.ltx / *.log 规则） ---------------
+#  这些是报告引用的原始证据，不是可再生的中间态；缺了它们评委 clone 后
+#  无法复核 deliverables/data/SHA256SUMS.txt（2026-10-27 发现 27 个文件被忽略）。
+!deliverables/data/**
+!deliverables/data/**/*.bit
+!deliverables/data/**/*.ltx
+!deliverables/data/**/*.log
+#  按层次资源统计的中间产物（report 可随时用 tools/util_hier.tcl 重出）
+_hier_work/
+
+# ---- 2026-10-29：显示位流实现目录（_impl_v*/ 只匹配生产版） ------------------
+_impl_disp_v*/
+# ---- 2026-10-29：selftest_ui 的临时录制目录（final_verify 每跑一次就生成） --------
+host/_ui_selftest_tmp/
+
+# ---- 2026-11-02锛歷70 寤烘瀯涓?杞瘉鎹洰褰?--------------------------------------
+_synth_work_v*/
+_synth_work_lowsig/
+_impl_lowsig/
+_flash2_work/
+_pdf_out*/
+hs_err_pid*.dmp
+_vivado_check*.png
+#   _boardtest/ 鍙叆搴撹剼鏈€佹縺鍔卞拰 ModelSim 瀹氬悜鍙幫紱閲囬泦鍒扮殑 CSV/PNG/NPY 鏄幇鍦轰骇鐗╋紝宸插湪璇佹嵁褰掓。閲?
+_boardtest/*.csv
+_boardtest/*.npy
+_boardtest/*.png
+_boardtest/*.log
+_boardtest/*_sim/
+_boardtest/_scratch/
+
+# ---- submission staging / render temp (2026-11-02) ----
+_pkg/
+.dsh-office-*/
+deliverables/submission/*.zip
+
+_cm.txt
+
+# ---- 打包用的 OpenBLAS 构建环境（约 700 MB，可重建，见 host/requirements-build.txt）----
+.venv-blas/
+
+
+# ---- 2026-11-03 open-source release cleanup ----
+_acl_reports/
+host/*.log
+host/*.log.*
+deliverables/teacher_brief.md
+deliverables/video_shooting_plan.md
+tools/_*.py
+!tools/_smoke_net_mode.py
+!tools/_smoke_raw_wave.py

@@ -1,0 +1,228 @@
+﻿###### xvlog ######
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/abz_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module abz_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/ad9238_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module ad9238_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/amp_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module amp_monitor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/angle_lut.v" into library work
+INFO: [VRFC 10-311] analyzing module angle_lut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/bias_track.v" into library work
+INFO: [VRFC 10-311] analyzing module bias_track
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/biss_c_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module biss_c_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/calib_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module calib_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/cap_regs.v" into library work
+INFO: [VRFC 10-311] analyzing module cap_regs
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/cdc_sync2.v" into library work
+INFO: [VRFC 10-311] analyzing module cdc_sync2
+INFO: [VRFC 10-311] analyzing module cdc_pulse
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/decim_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module decim_avg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/enc_top.v" into library work
+INFO: [VRFC 10-311] analyzing module enc_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/lag_ff.v" into library work
+INFO: [VRFC 10-311] analyzing module lag_ff
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/lock_sm.v" into library work
+INFO: [VRFC 10-311] analyzing module lock_sm
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/loop_filter.v" into library work
+INFO: [VRFC 10-311] analyzing module loop_filter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/pole_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module pole_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/reg_file.v" into library work
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/sc_correct.v" into library work
+INFO: [VRFC 10-311] analyzing module sc_correct
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/scope_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/scope_dump.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_dump
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/spi_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/uart_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-311] analyzing module uart_scope
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/uart_spi_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_spi_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/uvw_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module uvw_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/eth/async_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/eth/eth_reply.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_reply
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/eth/eth_rx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_rx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/eth/eth_top.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/eth/eth_tx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_tx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/eth/rgmii_if.v" into library work
+INFO: [VRFC 10-311] analyzing module rgmii_if
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/eth/scope_udp.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_udp
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/_synth_work_lowsig/rtl_lowsig/eth/stream_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module stream_tx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/xilinx_prims_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module BUFG
+INFO: [VRFC 10-311] analyzing module ODDR
+INFO: [VRFC 10-311] analyzing module IDDR
+INFO: [VRFC 10-311] analyzing module MMCME2_BASE
+INFO: [VRFC 10-311] analyzing module IDELAYE2
+INFO: [VRFC 10-311] analyzing module BUFIO
+INFO: [VRFC 10-311] analyzing module IDELAYCTRL
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/mig_ui_model.v" into library work
+INFO: [VRFC 10-311] analyzing module mig_ui_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/tb_lowsig.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_lowsig
+###### xelab ######
+Vivado Simulator v2026.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Vivado/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical tb_lowsig -s tb_lowsig_sim 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3645] port 'ad_clk2' remains unconnected for this instance [C:/Users/zhaoy/Desktop/FPGA/sim/tb_lowsig.v:97]
+WARNING: [VRFC 10-5021] port 'eth_rxd' is not connected on this instance [C:/Users/zhaoy/Desktop/FPGA/sim/tb_lowsig.v:97]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.BUFG
+Compiling module work.ODDR(DDR_CLK_EDGE="SAME_EDGE")
+Compiling module work.cdc_sync2
+Compiling module work.ad9238_capture_default
+Compiling module work.decim_avg(DW=16)
+Compiling module work.sc_correct_default
+Compiling module work.bias_track_default
+Compiling module work.amp_monitor_default
+Compiling module work.cordic_atan2_default
+Compiling module work.loop_filter(GATE_STATE=1)
+Compiling module work.pole_counter_default
+Compiling module work.angle_lut
+Compiling module work.lag_ff_default
+Compiling module work.abz_gen(CLK_PERIOD_NS=20)
+Compiling module work.lock_sm
+Compiling module work.uvw_gen_default
+Compiling module work.biss_c_slave(ST_BITS=22,MT_BITS=...
+Compiling module work.uart_rx_default
+Compiling module work.uart_tx
+Compiling module work.uart_spi_bridge
+Compiling module work.spi_slave(USE_TW28_PACKET=1)
+Compiling module work.reg_file(ST_BITS_R=22,MT_BITS_R=...
+Compiling module work.calib_ctrl_default
+Compiling module work.uart_scope
+Compiling module work.cap_regs
+Compiling module work.scope_capture_default
+Compiling module work.scope_dump_default
+Compiling module work.MMCME2_BASE(CLKIN1_PERIOD=20.0,C...
+Compiling module work.BUFIO
+Compiling module work.IDELAYCTRL
+Compiling module work.IDELAYE2(IDELAY_TYPE="VAR_LOAD")
+Compiling module work.IDDR(DDR_CLK_EDGE="SAME_EDGE_PIP...
+Compiling module work.rgmii_if_default
+Compiling module work.eth_rx_mac
+Compiling module work.async_fifo(DW=11)
+Compiling module work.eth_reply
+Compiling module work.async_fifo(DW=33)
+Compiling module work.scope_udp_default
+Compiling module work.async_fifo(DW=64,AW=8,ALMOST=32)
+Compiling module work.stream_tx(MAX_PTS=200)
+Compiling module work.eth_tx_mac
+Compiling module work.eth_top
+Compiling module work.enc_top(POR_BITS=4)
+Compiling module work.tb_lowsig
+Built simulation snapshot tb_lowsig_sim
+###### xsim ######
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Thu Oct 29 10:32:35 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_lowsig_sim/xsim_script.tcl
+# xsim {tb_lowsig_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[enc_top] ERROR: 速度为正但延迟修正量为负 (85568 / -703440)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (85568 / -703440)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (65925 / -62037)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (65925 / -62037)
+
+[TEST T1] 200 mVpp (1704 codes pp), default gain 1.5, bipolar 0 V
+[enc_top] ERROR: 速度为正但延迟修正量为负 (19611 / -126324)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (19611 / -126324)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (14093 / -6381)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (14093 / -6381)
+  [ok  ] T1-default-GAIN_S-1.5
+  [ok  ] T1-default-GAIN_C-1.5
+  [ok  ] T1-default-INTER0-32
+  [ok  ] T1-default-cfg_inter-32
+  [ok  ] T1-200mV-amp-not-low
+  [ok  ] T1-200mV-amp-not-high
+  [ok  ] T1-200mV-amp-ok
+  [ok  ] T1-200mV-no-corr-sat
+  [ok  ] T1-200mV-TRACK
+  [ok  ] T1-200mV-amp_sq-0.39FS
+
+[TEST T2] 300 mVpp (2556 codes pp), default gain 1.5
+  [ok  ] T2-300mV-amp-not-low
+  [ok  ] T2-300mV-amp-not-high
+  [ok  ] T2-300mV-amp-ok
+  [ok  ] T2-300mV-no-corr-sat
+  [ok  ] T2-300mV-TRACK
+  [ok  ] T2-300mV-amp_sq-0.88FS
+
+[TEST T3] 250 mVpp (2130 codes pp), default gain 1.5
+  [ok  ] T3-250mV-amp-ok
+  [ok  ] T3-250mV-amp-not-low
+  [ok  ] T3-250mV-TRACK
+  [ok  ] T3-250mV-amp_sq-0.61FS
+
+[TEST T4] one-key calibration at 200 mVpp (64 cycles window)
+  [ok  ] T4-calib-done
+  [ok  ] T4-calib-not-busy
+  [ok  ] T4-res-GAIN_S-1.92
+  [ok  ] T4-res-GAIN_C-1.92
+  [ok  ] T4-res-SHIFT_S-0
+  [ok  ] T4-res-SHIFT_C-0
+[enc_top] ERROR: 速度为正但延迟修正量为负 (161284 / -621171)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (161284 / -621171)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (1270 / -951525)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (1270 / -951525)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (24677 / -208638)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (24677 / -208638)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (10523 / -97254)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (10523 / -97254)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (5445 / -21258)
+[enc_top] ERROR: 速度为正但延迟修正量为负 (5445 / -21258)
+  [ok  ] T4-postcal-amp-ok
+  [ok  ] T4-postcal-amp-not-low
+  [ok  ] T4-postcal-amp-not-high
+  [ok  ] T4-postcal-TRACK
+  [ok  ] T4-postcal-amp_sq-0.64FS
+  [dbg] T4 gain_reg=63076 gain_c_reg=63076 shift_reg=0 amp_sq=687355610
+
+[TEST T5] A/B: force gain 1.0 (old default) at 200 mVpp
+  [dbg] T5 before force: gain_reg=63076 amp_sq=687355610 amp_low=0
+  [dbg] T5 forced: gain_reg=32768 amp_sq=185493776 amp_low=1
+  [ok  ] T5-gain1.0-amp-low
+  [ok  ] T5-gain1.0-not-TRACK
+  [dbg] T5 released: gain_reg=63076 amp_sq=687355610 amp_low=0 lock=1
+  [ok  ] T5-release-amp-not-low
+  [ok  ] T5-release-TRACK-again
+
+==== RESULT: 35 passed, 0 failed ====
+TEST PASSED
+$finish called at time : 8142170 ns : File "C:/Users/zhaoy/Desktop/FPGA/sim/tb_lowsig.v" Line 281
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 239.125 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 29 10:32:45 2026...

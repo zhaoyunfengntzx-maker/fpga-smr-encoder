@@ -1,0 +1,52 @@
+# ============================================================================
+#  .gitattributes
+# ============================================================================
+
+# 权威输入文档（二进制，不要做行尾/文本转换，也不要在 diff 里展开）
+*.pdf   binary
+*.xls   binary
+*.xlsx  binary
+
+# 源码一律用 LF 存储（避免跨平台行尾抖动污染 diff）
+*.v     text eol=lf
+*.sv    text eol=lf
+*.md    text eol=lf
+*.py    text eol=lf
+*.tcl   text eol=lf
+*.xdc   text eol=lf
+*.txt   text eol=lf
+*.json  text eol=lf
+# ★ 这里原来写成 `*.gitignore` / `*.gitattributes` —— **匹配不到任何文件**：
+#   `*` 不匹配空串，所以 `*.gitignore` 只能匹配 `x.gitignore`，而我们说的是
+#   仓库根目录下那个**名字就叫** `.gitignore` 的文件。正确写法是直接用文件名
+#   （模式里不含 `/` 时匹配任意层级，所以子目录里的 .gitignore 也一起覆盖）。
+#   2026-10-09 实测：因为这两行失效，`.gitignore` 一直是 CRLF 进仓库。
+.gitignore      text eol=lf
+.gitattributes  text eol=lf
+
+# ★ .ps1 例外：必须带 UTF-8 BOM，且不要被 git 当文本做行尾/编码规范化。
+#   原因：这些脚本含中文注释与中文字符串。Windows PowerShell 5.1（powershell.exe）
+#   读取**无 BOM** 的 .ps1 时按系统 ANSI 代码页（简体中文机器上 cp936/GBK）解码，
+#   中文字符被拆成"半个字符"，其中某些字节会吃掉字符串的收尾引号，导致
+#   ParserError: Unexpected token '}' —— 我实测过：去掉 BOM 后 run_sim.ps1 直接报
+#   "At tools\run_sim.ps1:170 char:1 ... Unexpected token '}'"，回归跑不起来。
+#   所以 .ps1 保持 binary（git 不做任何转换），文件本身是 UTF-8 with BOM + LF。
+*.ps1   binary
+
+# 生成物/报告（若将来解除 .gitignore 忽略，按二进制处理更安全）
+*.bit   binary
+*.ltx   binary
+*.dcp   binary
+*.rpt   text eol=lf
+
+# linguist：把交付文档与模型脚本算作主要语言，别让 PDF 主导统计
+*.md    linguist-documentation
+docs/** linguist-documentation
+
+# ---- 证据归档：逐字节入库，禁止任何行尾/文本转换 -----------------------------
+#  原因（2026-10-27 实测）：本机全局 core.autocrlf=true，克隆后 .csv/.md 会被
+#  检出成 CRLF，而 deliverables/data/SHA256SUMS.txt 记录的是原始字节的哈希 ⇒
+#  在评委机器上 sha256sum -c 必然大面积失败。把 data/ 与 figures/ 全部标成
+#  -text -diff 后，git 按二进制原样存取，克隆字节 = 工作树字节 = 清单哈希。
+deliverables/data/**     -text -diff
+deliverables/figures/**  -text -diff

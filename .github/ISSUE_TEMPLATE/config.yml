@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 从零复现 / 常见问题
+    url: https://github.com/your-org/fpga-smr-encoder/blob/main/docs/REPRODUCE.md
+    about: 先看环境、构建、烧写、验收判据与 FAQ
+  - name: 安全漏洞（私密）
+    url: https://github.com/your-org/fpga-smr-encoder/security/advisories/new
+    about: 不要公开贴敏感信息，走 GitHub 私密报告
+  - name: 讨论区
+    url: https://github.com/your-org/fpga-smr-encoder/discussions
+    about: 使用问题、方案讨论、展示你的改版

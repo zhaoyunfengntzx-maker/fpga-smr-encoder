@@ -1,0 +1,6 @@
+v73 = v71 RTL (position acc + Z index fix) + Z pulse counter probe
+build id : 16'h0017
+source   : rtl/ (git 2f4c147)
+generated: 2026-11-02T11:32:59
+diff vs rtl/: RTL_BUILD_ID only
+probe    : z_pulse_cnt (32-bit, rising edges of z_out) -> 0x054A..0x054D

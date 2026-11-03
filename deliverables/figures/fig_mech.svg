@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="245.072126pt" height="121.116565pt" viewBox="0 0 245.072126 121.116565" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-03T10:53:26.836009</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.6, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 121.116565 
+L 245.072126 121.116565 
+L 245.072126 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 6.822047 114.234045 
+L 238.250079 114.234045 
+L 238.250079 97.906486 
+L 6.822047 97.906486 
+z
+" clip-path="url(#pfbd9479bca)" style="fill: #edf1f5; stroke: #9aa9bc; stroke-width: 0.7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 49.878425 97.906486 
+L 71.406614 97.906486 
+L 71.406614 76.136407 
+L 49.878425 76.136407 
+z
+" clip-path="url(#pfbd9479bca)" style="fill: #dce3ec; stroke: #9aa9bc; stroke-width: 0.7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 173.665512 97.906486 
+L 195.193701 97.906486 
+L 195.193701 76.136407 
+L 173.665512 76.136407 
+z
+" clip-path="url(#pfbd9479bca)" style="fill: #dce3ec; stroke: #9aa9bc; stroke-width: 0.7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 28.350236 76.136407 
+L 216.72189 76.136407 
+L 216.72189 59.808848 
+L 28.350236 59.808848 
+z
+" clip-path="url(#pfbd9479bca)" style="fill: #c9d2de; stroke: #9aa9bc; stroke-width: 0.7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 98.31685 59.808848 
+L 146.755276 59.808848 
+L 146.755276 38.038769 
+L 98.31685 38.038769 
+z
+" clip-path="url(#pfbd9479bca)" style="fill: #edf1f5; stroke: #9aa9bc; stroke-width: 0.7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 92.934803 38.038769 
+L 152.137323 38.038769 
+L 152.137323 25.520974 
+L 92.934803 25.520974 
+z
+" clip-path="url(#pfbd9479bca)" style="fill: #f6e3c7; stroke: #c98612; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 71.406614 15.724439 
+L 173.665512 15.724439 
+L 173.665512 7.560659 
+L 71.406614 7.560659 
+z
+" clip-path="url(#pfbd9479bca)" style="fill: #d9efe6; stroke: #1e6b52; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 161.286803 24.704596 
+L 161.286803 16.540817 
+" clip-path="url(#pfbd9479bca)" style="fill: none; stroke: #1a1a1a; stroke-width: 0.6; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 160.210394 18.445699 
+L 161.286803 16.540817 
+L 162.363213 18.445699 
+" clip-path="url(#pfbd9479bca)" style="fill: none; stroke: #1a1a1a; stroke-width: 0.6; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 160.210394 22.799714 
+L 161.286803 24.704596 
+L 162.363213 22.799714 
+" clip-path="url(#pfbd9479bca)" style="fill: none; stroke: #1a1a1a; stroke-width: 0.6; stroke-linecap: square"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 5.6px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #6e6e6e" x="122.536063" y="107.519266" transform="rotate(-0 122.536063 107.519266)">stator (non-magnetic)</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 5.2px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="60.64252" y="88.335259" transform="rotate(-0 60.64252 88.335259)">bearing</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 5.2px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="184.429606" y="88.335259" transform="rotate(-0 184.429606 88.335259)">bearing</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 5.8px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1a1a1a" x="36.423307" y="69.472018" transform="rotate(-0 36.423307 69.472018)">shaft</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 5.4px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #6e6e6e" x="122.536063" y="50.319793" transform="rotate(-0 122.536063 50.319793)">hub</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 5.2px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="122.536063" y="32.00518" transform="rotate(-0 122.536063 32.00518)">magnet ring</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 5.2px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="122.536063" y="36.390884" transform="rotate(-0 122.536063 36.390884)">2048 cycles/rev</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 5.8px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="122.536063" y="5.591531" transform="rotate(-0 122.536063 5.591531)">SMR sensor PCB</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 5px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1e6b52" x="122.536063" y="12.935127" transform="rotate(-0 122.536063 12.935127)">SMR</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 5.2px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1a1a1a" x="163.977827" y="21.936519" transform="rotate(-0 163.977827 21.936519)">air gap</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pfbd9479bca">
+   <rect x="1.44" y="2.662391" width="242.192126" height="117.014173"/>
+  </clipPath>
+ </defs>
+</svg>

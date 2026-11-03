@@ -1,0 +1,94 @@
+name: Bug 报告
+description: 仿真、构建、上板或上位机行为不符合预期
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请先确认已按 [docs/REPRODUCE.md](https://github.com/your-org/fpga-smr-encoder/blob/main/docs/REPRODUCE.md) 走过一遍；
+        安全问题请走私密渠道（见 SECURITY.md），不要在这里贴敏感信息。
+
+  - type: textarea
+    id: what
+    attributes:
+      label: 发生了什么
+      description: 实际现象、报错原文（整段复制，不要只写"报错了"）
+      placeholder: |
+        例：run_sim.ps1 在 tb_abz_gen 失败，日志最后一行是 ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 你期望什么
+      description: 对照 README / REPRODUCE 里的判据
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+      description: 最小、可重复；涉及板卡请写接线与位流 SHA-256
+      placeholder: |
+        1. git clone ...
+        2. python tools\make_v74_rtl.py
+        3. vivado -mode batch -source tools\impl_check_v74.tcl
+        4. ......
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 版本 / 位流
+      description: 提交 SHA、RTL_BUILD_ID、位流 SHA-256（任一可）
+      placeholder: "v1.0.0 / 0x0018 / 03F12968..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影响范围
+      multiple: true
+      options:
+        - RTL / 仿真
+        - 综合 / 实现 / 时序
+        - 上板 / 烧写
+        - 屏上 UI
+        - 上位机 host/
+        - 以太网
+        - 文档 / 复现脚本
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: 环境
+      description: OS、Vivado 版本、Python 版本、开发板/ADC 型号、串口号
+      placeholder: "Windows 11 / Vivado 2026.1 / Python 3.13.9 / 达芬奇-lite + AD9238 / COM7"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志 / 报告
+      description: 贴关键片段或文件名（sim/logs/*.log、_impl_*/*.rpt）；大文件请给链接
+      render: text
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 确认
+      options:
+        - label: 我已搜索现有 issue，没有重复
+          required: true
+        - label: 我按 REPRODUCE 走过一遍，问题仍存在
+          required: true

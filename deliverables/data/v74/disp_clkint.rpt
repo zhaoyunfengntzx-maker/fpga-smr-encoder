@@ -1,0 +1,36 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (win64) Build 6511674 Tue Jun 16 11:02:23 MDT 2026
+| Date         : Mon Nov  2 23:00:36 2026
+| Host         : ROG running 64-bit major release  (build 9200)
+| Command      : report_clock_interaction -file C:/Users/zhaoy/Desktop/FPGA/_impl_disp_v74/impl_clkint.rpt
+| Design       : enc_top_disp
+| Device       : 7a35t-fgg484
+| Speed File   : -2  PRODUCTION 1.23 2018-06-13
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Clock Interaction Report
+
+Clock Interaction Table
+-----------------------
+
+                            WNS                            TNS Failing  TNS Total    WNS Path         Clock-Pair           Inter-Clock              
+From Clock    To Clock      Clock Edges  WNS(ns)  TNS(ns)    Endpoints    Endpoints  Requirement(ns)  Classification       Constraints              
+------------  ------------  -----------  -------  -------  -----------  -----------  ---------------  -------------------  -----------------------  
+adc_clk       adc_clk       fall - rise     6.96     0.00            0            1            10.00  Clean                Timed                    
+adc_clk2      adc_clk2      fall - rise     6.96     0.00            0            1            10.00  Clean                Timed                    
+clk_125_raw   clk_125_raw   rise - rise     0.42     0.00            0         6987             8.00  Clean                Timed                    
+clk_125_raw   eth_rxc_clk                                            0           10                   Ignored              Asynchronous Groups      
+clk_125_raw   eth_txc_out   fall - rise     2.14     0.00            0            5             4.00  Clean                Timed                    
+clk_125_raw   sys_clk       rise - rise     0.43     0.00            0          296             3.00  Ignored              Max Delay Datapath Only  
+eth_rxc_clk   clk_125_raw                                            0           11                   Ignored              Asynchronous Groups      
+eth_rxc_clk   eth_rxc_clk   rise - fall     1.91     0.00            0          602             4.00  Clean                Timed                    
+eth_rxc_clk   sys_clk                                                0           96                   Ignored              Asynchronous Groups      
+sys_clk       adc_clk       fall - rise     6.70     0.00            0            1            10.00  Clean                Timed                    
+sys_clk       adc_clk2      fall - rise     6.70     0.00            0            1            10.00  Clean                Timed                    
+sys_clk       clk_125_raw   rise - rise     0.64     0.00            0          233             3.00  Ignored              Max Delay Datapath Only  
+sys_clk       eth_rxc_clk                                            0          268                   Ignored              Asynchronous Groups      
+sys_clk       sys_clk       rise - rise     0.43     0.00            0        26440            20.00  Clean                Partial False Path       
+
+

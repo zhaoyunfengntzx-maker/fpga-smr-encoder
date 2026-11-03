@@ -1,0 +1,9 @@
+# host/ 上位机运行依赖（Windows 10/11 64-bit）
+# 安装：python -m pip install -r host/requirements.txt
+#
+# 版本下限按 2026-11 本机实测环境给出；更高版本一般兼容。
+PySide6>=6.9,<7
+pyserial>=3.5,<4
+numpy>=2.0,<3
+matplotlib>=3.9,<4
+Pillow>=11,<13

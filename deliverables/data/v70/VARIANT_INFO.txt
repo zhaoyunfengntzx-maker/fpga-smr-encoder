@@ -1,0 +1,24 @@
+v70: position-accumulator fix + UVW reverse-wrap fix + 2048 PPR + display CPR 2048
+source git: 657836a (工作区有未提交改动：rtl/pole_counter.v、rtl/uvw_gen.v、disp/enc_top_disp.v、tools/*)
+generated: 2026-11-01T22:32:46 (rtl_v70 由 tools/make_v70_rtl.py 从 rtl/ 生成)
+source RTL: C:\Users\zhaoy\Desktop\FPGA\rtl (25 + 8)
+build id: 0x0015
+
+patches applied by tools/make_v70_rtl.py (rtl/ 源文件不改):
+  enc_top.v RTL_BUILD_ID 0x000E -> 0x0015
+  reg_file.v INTER0 2 -> 32            (2048 PPR x 32 = 65536 A 沿/圈)
+
+RTL 源文件本身的修复（v70 变体从源复制，故不在上面的补丁列表里）:
+  pole_counter.v: step_s 改为“先做模 2^AW 无符号差（diff_u），再对差值做符号扩展”,
+                  配合 phase_acc 增量展开累加器。修 v63..v69 cycle_cnt 恒 0。
+  uvw_gen.v:      off_bwd 增加 r_sec==0 && eang>BND[5] 的回绕分支（bwd_wide）,
+                  修反向 0->5 跨界被吞；dir_det 改为 16 位最短有符号差；
+                  move_fwd/move_bwd 显式声明。
+  disp/enc_top_disp.v: 新增 `elsif ENC_V69_CPR2048 -> DISP_CPR = 2048。
+
+构建命令:
+  E:\Anaconda\python.exe tools\make_v70_rtl.py
+  powershell -File _flash2_work\run_vivado_hw.ps1 -Tcl tools/impl_check_v70.tcl -LogFile build_v70.log -Tail 20
+  powershell -File _flash2_work\run_vivado_hw.ps1 -Tcl tools/impl_check_disp_v70.tcl -LogFile build_disp_v70.log -Tail 20
+
+显示位流 define: ENC_DISP_TAP + ENC_V69_CPR2048   （生产位流绝不能带 ENC_DISP_TAP）

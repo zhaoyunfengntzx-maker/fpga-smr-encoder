@@ -1,0 +1,16 @@
+# RTL 遥测帧"实拍"样本（18 字节，空白分隔的十六进制）
+#
+# 来源  : sim/tb_uart_scope.v 的 [C] 段——测试台在 DUT 输出线 utx 上逐位采样、
+#         按 8N1 解码得到的**真实线上字节**，不是上位机构造出来的帧。
+# 生成行: sim/logs/tb_uart_scope.log 里的 "RTL_FRAME_HEX" 行
+#         （该行由 2026-10-10 新增的 $display 打印；同一次还修了旧打印语句
+#           只有 16 个 %02h 却有 18 个实参、导致 stat 与校验和从未被打印的缺陷）
+# 激励  : t_angle=0x1234  t_s=0x0F0E  t_c=0xF1F2
+#         t_io=0x6D  t_flag=0xA6（帧布局 v2；v11 及以前此处是 t_amp=0xDEADBEEF）
+#         t_pos=0x01020304 t_stat=0x5A
+# 布局  : v2（RTL v12）—— off8=io_state、off9=0xA2 帧标记、off10=io_flags、off11=0x00。
+#         amp_sq[31:0] 不再上线，由 s/c 无损重算（见 rtl/uart_scope.v 的帧格式注释）。
+# 校验和: 末字节 0xEC = 0xAA ^ 0x55 ^ payload_xor(0x13)，即 **含两个帧头常量**。
+#         纯 payload XOR 是 0x13，与 0xEC 相差 0xFF。约定见 rtl/uart_scope.v:219-224。
+# 守卫  : tools/check_uart_frame_fixture.py（把约定改回"只异或 payload"会立刻失败）
+aa 55 12 34 0f 0e f1 f2 6d a2 a6 00 01 02 03 04 5a ec

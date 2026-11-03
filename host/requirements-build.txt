@@ -1,0 +1,49 @@
+# 构建环境（打包专用）—— 为什么要单独一份
+
+打包体积的大头不是我们的代码，是**数值库的 BLAS 后端**：
+
+| numpy 来源 | BLAS | 包内 DLL | 交付包总大小 |
+|---|---|---|---|
+| Conda 默认（`Anaconda/MKL`） | Intel MKL | 23 个，222 MB | 585 MB → 375 MB（裁掉 4 个变体后） |
+| PyPI 官方 wheel | OpenBLAS | 1 个，19.5 MB | **179 MB** |
+
+本程序对 numpy 只用：数组运算、`arctan2`、`rfft`、`lstsq`、`mean/std`。
+这些在 OpenBLAS 上结果一致（`host/analysis.py --selftest` 52 项在同一台机器上两种后端都 PASS），
+而 MKL 的 AVX-512 / TBB / ScaLAPACK 路径我们一次都用不到。
+
+## 复现（国内网络，不翻墙）
+
+用清华源即可，实测 10 MB/s：
+
+```powershell
+python -m venv .venv-blas
+.\.venv-blas\Scripts\python.exe -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple `
+    numpy==2.3.5 matplotlib==3.10.6 PySide6==6.9.2 pyserial==3.5 pyinstaller==6.22.3
+powershell -ExecutionPolicy Bypass -File tools\build_host_onedir.ps1 -Python .venv-blas\Scripts\python.exe
+```
+
+备用镜像（任选其一，把 `-i` 换掉）：
+`https://mirrors.aliyun.com/pypi/simple`、
+`https://mirrors.ustc.edu.cn/pypi/simple`、
+`https://repo.huaweicloud.com/repository/pypi/simple`。
+
+版本必须与下面一致，否则 matplotlib 对 numpy 的 ABI / Qt 平台插件行为会变：
+
+```
+numpy==2.3.5
+matplotlib==3.10.6
+PySide6==6.9.2
+pyserial==3.5
+pyinstaller==6.22.3
+```
+
+## 注意
+
+1. `.venv-blas/` 已在 `.gitignore` 里，不要提交（约 700 MB）。
+2. venv 里的 `python` 仍然是本机 Anaconda 的 3.13.9 解释器，只是 site-packages 独立 —— 所以
+   `host_app_run.log` 里仍然会写 "packaged by Anaconda"，那是解释器的打包标记，不是 MKL。
+3. 再往下压（179 → ≤100 MB）只剩两条路，都需要更大的改动：
+   * 去掉 matplotlib（实时页波形改用 QPainter，抓包页已经是 QPainter 写法，可照抄）≈ −45 MB；
+   * 裁 Qt 里没用的模块（`Qt6Quick/Qml/Pdf`、`PIL._avif`、`opengl32sw.dll`）≈ −44 MB，
+     其中 `opengl32sw.dll` 是软件 OpenGL 兜底，**在没有显卡驱动的虚拟机/远程桌面上删了会白屏**，
+     所以默认留着。

@@ -1,0 +1,9 @@
+v71: Z index pulse fix (absolute-angle rev window + crossing latch) + 2048 PPR
+source git: 2f4c147
+ generated: 2026-11-02T09:24:44
+ source RTL: C:\Users\zhaoy\Desktop\FPGA\rtl (25 + 8)
+patches:
+  enc_top.v RTL_BUILD_ID 0x000E -> 0x0016
+  inherited fixes: enc_top.v z_window from absolute angle wrap (7/8..1/8) + free-run rev_cnt;
+                   abz_gen.v persistent crossing latch (r_pend_ttl) + direction-aware edge;
+                   enc_top.v clr_on_z 1 -> 0

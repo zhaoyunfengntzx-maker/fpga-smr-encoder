@@ -1,0 +1,22 @@
+﻿=== verify v11 start 10-12 21:16:12
+[21:16:12] BEFORE 0x05F2 ->        0x05F2                  = 0x0009   (byte0=0x09 byte1=0x00)   [status=0x08]
+  0x0505 gl_1024_gt5.6deg         9056         9924        868
+  0x0507 gl_2048_gt11.25deg          515          559         44
+  0x050D gl_hold_cnt          9055         9924        869
+  0x0540 cyc_pulse_cnt         2774        13721      10947
+[21:16:43] BEFORE otr(0x0405) ->        0x0405 STAT_LATCH(W1C)  = 0x0025   (byte0=0x25 byte1=0x00)   set: otr laglim amp   [status=0x00]
+[21:16:53]   dl: ILACAP DONE
+[21:17:05] AFTER 0x05F2 ->        0x05F2                  = 0x000B   (byte0=0x0B byte1=0x00)   [status=0x00]
+  0x05F2 rtl_build_id           11           11       (快照)
+  0x0505 gl_1024_gt5.6deg            3            3          0
+  0x0507 gl_2048_gt11.25deg            3            3          0
+  0x0509 gl_4096_gt22.5deg            3            3          0
+  0x050B gl_8192_gt45deg            1            1          0
+  0x050D gl_hold_cnt             1            1          0
+  0x0540 cyc_pulse_cnt        50519        35507      50524
+  RTL_BUILD_ID(0x05F2) = 11
+[21:19:06] AFTER otr(0x0405) ->        0x0405 STAT_LATCH(W1C)  = 0x0024   (byte0=0x24 byte1=0x00)   set: laglim amp   [status=0x00]
+  amp: 校正后半径 r      : mean 25535.6  min 25420.7  max 25673.4
+  amp: 圆度偏差(RMS)     : 0.133 %   （稳健口径：>3% 说明有直流偏置或标定没生效）
+  amp: 角度步进 (deg/帧) : mean -0.00360  min -0.11536  max +0.13733
+[21:19:07] === verify v11 end 21:19:07

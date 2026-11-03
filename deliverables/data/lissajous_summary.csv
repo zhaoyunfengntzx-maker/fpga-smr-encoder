@@ -1,0 +1,5 @@
+ts,stage,radius_mean,radius_min,radius_max,roundness_rms_pct,status,frames,crc_err,png,csv,note
+2026-10-13 21:28:01,before,26773.9,17594.5,33496.6,17.786,"oflow=4978, scamp=4975",49775,200,deliverables/figures/lissajous_before.png,deliverables/data/lissajous_before.csv,
+2026-10-13 21:28:01,after,26213.8,26094.1,26318.1,0.101,OK(no-alarm),49769,209,deliverables/figures/lissajous_after.png,deliverables/data/lissajous_after.csv,write 0x0502=0x0001
+2026-10-13 21:28:20,before,26214.8,26105.4,26346.7,0.101,OK(no-alarm),49803,175,deliverables/figures/lissajous_before.png,deliverables/data/lissajous_before.csv,
+2026-10-13 21:28:20,after,26214.5,26104.3,26321.7,0.101,OK(no-alarm),49787,191,deliverables/figures/lissajous_after.png,deliverables/data/lissajous_after.csv,write 0x0502=0x0001

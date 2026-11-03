@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "如果本仓库对你的研究或工程有帮助，请按以下信息引用。"
+title: "基于 SMR 磁阻传感器与 FPGA 的高精度细分磁编码器"
+abstract: >-
+  用 Xilinx Artix-7 FPGA 软件化实现 iC-Haus iC-TW28 正余弦细分器的全部功能：
+  12-bit 双通道同步 ADC、六参数闭式标定、16-bit 全流水 CORDIC、PI 跟踪环，
+  输出 16-bit 绝对角度与 ABZ/UVW/SPI/UART 接口，并集成 7 英寸触摸 UI 与
+  千兆以太网。仓库包含 RTL、定点黄金模型、上位机、仿真回归、构建/签核脚本
+  与可逐字节复核的证据归档。
+type: software
+authors:
+  - name: "The FPGA Encoder Project Contributors"
+    # 按竞赛匿名要求，不列个人姓名与单位；引用时使用团队署名即可。
+version: "1.0.0"
+date-released: "2026-11-03"
+license: MIT
+repository-code: "https://github.com/your-org/fpga-smr-encoder"
+url: "https://github.com/your-org/fpga-smr-encoder"
+keywords:
+  - FPGA
+  - magnetic encoder
+  - SMR sensor
+  - sin/cos interpolation
+  - CORDIC
+  - Artix-7
+  - Verilog
+  - motion control

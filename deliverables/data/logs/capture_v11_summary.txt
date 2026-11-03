@@ -1,0 +1,57 @@
+﻿[10-12 21:44:19] === v11 clean capture start ===
+[10-12 21:44:19] v11 ILA bit: 1458744 B / 2026/10/12 21:29:54   ltx: 71337 B
+[10-12 21:44:19] v11 ILA sha256: 5E049FD3B3EAB51C79D62BEA35709D6CB922820064B316FE1C644DCB97B3210B
+[10-12 21:44:49] rate before (30 s) = 0
+[10-12 21:44:49] capture v11stage1: mode=stage1 trig= wait=60000 csv=_synth_work/ila_cmp_v11_clean.csv
+[10-12 21:45:00]   rc=0
+[10-12 21:45:00]   log: # proc p {s} { puts "ILACAP $s" }
+[10-12 21:45:00]   log: # proc die {s} { puts "ILACAP FATAL: $s"; puts "ILACAP DONE"; return -code error $s }
+[10-12 21:45:00]   log: ILACAP BEGIN mode=stage1 bit=_synth_work/enc_top_ila.bit ltx=_synth_work/enc_top_ila.ltx csv=_synth_work/ila_cmp_v11_clean.csv depth=1024 wait=60000ms
+[10-12 21:45:00]   log: ILACAP   bit=1458744 B  ltx=71337 B
+[10-12 21:45:00]   log: ILACAP   server=localhost:3121
+[10-12 21:45:00]   log: ILACAP   target=localhost:3121/xilinx_tcf/Digilent/210512180081
+[10-12 21:45:00]   log: ILACAP   device=xc7a35t_0 PART=xc7a35t IDCODE=00000011011000101101000010010011
+[10-12 21:45:00]   log: ILACAP   已下载位�?
+[10-12 21:45:00]   log: ILACAP   ila=hw_ila_1
+[10-12 21:45:00]   log: ILACAP   探针敡�=36
+[10-12 21:45:00]   log: ILACAP     (关键探针) dbg_adc_valid
+[10-12 21:45:00]   log: ILACAP     (关键探针) dbg_ang_glitch
+[10-12 21:45:00]   log: ILACAP   trigger probe=dbg_adc_valid
+[10-12 21:45:00]   log: ILACAP   TRIGGER_COMPARE_VALUE = eq1'b1
+[10-12 21:45:00]   log: ILACAP   已�?��?�，等触发（上限 60000 ms）�?
+[10-12 21:45:00]   log: ILACAP   武�?�后 CORE_STATUS=FULL TRIGGER_STATUS=
+[10-12 21:45:00]   log: ILACAP   TRIGGER_STATUS= CORE_STATUS=FULL fired=1 elapsed=1 ms
+[10-12 21:45:00]   log: ILACAP   CSV 已写�?: _synth_work/ila_cmp_v11_clean.csv  (134738 B)
+[10-12 21:45:00]   log: ILACAP DONE
+[10-12 21:45:00]   CSV ok: 134738 B
+[10-12 21:45:00] capture v11glitch: mode=capture trig=ang_glitch wait=60000 csv=_synth_work/ila_cmp_v11_glitch.csv
+[10-12 21:46:13]   rc=0
+[10-12 21:46:13]   log: # proc p {s} { puts "ILACAP $s" }
+[10-12 21:46:14]   log: # proc die {s} { puts "ILACAP FATAL: $s"; puts "ILACAP DONE"; return -code error $s }
+[10-12 21:46:14]   log: ILACAP BEGIN mode=capture bit=_synth_work/enc_top_ila.bit ltx=_synth_work/enc_top_ila.ltx csv=_synth_work/ila_cmp_v11_glitch.csv depth=1024 wait=60000ms
+[10-12 21:46:14]   log: ILACAP   bit=1458744 B  ltx=71337 B
+[10-12 21:46:14]   log: ILACAP   server=localhost:3121
+[10-12 21:46:14]   log: ILACAP   target=localhost:3121/xilinx_tcf/Digilent/210512180081
+[10-12 21:46:14]   log: ILACAP   device=xc7a35t_0 PART=xc7a35t IDCODE=00000011011000101101000010010011
+[10-12 21:46:14]   log: ILACAP   capture 模式�?**不重下位�?**（保持板上现有配�?与寄存器值）
+[10-12 21:46:14]   log: ILACAP   ila=hw_ila_1
+[10-12 21:46:14]   log: ILACAP   探针敡�=36
+[10-12 21:46:14]   log: ILACAP     (关键探针) dbg_adc_valid
+[10-12 21:46:14]   log: ILACAP     (关键探针) dbg_ang_glitch
+[10-12 21:46:14]   log: ILACAP   ILA_TRIG 覆盖触发探针 �? want=ang_glitch
+[10-12 21:46:14]   log: ILACAP   trigger probe=dbg_ang_glitch
+[10-12 21:46:14]   log: ILACAP   TRIGGER_COMPARE_VALUE = eq1'b1
+[10-12 21:46:14]   log: ILACAP   已�?��?�，等触发（上限 60000 ms）�?
+[10-12 21:46:14]   log: ILACAP   武�?�后 CORE_STATUS=WAITING FOR TRIGGER TRIGGER_STATUS=
+[10-12 21:46:14]   log: ILACAP   TRIGGER_STATUS= CORE_STATUS=WAITING FOR TRIGGER fired=0 elapsed=60114 ms
+[10-12 21:46:14]   log: ILACAP   �? 没等到触发。stage2 说明这�?�时间里没有毛刺（ADC 上有真实正弦输入吗？）或触发条件没配上�?
+[10-12 21:46:14]   log: ILACAP DONE
+[10-12 21:46:14]   CSV MISSING
+[10-12 21:46:44] rate with v11 ILA on board (30 s) = 0
+[10-12 21:46:44] RATE_V11=0
+[10-12 21:46:57] restore: rc=0  id=read  0x05F2  -> 85 F2 00 00        0x05F2                  = 0x000B   (byte0=0x0B byte1=0x00)   [status=0x00]
+[10-12 21:46:57] figure annotations: [capture window rate (v9, 30 s) = 1978 events] [same dial, v11: glitch counter delta = 0 events / 30 s]
+[10-12 21:46:58]   fig: saved deliverables/figures/ila_glitch_v9_vs_v11.png
+[10-12 21:46:58]   fig: v9  window: glitch=1, center idx=486, s_raw=0x300
+[10-12 21:46:58]   fig: v11 window: glitch=0, center idx=512
+[10-12 21:46:58] === v11 clean capture end ===

@@ -1,0 +1,3 @@
+﻿[10-12 21:25:13] === v11 ILA build wrapper start ===
+[10-12 21:25:13] backed up v10 ILA: enc_top_ila.bit -> 1203448 B
+[10-12 21:25:13] backed up v10 ILA: enc_top_ila.ltx -> 71337 B

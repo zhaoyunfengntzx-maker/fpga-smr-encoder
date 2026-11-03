@@ -1,0 +1,10 @@
+v67 low-signal variant
+source git: b7d7f79
+generated: 2026-10-29T10:32:09
+source RTL: C:\Users\zhaoy\Desktop\FPGA\rtl (25 top-level + 8 eth)
+patches:
+  enc_top.v  POLE_BITS 11 -> 6
+  enc_top.v  RTL_BUILD_ID 0x000E -> 0x000F
+  reg_file.v GAIN_S/GAIN_C reset 32768 -> 49152 (Q1.15 x1.5)
+  reg_file.v INTER0 reset 2 -> 32 (64 cycles/rev x 2x32 = 4096 A edges/rev)
+build: tools/impl_check_lowsig.tcl -> _impl_lowsig/enc_top_lowsig.bit

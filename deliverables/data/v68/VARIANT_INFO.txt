@@ -1,0 +1,11 @@
+v68 400mVpp + display variant
+source git: 086df12
+generated: 2026-10-30T17:05:04
+source RTL: C:\Users\zhaoy\Desktop\FPGA\rtl (25 top-level + 8 eth)
+patches:
+  enc_top.v  POLE_BITS 11 -> 6 (64 cycles/rev)
+  enc_top.v  RTL_BUILD_ID 0x000E -> 0x0010
+  reg_file.v INTER0 reset 2 -> 32 (64 cycles/rev x 2x32 = 4096 A edges/rev)
+  (GAIN_S/GAIN_C stays 32768 = 1.0: 400mVpp x 4.16 = 0.832 FS)
+build (production): tools/impl_check_v68.tcl -> _impl_v68/enc_top_v68.bit
+build (display)   : tools/impl_check_disp_v68.tcl -> _impl_disp_v68/enc_top_disp_v68.bit

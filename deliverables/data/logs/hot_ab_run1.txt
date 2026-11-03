@@ -1,0 +1,39 @@
+﻿=== hot_ab watch start 10-12 20:57:27  hotMin=5/s  window=30s
+[20:57:27] board 0x05F2 ->        0x05F2                  = 0x0009   (byte0=0x09 byte1=0x00)   [status=0x08]
+[20:57:38] watch: d1024=2522 / 10 s => 252.20/s HOT
+[20:57:50] watch: d1024=2434 / 10 s => 243.40/s HOT
+[20:57:50] === HOT PLATEAU detected -> running A/B/A
+[20:57:50] ----- A1_v9 begin (no download; board is expected to be v9 already)
+  0x0505 gl_1024_gt5.6deg        10065        14845       4780
+  0x0507 gl_2048_gt11.25deg          101          103          2
+  0x0509 gl_4096_gt22.5deg            3            3          0
+  0x050B gl_8192_gt45deg            1            1          0
+  0x050D gl_hold_cnt         10067        14846       4779
+  0x0540 cyc_pulse_cnt        55147          557      10946
+[20:58:21]   A1_v9 otr(0x0405) ->        0x0405 STAT_LATCH(W1C)  = 0x0025   (byte0=0x25 byte1=0x00)   set: otr laglim amp   [status=0x00]
+  amp: 校正后半径 r      : mean 25520.6  min 25342.3  max 25693.8
+  amp: 角度步进 (deg/帧) : mean -0.00359  min -0.13184  max +0.10437
+[20:58:25] ----- B_v10 begin (download)
+[20:58:35]   B_v10 0x05F2 ->        0x05F2                  = 0x000A   (byte0=0x0A byte1=0x00)   [status=0x00]
+  0x0505 gl_1024_gt5.6deg            3            3          0
+  0x0507 gl_2048_gt11.25deg            3            3          0
+  0x0509 gl_4096_gt22.5deg            3            3          0
+  0x050B gl_8192_gt45deg            3            3          0
+  0x050D gl_hold_cnt             1            1          0
+  0x0540 cyc_pulse_cnt        10498        21444      10946
+[20:59:15]   B_v10 otr(0x0405) ->        0x0405 STAT_LATCH(W1C)  = 0x0024   (byte0=0x24 byte1=0x00)   set: laglim amp   [status=0x00]
+  amp: 校正后半径 r      : mean 25645.4  min 25462.2  max 25858.2
+  amp: 角度步进 (deg/帧) : mean -0.00357  min -0.12634  max +0.10986
+[20:59:17] ----- A2_v9 begin (download back)
+[20:59:27]   A2_v9 0x05F2 ->        0x05F2                  = 0x0009   (byte0=0x09 byte1=0x00)   [status=0x00]
+  0x0505 gl_1024_gt5.6deg            3            3          0
+  0x0507 gl_2048_gt11.25deg            2            2          0
+  0x0509 gl_4096_gt22.5deg            1            1          0
+  0x050B gl_8192_gt45deg            1            1          0
+  0x050D gl_hold_cnt             1            1          0
+  0x0540 cyc_pulse_cnt        10665        30637      19972
+[21:00:08]   A2_v9 otr(0x0405) ->        0x0405 STAT_LATCH(W1C)  = 0x0024   (byte0=0x24 byte1=0x00)   set: laglim amp   [status=0x00]
+  amp: 校正后半径 r      : mean 25481.5  min 25331.7  max 25644.2
+  amp: 角度步进 (deg/帧) : mean -0.00363  min -0.12085  max +0.09888
+[21:00:10] === HOT A/B/A done (board left at v9)
+[21:00:12] === hot_ab end 10-12 21:00:12
