@@ -114,7 +114,7 @@ Get-Content SHA256SUMS.txt | ForEach-Object {
 | 显示 DRC / 约束 / IO | [`disp_drc.rpt`](data/v66/disp_drc.rpt)、[`disp_check_timing.rpt`](data/v66/disp_check_timing.rpt)、[`disp_io.rpt`](data/v66/disp_io.rpt) | 0 Error；约束检查与 107 个 I/O 分配 | §4.2、§5 |
 | 最差路径 | [`prod_top_paths.rpt`](data/v66/prod_top_paths.rpt)、[`disp_top_paths.rpt`](data/v66/disp_top_paths.rpt)、[`disp_hold_paths.rpt`](data/v66/disp_hold_paths.rpt) | 见 §11.12 #3（v65 的 −1.197 事故路径） | §11.12 |
 | 构建日志 | [`prod_impl.log`](data/v66/prod_impl.log)、[`disp_impl.log`](data/v66/disp_impl.log) | 270,666 B / 479,424 B | 复现构建 |
-| 仿真回归 | [`../sim/logs/SUMMARY.md`](../sim/logs/SUMMARY.md) | **33/33 PASS**（2026-10-28 11:09:32；新增 `tb_lag_ff`/`tb_lock_sm`/`tb_bias_track`/`tb_angle_lut`） | §11.11 |
+| 仿真回归 | [`../sim/logs/`](../sim/logs/) | **33/33 PASS**（2026-10-28 11:09:32；新增 `tb_lag_ff`/`tb_lock_sm`/`tb_bias_track`/`tb_angle_lut`） | §11.11 |
 | 上板闸门 | [`../tools/final_verify.ps1`](../tools/final_verify.ps1) | 8 类检查；2026-10-28 实跑 **ALL CHECKS PASSED**（退出码 0） | §4.2、§11.11 |
 
 源码版本：tag **`v66-pre-board`**（feat 提交 `eda62da` + docs 提交 `14b70dc`）。
@@ -294,7 +294,7 @@ v68 之所以"看起来有 Z"，是因为那时 `cycle_cnt` 卡 0 ⇒ `z_window�
 | 编码器单机（历史基线 v12） | 6,298 LUT = 30.28% / WNS +0.959 / 位流 1,042,208 B | [`data/timing/impl_timing.rpt`](data/timing/impl_timing.rpt) + [`data/timing/impl_util.rpt`](data/timing/impl_util.rpt) + [`data/bitstreams/enc_top_v12_prod.bit`](data/bitstreams/enc_top_v12_prod.bit) | `[实测]` |
 | 纯屏版（历史 v59） | 14,263 LUT = 68.57% / BRAM 48.5 / WNS +0.586 / 1,732,625 B | `_impl_v58/impl_util.rpt`（工作副本，**未入 data/**） | `[实测]` |
 | 测试台规模 | `sim/` **36 台** + `disp/` **18 台** = **54 台** | `sim/tb_*.v`、`disp/tb_*.v` | `[仿真]` |
-| 回归结果 | **36/36 PASS**（v74 轮，2026-11-02）；disp 18/18。历史：v66 轮 33/33（2026-10-28 11:09:32，`tb_enc_top` 238 s）、v62 轮 29/29（2026-10-23 10:54:33，191 s） | [`sim/logs/SUMMARY.md`](../sim/logs/SUMMARY.md) + [`../_sim_after_v62.log`](../_sim_after_v62.log) | `[仿真]` |
+| 回归结果 | **36/36 PASS**（v74 轮，2026-11-02）；disp 18/18。历史：v66 轮 33/33（2026-10-28 11:09:32，`tb_enc_top` 238 s）、v62 轮 29/29（2026-10-23 10:54:33，191 s） | [`sim/logs/`](../sim/logs/)（逐台 `*.log` 与 `SUMMARY.md` 由 `tools/run_sim.ps1` 本地生成，不入库；入库的是 `_run_console*.txt`） | `[仿真]` |
 | 静态检查 | ERROR 0 / WARNING 0 | `tools/lint_all.ps1 -Clean` | `[仿真]` |
 
 ---
