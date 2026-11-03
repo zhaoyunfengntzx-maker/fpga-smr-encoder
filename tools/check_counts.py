@@ -111,6 +111,14 @@ def measure() -> dict:
         facts["zip"] = {"entries": entries, "bytes": size, "mb": round(size / 1e6, 2)}
     if MANIFEST.is_file():
         facts["manifest_lines"] = len(MANIFEST.read_text(encoding="utf-8").splitlines())
+    elif facts["zip"]:
+        # the packer streams straight into the zip, so the manifest only lives there
+        with zipfile.ZipFile(ZIP) as zf:
+            try:
+                blob = zf.read("FPGA_encoder_source/MANIFEST.sha256")
+            except KeyError:
+                blob = b""
+        facts["manifest_lines"] = len(blob.decode("utf-8").splitlines()) or None
     if PDF.is_file():
         pages = pdf_pages(PDF)
         size = PDF.stat().st_size

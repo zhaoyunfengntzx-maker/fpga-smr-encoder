@@ -40,4 +40,4 @@
 
 `deliverables/figures/` 下另有四张按报告版面缩放的同源图（`photo_overview.jpg`、
 `photo_adc_frontend.jpg`、`photo_board_front.jpg`、`photo_screen_p1.jpg`），供
-`design_report.docx/pdf` 的附录 D 引用；上传报名系统时用本目录的原分辨率版本。
+`design_report.docx/pdf` 正文 3.1 与 3.2.2 的照片引用；上传报名系统时用本目录的原分辨率版本。

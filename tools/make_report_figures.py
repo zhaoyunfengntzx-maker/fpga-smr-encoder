@@ -198,10 +198,10 @@ def verify():
     ax.axis("off")
     steps = [
         ("Fixed-point\nmodel", "bit-exact\nvs RTL"),
-        ("RTL", "25 top\n+ 8 eth"),
-        ("51 benches", "33/33 main\nregression"),
-        ("Build sign-off", "WNS +0.091 ns\n24,680 endpoints"),
-        ("Board", "five criteria\n598,115 frames"),
+        ("RTL", "24 modules\n+ 8 eth"),
+        ("57 benches", "37/37 + 20/20"),
+        ("Build sign-off", "WNS +0.199 ns\n24,691 endpoints"),
+        ("Board", "five criteria\n597,886 frames"),
     ]
     n = len(steps)
     w, gap = 0.160, 0.040
@@ -215,7 +215,7 @@ def verify():
                 color=S.GREY, transform=ax.transAxes)
         if i < n - 1:
             arrow(ax, (x + w + 0.006, 0.59), (x + w + gap - 0.006, 0.59), ms=4)
-    ax.text(0.02, 0.18, "202 evidence files  \u00b7  213 SHA-256 lines  \u00b7  one-command sign-off",
+    ax.text(0.02, 0.18, "320 evidence files  \u00b7  323 SHA-256 lines  \u00b7  one-command sign-off",
             fontsize=6.2, color=S.GREY, transform=ax.transAxes)
     S.save(fig, os.path.join(FIG, "fig_verify_chain"))
     plt.close(fig)
