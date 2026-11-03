@@ -1,0 +1,219 @@
+﻿###### xvlog ######
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module abz_gen
+INFO: [VRFC 10-311] analyzing module z_index_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ad9238_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module ad9238_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/amp_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module amp_monitor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/angle_lut.v" into library work
+INFO: [VRFC 10-311] analyzing module angle_lut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/bias_track.v" into library work
+INFO: [VRFC 10-311] analyzing module bias_track
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/calib_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module calib_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cap_regs.v" into library work
+INFO: [VRFC 10-311] analyzing module cap_regs
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cdc_sync2.v" into library work
+INFO: [VRFC 10-311] analyzing module cdc_sync2
+INFO: [VRFC 10-311] analyzing module cdc_pulse
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/decim_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module decim_avg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/enc_top.v" into library work
+INFO: [VRFC 10-311] analyzing module enc_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lag_ff.v" into library work
+INFO: [VRFC 10-311] analyzing module lag_ff
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lock_sm.v" into library work
+INFO: [VRFC 10-311] analyzing module lock_sm
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/loop_filter.v" into library work
+INFO: [VRFC 10-311] analyzing module loop_filter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/pole_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module pole_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/reg_file.v" into library work
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/sc_correct.v" into library work
+INFO: [VRFC 10-311] analyzing module sc_correct
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_dump.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_dump
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/spi_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-311] analyzing module uart_scope
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_spi_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_spi_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uvw_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module uvw_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/async_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_reply.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_reply
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_rx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_rx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_top.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_tx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_tx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/rgmii_if.v" into library work
+INFO: [VRFC 10-311] analyzing module rgmii_if
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/scope_udp.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_udp
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/stream_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module stream_tx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ddr3/ddr3_ring.v" into library work
+INFO: [VRFC 10-311] analyzing module ddr3_ring
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/xilinx_prims_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module BUFG
+INFO: [VRFC 10-311] analyzing module ODDR
+INFO: [VRFC 10-311] analyzing module IDDR
+INFO: [VRFC 10-311] analyzing module MMCME2_BASE
+INFO: [VRFC 10-311] analyzing module IDELAYE2
+INFO: [VRFC 10-311] analyzing module BUFIO
+INFO: [VRFC 10-311] analyzing module IDELAYCTRL
+INFO: [VRFC 10-311] analyzing module IOBUF
+INFO: [VRFC 10-311] analyzing module IBUF
+INFO: [VRFC 10-311] analyzing module OBUF
+INFO: [VRFC 10-311] analyzing module OBUFT
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/mig_ui_model.v" into library work
+INFO: [VRFC 10-311] analyzing module mig_ui_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/tb_stream_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_stream_tx
+###### xelab ######
+Vivado Simulator v2026.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Vivado/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical tb_stream_tx -s tb_stream_tx_sim 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3645] port 'host_mac' remains unconnected for this instance [C:/Users/zhaoy/Desktop/FPGA/sim/tb_stream_tx.v:53]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.async_fifo(DW=64,AW=8,ALMOST=32)
+Compiling module work.stream_tx(DEPTH=256,MAX_PTS=8)
+Compiling module work.tb_stream_tx
+Built simulation snapshot tb_stream_tx_sim
+###### xsim ######
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Wed Nov  4 00:48:36 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_stream_tx_sim/xsim_script.tcl
+# xsim {tb_stream_tx_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+[stream_tx] continuous stream check
+
+[A] disabled: no frame
+
+[B] enable + 100 samples
+  WR[0] idx=0 data=3e80064
+  WR[1] idx=1 data=3e90065
+  WR[2] idx=2 data=3ea0066
+  WR[3] idx=3 data=3eb0067
+  WR[4] idx=4 data=3ec0068
+  WR[5] idx=5 data=3ed0069
+  WR[6] idx=6 data=3ee006a
+  WR[7] idx=7 data=3ef006b
+  WR[8] idx=8 data=3f0006c
+  WR[9] idx=9 data=3f1006d
+  WR[10] idx=10 data=3f2006e
+  WR[11] idx=11 data=3f3006f
+  WR[12] idx=12 data=3f40070
+  WR[13] idx=13 data=3f50071
+  WR[14] idx=14 data=3f60072
+  WR[15] idx=15 data=3f70073
+  WR[16] idx=16 data=3f80074
+  WR[17] idx=17 data=3f90075
+  WR[18] idx=18 data=3fa0076
+  WR[19] idx=19 data=3fb0077
+  RD[0] idx=0 data=0000
+  RD[1] idx=0 data=0064
+  RD[2] idx=1 data=0065
+  RD[3] idx=2 data=0066
+  RD[4] idx=3 data=0067
+  RD[5] idx=4 data=0068
+  RD[6] idx=5 data=0069
+  RD[7] idx=6 data=006a
+  pkt 0: seq=1 first_lo=0 plen=89
+    s[58] 64
+    s[59] 00
+    s[60] e8
+    s[61] 03
+    s[62] 65
+    s[63] 00
+    s[64] e9
+    s[65] 03
+    s[66] 66
+    s[67] 00
+    s[68] ea
+    s[69] 03
+    s[70] 67
+    s[71] 00
+    s[72] eb
+    s[73] 03
+    s[74] 68
+    s[75] 00
+    s[76] ec
+    s[77] 03
+    s[78] 69
+    s[79] 00
+    s[80] ed
+    s[81] 03
+    s[82] 6a
+    s[83] 00
+    s[84] ee
+    s[85] 03
+    s[86] 6b
+    s[87] 00
+    s[88] ef
+  RD[8] idx=7 data=006b
+  RD[9] idx=8 data=006c
+  RD[10] idx=9 data=006d
+  RD[11] idx=10 data=006e
+  RD[12] idx=11 data=006f
+  RD[13] idx=12 data=0070
+  RD[14] idx=13 data=0071
+  RD[15] idx=14 data=0072
+  pkt 1: seq=2 first_lo=8 plen=89
+  RD[16] idx=15 data=0073
+  RD[17] idx=16 data=0074
+  RD[18] idx=17 data=0075
+  RD[19] idx=18 data=0076
+  pkt 2: seq=3 first_lo=16 plen=89
+  pkt 3: seq=4 first_lo=24 plen=89
+  pkt 4: seq=5 first_lo=32 plen=89
+  pkt 5: seq=6 first_lo=40 plen=89
+  pkt 6: seq=7 first_lo=48 plen=89
+  pkt 7: seq=8 first_lo=56 plen=89
+  pkt 8: seq=9 first_lo=64 plen=89
+  pkt 9: seq=10 first_lo=72 plen=89
+  pkt 10: seq=11 first_lo=80 plen=89
+  pkt 11: seq=12 first_lo=88 plen=89
+  pkt 12: seq=13 first_lo=96 plen=89
+  pkts=13 drop=0 lag=0 prod=169 lvl=57 full=0 empty=0 rdp=169 wr=169
+
+[C] overrun: reader falls too far behind
+  pkt 13: seq=14 first_lo=104 plen=89
+
+[D] disable: no hang
+  pkt 14: seq=15 first_lo=112 plen=89
+
+ TEST PASSED (260 checks)
+$finish called at time : 19370 ns : File "C:/Users/zhaoy/Desktop/FPGA/sim/tb_stream_tx.v" Line 244
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Nov  4 00:48:38 2026...

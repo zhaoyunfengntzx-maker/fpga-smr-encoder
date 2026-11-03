@@ -1,0 +1,206 @@
+﻿###### xvlog ######
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module abz_gen
+INFO: [VRFC 10-311] analyzing module z_index_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ad9238_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module ad9238_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/amp_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module amp_monitor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/angle_lut.v" into library work
+INFO: [VRFC 10-311] analyzing module angle_lut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/bias_track.v" into library work
+INFO: [VRFC 10-311] analyzing module bias_track
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/calib_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module calib_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cap_regs.v" into library work
+INFO: [VRFC 10-311] analyzing module cap_regs
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cdc_sync2.v" into library work
+INFO: [VRFC 10-311] analyzing module cdc_sync2
+INFO: [VRFC 10-311] analyzing module cdc_pulse
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/decim_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module decim_avg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/enc_top.v" into library work
+INFO: [VRFC 10-311] analyzing module enc_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lag_ff.v" into library work
+INFO: [VRFC 10-311] analyzing module lag_ff
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lock_sm.v" into library work
+INFO: [VRFC 10-311] analyzing module lock_sm
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/loop_filter.v" into library work
+INFO: [VRFC 10-311] analyzing module loop_filter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/pole_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module pole_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/reg_file.v" into library work
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/sc_correct.v" into library work
+INFO: [VRFC 10-311] analyzing module sc_correct
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_dump.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_dump
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/spi_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-311] analyzing module uart_scope
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_spi_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_spi_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uvw_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module uvw_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/async_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_reply.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_reply
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_rx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_rx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_top.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_tx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_tx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/rgmii_if.v" into library work
+INFO: [VRFC 10-311] analyzing module rgmii_if
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/scope_udp.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_udp
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/stream_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module stream_tx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ddr3/ddr3_ring.v" into library work
+INFO: [VRFC 10-311] analyzing module ddr3_ring
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/xilinx_prims_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module BUFG
+INFO: [VRFC 10-311] analyzing module ODDR
+INFO: [VRFC 10-311] analyzing module IDDR
+INFO: [VRFC 10-311] analyzing module MMCME2_BASE
+INFO: [VRFC 10-311] analyzing module IDELAYE2
+INFO: [VRFC 10-311] analyzing module BUFIO
+INFO: [VRFC 10-311] analyzing module IDELAYCTRL
+INFO: [VRFC 10-311] analyzing module IOBUF
+INFO: [VRFC 10-311] analyzing module IBUF
+INFO: [VRFC 10-311] analyzing module OBUF
+INFO: [VRFC 10-311] analyzing module OBUFT
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/mig_ui_model.v" into library work
+INFO: [VRFC 10-311] analyzing module mig_ui_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/tb_abz_jitter.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_abz_jitter
+###### xelab ######
+Vivado Simulator v2026.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Vivado/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical tb_abz_jitter -s tb_abz_jitter_sim 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.abz_gen_default
+Compiling module work.tb_abz_jitter
+Built simulation snapshot tb_abz_jitter_sim
+###### xsim ######
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Wed Nov  4 00:42:20 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_abz_jitter_sim/xsim_script.tcl
+# xsim {tb_abz_jitter_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+================================================================
+ tb_abz_jitter —— ABZ 边沿抖动量化测试台
+ 生产配置复核: inter=256 div=1 hyst=0 ablimit=0 zwidth=4(★ v9 起宽 = 5 步)
+ 样点节拍 filt_valid = 12.5 MHz (= 50 MHz / 2^LOG2DEC, LOG2DEC=2)
+================================================================
+
+  === [PH1-1kHz] f_in = 999.999 Hz, filt_valid = 12.5 MHz, inter=256 div=1 ===
+      理想: AB 边沿率 = 1023999 /s, 边沿间隔 = 976.564 ns = 12.207 节拍
+      窗口 10.000 ms
+      AB 边沿: n=10240, 实测平均间隔 = 48.828 clk (976.6 ns) = 12.207 节拍
+               最小 48 clk, 最大 52 clk -> 峰峰 = 80 ns (1.00 节拍)
+               峰峰抖动/平均间隔 = 8.19 %
+      与理想均匀栅格的最大偏差 = 78 ns (0.97 节拍)
+      A 上升->上升: n=2560, 平均 195.236 clk (3904.7 ns), 峰峰 80 ns
+      A 高电平:     n=2559, 平均 97.657 clk (1953.1 ns), 峰峰 80 ns  (占空 50.02 %)
+      A->B 相位:    n=2560, 平均 48.830 clk (976.6 ns), 峰峰 80 ns
+      B->A 相位:    n=2560, 平均 48.830 clk (976.6 ns), 峰峰 80 ns
+      Z: 脉冲 10 次, 宽度 244.0 clk (4.880 us) 峰峰 0 ns
+      limiter 高电平 0 clk, lag_warn 0 clk, lag_fatal 0 clk
+      点火方向: 正向 10240 次, 反向 0 次 (edge_cnt 末值 = 12288)
+
+  ---- PH1 判据（10 个输入周期 = 10240 个理想 AB 边沿）----
+    ok  : PH1-edge-count = 4*inter/div * N
+    ok  : PH1-jitter <= 1 tick (80ns) vs ideal grid
+    ok  : PH1-edge-interval pk-pk <= 2 ticks
+    ok  : PH1-A-high-width pk-pk <= 2 ticks
+    ok  : PH1-limiter never active
+    ok  : PH1-lag_warn never set
+    ok  : PH1-lag_fatal never set
+    ok  : PH1-Z = 1 per input period (10+-1)
+    ok  : PH1-no reverse fire
+
+  === [H2-10kHz] f_in = 10000.000 Hz, filt_valid = 12.5 MHz, inter=256 div=1 ===
+      理想: AB 边沿率 = 10240000 /s, 边沿间隔 = 97.656 ns = 1.221 节拍
+      窗口 1.000 ms
+      AB 边沿: n=10239, 实测平均间隔 = 4.883 clk (97.7 ns) = 1.221 节拍
+               最小 4 clk, 最大 8 clk -> 峰峰 = 80 ns (1.00 节拍)
+               峰峰抖动/平均间隔 = 81.92 %
+      与理想均匀栅格的最大偏差 = 48 ns (0.60 节拍)
+      A 上升->上升: n=2559, 平均 19.523 clk (390.5 ns), 峰峰 80 ns
+      A 高电平:     n=2559, 平均 9.771 clk (195.4 ns), 峰峰 80 ns  (占空 50.05 %)
+      A->B 相位:    n=2559, 平均 4.896 clk (97.9 ns), 峰峰 80 ns
+      B->A 相位:    n=2559, 平均 4.886 clk (97.7 ns), 峰峰 80 ns
+      Z: 脉冲 20 次, 宽度 24.0 clk (0.480 us) 峰峰 0 ns
+      limiter 高电平 0 clk, lag_warn 0 clk, lag_fatal 0 clk
+      点火方向: 正向 10239 次, 反向 0 次 (edge_cnt 末值 = 24575)
+
+  ---- PH2 判据（10 kHz：理想边沿率 10.24 MHz，已贴近 12.5 MHz 上限）----
+    ok  : PH2-edge-count exact (no drop)
+    ok  : PH2-limiter not active
+    ok  : PH2-lag_warn not set
+    ok  : PH2-no reverse fire
+      注: 理想平均边沿间隔仅 1.221 节拍(97.7 ns)，1 节拍量化抖动即占 81.9 %
+          这是 filt_valid = 12.5 MHz 这个**配置**决定的，不是 RTL 缺陷。
+
+  === [H3-20kHz] f_in = 20000.001 Hz, filt_valid = 12.5 MHz, inter=256 div=1 ===
+      理想: AB 边沿率 = 20480001 /s, 边沿间隔 = 48.828 ns = 0.610 节拍
+      窗口 1.000 ms
+      AB 边沿: n=12500, 实测平均间隔 = 4.000 clk (80.0 ns) = 1.000 节拍
+               最小 4 clk, 最大 4 clk -> 峰峰 = 0 ns (0.00 节拍)
+               峰峰抖动/平均间隔 = 0.00 %
+      与理想均匀栅格的最大偏差 = 389617 ns (4870.22 节拍)
+      A 上升->上升: n=3125, 平均 15.995 clk (319.9 ns), 峰峰 0 ns
+      A 高电平:     n=3125, 平均 8.000 clk (160.0 ns), 峰峰 0 ns  (占空 50.02 %)
+      A->B 相位:    n=3125, 平均 4.000 clk (80.0 ns), 峰峰 0 ns
+      B->A 相位:    n=3125, 平均 4.000 clk (80.0 ns), 峰峰 0 ns
+      Z: 脉冲 40 次, 宽度 20.0 clk (0.400 us) 峰峰 0 ns
+      limiter 高电平 0 clk, lag_warn 50000 clk, lag_fatal 47601 clk
+      点火方向: 正向 12500 次, 反向 0 次 (edge_cnt 末值 = 38325)
+
+  ---- PH3 判据（20 kHz：需 20.48 MHz 边沿 > 12.5 MHz 上限）----
+    ok  : PH3-edge-count far below ideal (dropped)
+    ok  : PH3-rate pinned to filt_valid (=12.5 MHz, 4 clk)
+    ok  : PH3-lag_warn SET on overload (blind spot closed)
+    ok  : PH3-lag_fatal SET on gross overload
+    ok  : PH3-no reverse fire (acc clamped, no wrap)
+    ok  : PH3-limiter NOT active (overload only sets lag)
+
+  ★ 过速保护生效: r_acc 恒在 [0,acc_th-1]，越界量计入独立过速计数 r_ovl
+     （只喂 lag_warn/lag_fatal，不进 limiter_active —— 见文件头说明）。
+     实用约束（不变）: inter*f_in/div <= filt_valid/2 = 6.25 MHz（留一半余量）
+       本配置 inter=256/div=1 -> f_in <= 24.4 kHz；
+       要跑更高输入率就把 LOG2DEC 从 2 降到 0（filt_valid=50 MHz，需重综合），
+       或减小 inter。
+
+================================================================
+ TEST PASSED (0 errors)
+================================================================
+$finish called at time : 14300370 ns : File "C:/Users/zhaoy/Desktop/FPGA/sim/tb_abz_jitter.v" Line 490
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Nov  4 00:42:22 2026...

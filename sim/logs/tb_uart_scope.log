@@ -1,0 +1,169 @@
+﻿###### xvlog ######
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module abz_gen
+INFO: [VRFC 10-311] analyzing module z_index_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ad9238_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module ad9238_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/amp_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module amp_monitor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/angle_lut.v" into library work
+INFO: [VRFC 10-311] analyzing module angle_lut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/bias_track.v" into library work
+INFO: [VRFC 10-311] analyzing module bias_track
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/calib_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module calib_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cap_regs.v" into library work
+INFO: [VRFC 10-311] analyzing module cap_regs
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cdc_sync2.v" into library work
+INFO: [VRFC 10-311] analyzing module cdc_sync2
+INFO: [VRFC 10-311] analyzing module cdc_pulse
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/decim_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module decim_avg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/enc_top.v" into library work
+INFO: [VRFC 10-311] analyzing module enc_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lag_ff.v" into library work
+INFO: [VRFC 10-311] analyzing module lag_ff
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lock_sm.v" into library work
+INFO: [VRFC 10-311] analyzing module lock_sm
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/loop_filter.v" into library work
+INFO: [VRFC 10-311] analyzing module loop_filter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/pole_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module pole_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/reg_file.v" into library work
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/sc_correct.v" into library work
+INFO: [VRFC 10-311] analyzing module sc_correct
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_dump.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_dump
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/spi_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-311] analyzing module uart_scope
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_spi_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_spi_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uvw_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module uvw_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/async_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_reply.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_reply
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_rx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_rx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_top.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_tx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_tx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/rgmii_if.v" into library work
+INFO: [VRFC 10-311] analyzing module rgmii_if
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/scope_udp.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_udp
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/stream_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module stream_tx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ddr3/ddr3_ring.v" into library work
+INFO: [VRFC 10-311] analyzing module ddr3_ring
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/xilinx_prims_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module BUFG
+INFO: [VRFC 10-311] analyzing module ODDR
+INFO: [VRFC 10-311] analyzing module IDDR
+INFO: [VRFC 10-311] analyzing module MMCME2_BASE
+INFO: [VRFC 10-311] analyzing module IDELAYE2
+INFO: [VRFC 10-311] analyzing module BUFIO
+INFO: [VRFC 10-311] analyzing module IDELAYCTRL
+INFO: [VRFC 10-311] analyzing module IOBUF
+INFO: [VRFC 10-311] analyzing module IBUF
+INFO: [VRFC 10-311] analyzing module OBUF
+INFO: [VRFC 10-311] analyzing module OBUFT
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/mig_ui_model.v" into library work
+INFO: [VRFC 10-311] analyzing module mig_ui_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/tb_uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_uart_scope
+###### xelab ######
+Vivado Simulator v2026.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Vivado/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical tb_uart_scope -s tb_uart_scope_sim 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.uart_tx
+Compiling module work.uart_scope(BAUD_DIV=4,SAMPLE_DIV...
+Compiling module work.tb_uart_scope
+Built simulation snapshot tb_uart_scope_sim
+###### xsim ######
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Wed Nov  4 00:48:48 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_uart_scope_sim/xsim_script.tcl
+# xsim {tb_uart_scope_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+================================================================
+ tb_uart_scope  ——  uart_tx / uart_scope 自检
+   BAUD_DIV=4 (1 bit = 4 clk)  SAMPLE_DIV=100  frame=18 bytes
+================================================================
+
+[A] uart_tx 位级时序（一位 = 4 clk，整字节 = 40 clk）
+     measured byte length = 40 clk (expected 40)
+
+[B] 字节往返（逐位中点采样还原）
+     sent 0x00  received 0x00  stop=1
+     sent 0xff  received 0xff  stop=1
+     sent 0xaa  received 0xaa  stop=1
+     sent 0x55  received 0x55  stop=1
+     sent 0x80  received 0x80  stop=1
+     sent 0x01  received 0x01  stop=1
+     sent 0x5a  received 0x5a  stop=1
+     sent 0xa5  received 0xa5  stop=1
+
+[C] uart_scope 整帧：帧头 / 大端字段 / io 快照 / XOR 校验
+     frame = aa 55 | 1234 0f0e | f1f26da2 | a6000102 | 0304 | 5a | ec
+RTL_FRAME_HEX aa 55 12 34 0f 0e f1 f2 6d a2 a6 00 01 02 03 04 5a ec
+
+[D] 帧周期 = SAMPLE_DIV 的整数倍；en=0 停发
+     [dbg] fr_t0 seq = 1320 2120 2920 ; anchors a/b/c = 0 0 0
+     [dbg] fc now = 4
+     frame period (counted): 25 frames in 20000 clk  => avg 800 clk/frame
+     frame period (exact edge-to-edge) = 800 clk  (18 bytes = 720, SAMPLE_DIV = 100, sum = 820)
+     [dbg] latch pulses at 481 581 681  => periods 100 , 100 clk
+     [dbg] tx_start pulses: n=557  first=484  1st->2nd = 42 clk  (1 byte = 40 clk)
+     [dbg] sc_tx edges: n=12  e1=1 e2=2 e9=513 e10=517  => bit periods 1 4 (BAUD_DIV=4 clk)
+     [dbg] frame_cnt changes at 1 2 (n=32, delta=1) ; sending 1st fall at 1198
+     D4: byte interval measured 42 clk (expect 10*BAUD_DIV+2 = 42)
+     D4: one frame occupies 754 clk of line time; measured frame period = 800
+     D4b: non-uniform intervals in frame = 0
+     D4: elapsed=20000  nframes=25  nframes*exact_period=20000  dev=0 clk
+     en=0: line idle after 92 clk wait; residual-byte allowance = 40 clk
+     en=0 window: 300 clk observed, 0 low samples, frame_cnt 31 -> 31
+
+[E] 注入噪声字节后凭帧头重同步
+     injected noise byte 0x24
+     injected noise byte 0x81
+     injected noise byte 0x09
+     injected noise byte 0x63
+     injected noise byte 0x0d
+
+[F] 恢复 en 后连续发帧，线上无异常
+
+================================================================
+ TEST PASSED (96 checks)
+================================================================
+$finish called at time : 566430 ns : File "C:/Users/zhaoy/Desktop/FPGA/sim/tb_uart_scope.v" Line 825
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Nov  4 00:48:50 2026...

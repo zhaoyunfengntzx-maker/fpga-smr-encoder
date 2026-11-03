@@ -1,0 +1,181 @@
+###### 归档说明（不是当前回归产物，勿当作现在的失败） ######
+# 这是一份**孤儿日志**：产生它的测试台 sim/tb_calib_bnd.v 已经从仓库中
+# 删除（其覆盖面由 sim/tb_calib_min.v 承接，后者 PASS 54 checks，见
+# docs/DEV_STATUS.md 第 1 节表格）。
+# 它记录的是 docs/DEV_STATUS.md §1.9 那个真缺陷（rtl/calib_ctrl.v 标定窗口
+# off-by-one，win_cycles=1 时窗口退化为 0）**修复之前**的失败现场：
+#   TEST FAILED (5 error(s) / 38 checks) —— T3a/T3b cycle_pulse 与 win_cycles、
+#   phase_k == 0、gain_s == gain_c、ACCUM..DONE 全部失败。
+# 保留它只作历史 A/B 证据（修复前失败 -> 修复后 PASS）。
+# 它不由 tools/run_sim.ps1 生成或读取（脚本只发现 sim/tb_*.v）。
+##############################################################
+###### xvlog ######
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module abz_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ad9238_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module ad9238_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/amp_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module amp_monitor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/biss_c_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module biss_c_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/calib_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module calib_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cdc_sync2.v" into library work
+INFO: [VRFC 10-311] analyzing module cdc_sync2
+INFO: [VRFC 10-311] analyzing module cdc_pulse
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/decim_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module decim_avg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/enc_top.v" into library work
+INFO: [VRFC 10-311] analyzing module enc_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/loop_filter.v" into library work
+INFO: [VRFC 10-311] analyzing module loop_filter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/pole_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module pole_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/reg_file.v" into library work
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/sc_correct.v" into library work
+INFO: [VRFC 10-311] analyzing module sc_correct
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/spi_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-311] analyzing module uart_scope
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uvw_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module uvw_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/xilinx_prims_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module BUFG
+INFO: [VRFC 10-311] analyzing module ODDR
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/tb_calib_bnd.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_calib_bnd
+###### xelab ######
+Vivado Simulator v2026.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Vivado/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical tb_calib_bnd -s tb_calib_bnd_sim 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.calib_ctrl_default
+Compiling module work.tb_calib_bnd
+Built simulation snapshot tb_calib_bnd_sim
+###### xsim ######
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Sat Oct 10 00:22:21 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_calib_bnd_sim/xsim_script.tcl
+# xsim {tb_calib_bnd_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+=================================================================
+ tb_calib_min -- calib_ctrl 最小自检
+   win_cycles=4, MAX_SAMPLES=65536, 每周期 8 个样本 ⇒ N=32
+=================================================================
+ DBGE t=190000 d_pulse=1 wcnt=0 nsamp=0 cp_in=1
+ DBGE t=210000 d_pulse=0 wcnt=1 nsamp=0 cp_in=0
+ DBGFEED #1 d_s=3827 d_c=-3827 cp=0 nsamp=0 S1=0
+ DBGE t=230000 d_pulse=0 wcnt=1 nsamp=1 cp_in=0
+ DBGFEED #2 d_s=7071 d_c=-7071 cp=0 nsamp=1 S1=3827
+ DBGE t=250000 d_pulse=0 wcnt=1 nsamp=2 cp_in=0
+ DBGFEED #3 d_s=9239 d_c=-9239 cp=0 nsamp=2 S1=10898
+ DBGE t=270000 d_pulse=0 wcnt=1 nsamp=3 cp_in=0
+ DBGFEED #4 d_s=10000 d_c=-10000 cp=0 nsamp=3 S1=20137
+ DBGE t=290000 d_pulse=0 wcnt=1 nsamp=4 cp_in=0
+ DBGFEED #5 d_s=9239 d_c=-9239 cp=0 nsamp=4 S1=30137
+ DBGE t=310000 d_pulse=0 wcnt=1 nsamp=5 cp_in=0
+ DBGFEED #6 d_s=7071 d_c=-7071 cp=0 nsamp=5 S1=39376
+ DBGE t=330000 d_pulse=0 wcnt=1 nsamp=6 cp_in=0
+ DBGFEED #7 d_s=3827 d_c=-3827 cp=0 nsamp=6 S1=46447
+ DBGE t=350000 d_pulse=1 wcnt=1 nsamp=7 cp_in=1
+ DBGFEED #8 d_s=0 d_c=0 cp=1 nsamp=7 S1=50274
+ DBGE t=370000 d_pulse=0 wcnt=2 nsamp=8 cp_in=0
+ DBGFEED #9 d_s=-3827 d_c=3827 cp=0 nsamp=8 S1=50274
+ DBGE t=390000 d_pulse=0 wcnt=2 nsamp=9 cp_in=0
+ DBGFEED #10 d_s=-7071 d_c=7071 cp=0 nsamp=9 S1=46447
+ DBGE t=410000 d_pulse=0 wcnt=2 nsamp=10 cp_in=0
+ DBGFEED #11 d_s=-9239 d_c=9239 cp=0 nsamp=10 S1=39376
+ DBGE t=430000 d_pulse=0 wcnt=2 nsamp=11 cp_in=0
+ DBGFEED #12 d_s=-10000 d_c=10000 cp=0 nsamp=11 S1=30137
+ DBGE t=450000 d_pulse=0 wcnt=2 nsamp=12 cp_in=0
+ DBGFEED #13 d_s=-9239 d_c=9239 cp=0 nsamp=12 S1=20137
+ DBGE t=470000 d_pulse=0 wcnt=2 nsamp=13 cp_in=0
+ DBGFEED #14 d_s=-7071 d_c=7071 cp=0 nsamp=13 S1=10898
+ DBGE t=490000 d_pulse=0 wcnt=2 nsamp=14 cp_in=0
+ DBGFEED #15 d_s=-3827 d_c=3827 cp=0 nsamp=14 S1=3827
+ DBGE t=510000 d_pulse=1 wcnt=2 nsamp=15 cp_in=1
+ DBGFEED #16 d_s=0 d_c=0 cp=1 nsamp=15 S1=0
+ DBGE t=530000 d_pulse=0 wcnt=3 nsamp=16 cp_in=0
+ DBGFEED #17 d_s=3827 d_c=-3827 cp=0 nsamp=16 S1=0
+ DBGE t=550000 d_pulse=0 wcnt=3 nsamp=17 cp_in=0
+ DBGFEED #18 d_s=7071 d_c=-7071 cp=0 nsamp=17 S1=3827
+ DBGE t=570000 d_pulse=0 wcnt=3 nsamp=18 cp_in=0
+ DBGFEED #19 d_s=9239 d_c=-9239 cp=0 nsamp=18 S1=10898
+ DBGE t=590000 d_pulse=0 wcnt=3 nsamp=19 cp_in=0
+ DBGFEED #20 d_s=10000 d_c=-10000 cp=0 nsamp=19 S1=20137
+ DBGE t=610000 d_pulse=0 wcnt=3 nsamp=20 cp_in=0
+ DBGFEED #21 d_s=9239 d_c=-9239 cp=0 nsamp=20 S1=30137
+ DBGE t=630000 d_pulse=0 wcnt=3 nsamp=21 cp_in=0
+ DBGFEED #22 d_s=7071 d_c=-7071 cp=0 nsamp=21 S1=39376
+ DBGE t=650000 d_pulse=0 wcnt=3 nsamp=22 cp_in=0
+ DBGFEED #23 d_s=3827 d_c=-3827 cp=0 nsamp=22 S1=46447
+ DBGE t=670000 d_pulse=1 wcnt=3 nsamp=23 cp_in=1
+ DBGFEED #24 d_s=0 d_c=0 cp=1 nsamp=23 S1=50274
+ DBGE t=690000 d_pulse=0 wcnt=4 nsamp=24 cp_in=0
+ DBGFEED #25 d_s=-3827 d_c=3827 cp=0 nsamp=24 S1=50274
+ DBGE t=710000 d_pulse=0 wcnt=4 nsamp=25 cp_in=0
+ DBGFEED #26 d_s=-7071 d_c=7071 cp=0 nsamp=25 S1=46447
+ DBGE t=730000 d_pulse=0 wcnt=4 nsamp=26 cp_in=0
+ DBGFEED #27 d_s=-9239 d_c=9239 cp=0 nsamp=26 S1=39376
+ DBGE t=750000 d_pulse=0 wcnt=4 nsamp=27 cp_in=0
+ DBGFEED #28 d_s=-10000 d_c=10000 cp=0 nsamp=27 S1=30137
+ DBGE t=770000 d_pulse=0 wcnt=4 nsamp=28 cp_in=0
+ DBGFEED #29 d_s=-9239 d_c=9239 cp=0 nsamp=28 S1=20137
+ DBGE t=790000 d_pulse=0 wcnt=4 nsamp=29 cp_in=0
+ DBGFEED #30 d_s=-7071 d_c=7071 cp=0 nsamp=29 S1=10898
+ DBGE t=810000 d_pulse=0 wcnt=4 nsamp=30 cp_in=0
+ DBGFEED #31 d_s=-3827 d_c=3827 cp=0 nsamp=30 S1=3827
+ DBGE t=830000 d_pulse=1 wcnt=4 nsamp=31 cp_in=1
+ DBGFEED #32 d_s=0 d_c=0 cp=1 nsamp=31 S1=0
+ DBGE t=850000 d_pulse=0 wcnt=5 nsamp=31 cp_in=0
+ DBGFEED #33 d_s=3827 d_c=-3827 cp=0 nsamp=31 S1=0
+ DBGSUM nsamp=31 n_win=31 S1=0 S2=0
+ DBGSUM S3=1600032728 S4=1600032728 S5=-1600032728
+ DBGPARAM win_n=4 MAX_SAMP=65536
+ DBGCAP iv_edges=39 cap_s=3827 cap_c=-3827 pulse_cnt=5
+  [FAIL] T3a-DU����������� ������������   (t=1041000)
+  [FAIL] T3b-cycle_pulse�������������win_cycles=����   (t=1041000)
+  [FAIL] T��������������� phase_k == 0   (t=11441000)
+  [FAIL] T��������������� gain_s == gain_c   (t=11441000)
+  [FAIL] T6-������������������������ ACCUM..DONE   (t=11441000)
+-----------------------------------------------------------------
+ 观测：nsamp_max=31  pulse_cnt=5  we_cnt=11  busy_cyc=564
+ 结果：ofs_s=0 ofs_c=0 gain_s=42272 gain_c=48813 phase_k=-32767 sh=1/1
+ 写回：
+   [0] addr=0x0510 data=0x00
+   [1] addr=0x0511 data=0x00
+   [2] addr=0x0512 data=0x00
+   [3] addr=0x0513 data=0x00
+   [4] addr=0x0514 data=0x20
+   [5] addr=0x0515 data=0xa5
+   [6] addr=0x0516 data=0xad
+   [7] addr=0x0517 data=0xbe
+   [8] addr=0x0518 data=0x01
+   [9] addr=0x0519 data=0x80
+   [10] addr=0x051a data=0x05
+-----------------------------------------------------------------
+ TEST FAILED  (5 error(s) / 38 checks)
+=================================================================
+$finish called at time : 11441 ns : File "C:/Users/zhaoy/Desktop/FPGA/sim/tb_calib_bnd.v" Line 278
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 00:22:23 2026...

@@ -19,7 +19,7 @@
 >
 > **源码包口径（`deliverables/submission/source_code.zip`）**：包内包含全部 `.rpt`（综合 / 实现 / 时序 / 资源 / DRC）、
 > 逐台测试日志与 SUMMARY、v90 两个交付位流、全部 RTL（含 `rtl/eth`、`rtl/ddr3`）、定点黄金模型 `model/` 与 `skill/` 技能包。
-> **为控制体积（65 MB 量级），历史位流 `data/v6x…v7x/*.bit`（约 72 MB）与采集数据 `data/*.csv`（约 50 MB）不随源码包分发**；
+> **为控制体积（60 MB 量级），历史位流 `data/v6x…v7x/*.bit`（约 72 MB）与采集数据 `data/*.csv`（约 50 MB）不随源码包分发**；
 > 因此本表中指向这些 `.bit` / `.csv` 的链接在源码包内不可点开——但每行数字对应的 `.rpt` 报告都在包内，可原地复核。
 
 >

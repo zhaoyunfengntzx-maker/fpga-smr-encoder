@@ -9,6 +9,17 @@
 
 ## [Unreleased]
 
+### 2026-11-04 · 报告改为直接在官方模板上填写
+
+- `deliverables/template/design_report_template.docx` 收进仓库（赛题《报告模版》原件），
+  `tools/build_report_doc.py` 以它为基底：保留模板的 A4 版心、1.25 in 左右边距、1.5 倍行距、
+  自带页眉横幅与页脚页码，只把提示语替换为正文。
+- 排版回落到模板的中性样式：宋体/Times 12 pt 正文、14 pt 加粗部分标题、黑色标题与
+  细线表格（去掉此前的藏青/琥珀配色与自定义页眉）。
+- 表格单元压到 9.5 pt、行距 1.1，表 1 与表 C-1 各自单页收口；图 5/图 6 实物与电路照片进正文。
+- 产物：design_report.docx 6,791,149 B、design_report.pdf **26 页 / 1,530,854 B**，
+  同步到 deliverables/submission/。
+
 ### 设计报告按官方《报告模版》重排（2026-11-04）
 
 - **结构对齐模板**：`tools/build_report_doc.py` 重写为“作品名称 → 摘要 → 五部分”骨架，
@@ -22,7 +33,7 @@
   （51 台 / 33/33 / +0.091 / 598,115 帧）改成 v90（57 台 / 37/37+20/20 / +0.199 / 597,886 帧、
   320 件证据 / 323 条哈希）；表 6 的 LUT 列加宽不再断行，表 8 的“同类高阶方案”列纠正为
   16 bit（后分频）/ BiSS / 偏心补偿。
-- **产物**：`design_report.docx` 6,747,482 B、`design_report.pdf` **26 页 / 1,671,506 B**，
+- **产物**（随后改为直接在模板文件上填写，页数与字节以本节上方条目为准）：`design_report.docx` 6,747,482 B、`design_report.pdf` 26 页 / 1,671,506 B，
   已同步 `deliverables/submission/design_report.pdf`；页数与字节数回填到 `deliverables/README.md`、
   `submission/README.md`、`form_answers.md`、`submission_checklist.md`。
 

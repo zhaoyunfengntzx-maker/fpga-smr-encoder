@@ -1,0 +1,295 @@
+﻿###### xvlog ######
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module abz_gen
+INFO: [VRFC 10-311] analyzing module z_index_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ad9238_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module ad9238_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/amp_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module amp_monitor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/angle_lut.v" into library work
+INFO: [VRFC 10-311] analyzing module angle_lut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/bias_track.v" into library work
+INFO: [VRFC 10-311] analyzing module bias_track
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/calib_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module calib_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cap_regs.v" into library work
+INFO: [VRFC 10-311] analyzing module cap_regs
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cdc_sync2.v" into library work
+INFO: [VRFC 10-311] analyzing module cdc_sync2
+INFO: [VRFC 10-311] analyzing module cdc_pulse
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/decim_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module decim_avg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/enc_top.v" into library work
+INFO: [VRFC 10-311] analyzing module enc_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lag_ff.v" into library work
+INFO: [VRFC 10-311] analyzing module lag_ff
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lock_sm.v" into library work
+INFO: [VRFC 10-311] analyzing module lock_sm
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/loop_filter.v" into library work
+INFO: [VRFC 10-311] analyzing module loop_filter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/pole_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module pole_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/reg_file.v" into library work
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/sc_correct.v" into library work
+INFO: [VRFC 10-311] analyzing module sc_correct
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_dump.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_dump
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/spi_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-311] analyzing module uart_scope
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_spi_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_spi_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uvw_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module uvw_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/async_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_reply.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_reply
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_rx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_rx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_top.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_tx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_tx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/rgmii_if.v" into library work
+INFO: [VRFC 10-311] analyzing module rgmii_if
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/scope_udp.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_udp
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/stream_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module stream_tx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ddr3/ddr3_ring.v" into library work
+INFO: [VRFC 10-311] analyzing module ddr3_ring
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/xilinx_prims_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module BUFG
+INFO: [VRFC 10-311] analyzing module ODDR
+INFO: [VRFC 10-311] analyzing module IDDR
+INFO: [VRFC 10-311] analyzing module MMCME2_BASE
+INFO: [VRFC 10-311] analyzing module IDELAYE2
+INFO: [VRFC 10-311] analyzing module BUFIO
+INFO: [VRFC 10-311] analyzing module IDELAYCTRL
+INFO: [VRFC 10-311] analyzing module IOBUF
+INFO: [VRFC 10-311] analyzing module IBUF
+INFO: [VRFC 10-311] analyzing module OBUF
+INFO: [VRFC 10-311] analyzing module OBUFT
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/mig_ui_model.v" into library work
+INFO: [VRFC 10-311] analyzing module mig_ui_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/tb_ddr3_full.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_ddr3_full
+###### xelab ######
+Vivado Simulator v2026.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Vivado/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical tb_ddr3_full -s tb_ddr3_full_sim 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.async_fifo(DW=32,AW=8)
+Compiling module work.ddr3_ring(RING_AW=10)
+Compiling module work.mig_ui_model(AW=10)
+Compiling module work.tb_ddr3_full
+Built simulation snapshot tb_ddr3_full_sim
+###### xsim ######
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Wed Nov  4 00:42:48 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_ddr3_full_sim/xsim_script.tcl
+# xsim {tb_ddr3_full_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[5000000] wr_idx=240 wrrdy=1 afull=0 wp=240 rp=117 rdg=001001111 rgs2=001001110 fifo_rd_en=0 rd_pend=0 wcnt=1 wready=0 cons=0
+[10000000] wr_idx=489 wrrdy=1 afull=0 wp=489 rp=239 rdg=010011000 rgs2=010011001 fifo_rd_en=0 rd_pend=0 wcnt=3 wready=0 cons=0
+[15000000] wr_idx=611 wrrdy=1 afull=0 wp=99 rp=360 rdg=111011100 rgs2=111011100 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=1
+[20000000] wr_idx=732 wrrdy=1 afull=0 wp=220 rp=482 rdg=100010011 rgs2=100010001 fifo_rd_en=0 rd_pend=1 wcnt=1 wready=0 cons=0
+[25000000] wr_idx=854 wrrdy=1 afull=0 wp=342 rp=92 rdg=001110010 rgs2=001110110 fifo_rd_en=0 rd_pend=1 wcnt=3 wready=0 cons=0
+[30000000] wr_idx=976 wrrdy=0 afull=1 wp=464 rp=212 rdg=010111110 rgs2=010111110 fifo_rd_en=1 rd_pend=0 wcnt=0 wready=0 cons=0
+[35000000] wr_idx=1097 wrrdy=0 afull=1 wp=73 rp=334 rdg=111101001 rgs2=111101011 fifo_rd_en=1 rd_pend=0 wcnt=2 wready=0 cons=0
+[40000000] wr_idx=1219 wrrdy=0 afull=1 wp=195 rp=456 rdg=100101100 rgs2=100100100 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[45000000] wr_idx=1340 wrrdy=0 afull=1 wp=316 rp=65 rdg=001100001 rgs2=001100000 fifo_rd_en=0 rd_pend=0 wcnt=1 wready=0 cons=0
+[50000000] wr_idx=1462 wrrdy=1 afull=0 wp=438 rp=188 rdg=011100010 rgs2=011100110 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[55000000] wr_idx=1584 wrrdy=0 afull=1 wp=48 rp=309 rdg=110101111 rgs2=110101110 fifo_rd_en=0 rd_pend=1 wcnt=0 wready=0 cons=0
+[60000000] wr_idx=1705 wrrdy=1 afull=0 wp=169 rp=431 rdg=101111000 rgs2=101111001 fifo_rd_en=0 rd_pend=1 wcnt=2 wready=0 cons=0
+[65000000] wr_idx=1827 wrrdy=1 afull=0 wp=291 rp=40 rdg=000111100 rgs2=000111100 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[70000000] wr_idx=1948 wrrdy=0 afull=1 wp=412 rp=161 rdg=011110001 rgs2=011110000 fifo_rd_en=1 rd_pend=0 wcnt=1 wready=0 cons=0
+[75000000] wr_idx=2070 wrrdy=0 afull=1 wp=22 rp=283 rdg=110010110 rgs2=110010111 fifo_rd_en=1 rd_pend=0 wcnt=3 wready=0 cons=0
+[80000000] wr_idx=2192 wrrdy=0 afull=1 wp=144 rp=404 rdg=101011110 rgs2=101011110 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[85000000] wr_idx=2312 wrrdy=1 afull=0 wp=264 rp=14 rdg=000001001 rgs2=000001011 fifo_rd_en=0 rd_pend=0 wcnt=2 wready=0 cons=0
+[90000000] wr_idx=2435 wrrdy=1 afull=0 wp=387 rp=136 rdg=011001100 rgs2=011001100 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[95000000] wr_idx=2556 wrrdy=0 afull=1 wp=508 rp=257 rdg=110000001 rgs2=110000000 fifo_rd_en=1 rd_pend=0 wcnt=1 wready=0 cons=0
+[100000000] wr_idx=2678 wrrdy=0 afull=1 wp=118 rp=379 rdg=111000110 rgs2=111000111 fifo_rd_en=1 rd_pend=0 wcnt=3 wready=0 cons=0
+[105000000] wr_idx=2800 wrrdy=0 afull=1 wp=240 rp=500 rdg=100001110 rgs2=100001110 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[110000000] wr_idx=2920 wrrdy=1 afull=0 wp=360 rp=110 rdg=001011001 rgs2=001011011 fifo_rd_en=0 rd_pend=0 wcnt=2 wready=0 cons=0
+[115000000] wr_idx=3042 wrrdy=1 afull=0 wp=482 rp=232 rdg=010011100 rgs2=010010100 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[120000000] wr_idx=3164 wrrdy=0 afull=1 wp=92 rp=353 rdg=111010001 rgs2=111010000 fifo_rd_en=0 rd_pend=1 wcnt=0 wready=0 cons=0
+[125000000] wr_idx=3285 wrrdy=1 afull=0 wp=213 rp=475 rdg=100110110 rgs2=100110111 fifo_rd_en=0 rd_pend=1 wcnt=2 wready=0 cons=0
+[130000000] wr_idx=3407 wrrdy=1 afull=0 wp=335 rp=84 rdg=001111110 rgs2=001111110 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[135000000] wr_idx=3528 wrrdy=0 afull=1 wp=456 rp=205 rdg=010101011 rgs2=010101010 fifo_rd_en=1 rd_pend=0 wcnt=1 wready=0 cons=0
+[140000000] wr_idx=3650 wrrdy=1 afull=0 wp=66 rp=328 rdg=111101100 rgs2=111100100 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[145000000] wr_idx=3772 wrrdy=0 afull=1 wp=188 rp=449 rdg=100100001 rgs2=100100000 fifo_rd_en=0 rd_pend=1 wcnt=0 wready=0 cons=0
+[150000000] wr_idx=3893 wrrdy=1 afull=0 wp=309 rp=59 rdg=000100110 rgs2=000100111 fifo_rd_en=0 rd_pend=1 wcnt=2 wready=0 cons=0
+[155000000] wr_idx=4015 wrrdy=1 afull=0 wp=431 rp=180 rdg=011101110 rgs2=011101110 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[160000000] wr_idx=4136 wrrdy=0 afull=1 wp=40 rp=301 rdg=110111011 rgs2=110111010 fifo_rd_en=1 rd_pend=0 wcnt=1 wready=0 cons=0
+[165000000] wr_idx=4258 wrrdy=0 afull=1 wp=162 rp=423 rdg=101110100 rgs2=101110101 fifo_rd_en=1 rd_pend=0 wcnt=3 wready=0 cons=0
+[170000000] wr_idx=4380 wrrdy=0 afull=1 wp=284 rp=32 rdg=000110000 rgs2=000110000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[175000000] wr_idx=4500 wrrdy=1 afull=0 wp=404 rp=154 rdg=011010111 rgs2=011010101 fifo_rd_en=0 rd_pend=0 wcnt=2 wready=0 cons=0
+[180000000] wr_idx=4622 wrrdy=1 afull=0 wp=14 rp=276 rdg=110011110 rgs2=110011010 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[185000000] wr_idx=4744 wrrdy=0 afull=1 wp=136 rp=397 rdg=101001011 rgs2=101001010 fifo_rd_en=0 rd_pend=1 wcnt=0 wready=0 cons=0
+[190000000] wr_idx=4866 wrrdy=1 afull=0 wp=258 rp=8 rdg=000001100 rgs2=000000100 fifo_rd_en=0 rd_pend=1 wcnt=3 wready=0 cons=0
+[195000000] wr_idx=4988 wrrdy=0 afull=1 wp=380 rp=128 rdg=011000000 rgs2=011000000 fifo_rd_en=1 rd_pend=0 wcnt=0 wready=0 cons=0
+[200000000] wr_idx=5109 wrrdy=0 afull=1 wp=501 rp=250 rdg=010000111 rgs2=010000101 fifo_rd_en=1 rd_pend=0 wcnt=2 wready=0 cons=0
+[205000000] wr_idx=5231 wrrdy=1 afull=0 wp=111 rp=372 rdg=111001110 rgs2=111001110 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[210000000] wr_idx=5352 wrrdy=1 afull=0 wp=232 rp=494 rdg=100011001 rgs2=100011011 fifo_rd_en=0 rd_pend=1 wcnt=1 wready=0 cons=0
+[215000000] wr_idx=5474 wrrdy=1 afull=0 wp=354 rp=104 rdg=001011100 rgs2=001010100 fifo_rd_en=0 rd_pend=1 wcnt=3 wready=0 cons=0
+[220000000] wr_idx=5596 wrrdy=0 afull=1 wp=476 rp=224 rdg=010010000 rgs2=010010000 fifo_rd_en=1 rd_pend=0 wcnt=0 wready=0 cons=0
+[225000000] wr_idx=5717 wrrdy=1 afull=0 wp=85 rp=347 rdg=111110110 rgs2=111110111 fifo_rd_en=0 rd_pend=1 wcnt=2 wready=0 cons=0
+[230000000] wr_idx=5839 wrrdy=1 afull=0 wp=207 rp=468 rdg=100111110 rgs2=100111110 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[235000000] wr_idx=5960 wrrdy=0 afull=1 wp=328 rp=77 rdg=001101011 rgs2=001101010 fifo_rd_en=1 rd_pend=0 wcnt=1 wready=0 cons=0
+[240000000] wr_idx=6082 wrrdy=0 afull=1 wp=450 rp=199 rdg=010100100 rgs2=010100101 fifo_rd_en=1 rd_pend=0 wcnt=3 wready=0 cons=0
+[245000000] wr_idx=6204 wrrdy=0 afull=1 wp=60 rp=320 rdg=111100000 rgs2=111100000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[250000000] wr_idx=6325 wrrdy=0 afull=1 wp=181 rp=442 rdg=101100111 rgs2=101100101 fifo_rd_en=1 rd_pend=0 wcnt=2 wready=0 cons=0
+[255000000] wr_idx=6447 wrrdy=0 afull=1 wp=303 rp=52 rdg=000101110 rgs2=000101010 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[260000000] wr_idx=6568 wrrdy=0 afull=1 wp=424 rp=173 rdg=011111011 rgs2=011111010 fifo_rd_en=0 rd_pend=0 wcnt=1 wready=0 cons=0
+[265000000] wr_idx=6689 wrrdy=1 afull=0 wp=33 rp=295 rdg=110110100 rgs2=110110101 fifo_rd_en=0 rd_pend=0 wcnt=3 wready=0 cons=0
+[270000000] wr_idx=6811 wrrdy=1 afull=0 wp=155 rp=416 rdg=101110000 rgs2=101110000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=1
+[275000000] wr_idx=6932 wrrdy=1 afull=0 wp=276 rp=26 rdg=000010111 rgs2=000010101 fifo_rd_en=0 rd_pend=1 wcnt=1 wready=0 cons=0
+[280000000] wr_idx=7054 wrrdy=1 afull=0 wp=398 rp=148 rdg=011011110 rgs2=011011010 fifo_rd_en=0 rd_pend=1 wcnt=3 wready=0 cons=0
+[285000000] wr_idx=7176 wrrdy=0 afull=1 wp=8 rp=268 rdg=110001010 rgs2=110001010 fifo_rd_en=1 rd_pend=0 wcnt=0 wready=0 cons=0
+[290000000] wr_idx=7297 wrrdy=0 afull=1 wp=129 rp=390 rdg=101000101 rgs2=101000111 fifo_rd_en=1 rd_pend=0 wcnt=2 wready=0 cons=0
+[295000000] wr_idx=7419 wrrdy=0 afull=1 wp=251 rp=0 rdg=000000000 rgs2=100000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[300000000] wr_idx=7540 wrrdy=0 afull=1 wp=372 rp=121 rdg=001000101 rgs2=001000100 fifo_rd_en=0 rd_pend=0 wcnt=1 wready=0 cons=0
+[305000000] wr_idx=7662 wrrdy=1 afull=0 wp=494 rp=244 rdg=010001110 rgs2=010001010 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[310000000] wr_idx=7784 wrrdy=0 afull=1 wp=104 rp=365 rdg=111011011 rgs2=111011010 fifo_rd_en=0 rd_pend=1 wcnt=0 wready=0 cons=0
+[315000000] wr_idx=7905 wrrdy=1 afull=0 wp=225 rp=487 rdg=100010100 rgs2=100010101 fifo_rd_en=0 rd_pend=1 wcnt=2 wready=0 cons=0
+[320000000] wr_idx=8027 wrrdy=1 afull=0 wp=347 rp=96 rdg=001010000 rgs2=001010000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=1 cons=0
+[325000000] wr_idx=8148 wrrdy=0 afull=1 wp=468 rp=217 rdg=010110101 rgs2=010110100 fifo_rd_en=1 rd_pend=0 wcnt=1 wready=0 cons=0
+[330000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=339 rdg=111111010 rgs2=111111011 fifo_rd_en=1 rd_pend=0 wcnt=3 wready=0 cons=0
+[335000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=460 rdg=100101010 rgs2=100101010 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[340000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[345000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[350000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[355000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[360000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[365000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[370000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[375000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[380000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[385000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[390000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[395000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[400000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[405000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[410000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[415000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[420000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[425000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+  [read 0] data=5a5a1000 exp=5a5a1000       ok
+  [read 1] data=5a5a1001 exp=5a5a1001       ok
+  [read 2] data=5a5a1002 exp=5a5a1002       ok
+  [read 3] data=5a5a1003 exp=5a5a1003       ok
+  [read 4] data=5a5a1004 exp=5a5a1004       ok
+  [read 5] data=5a5a1005 exp=5a5a1005       ok
+  [read 6] data=5a5a1006 exp=5a5a1006       ok
+  [read 7] data=5a5a1007 exp=5a5a1007       ok
+  [read 8] data=5a5a1008 exp=5a5a1008       ok
+  [read 9] data=5a5a1009 exp=5a5a1009       ok
+  [read 10] data=5a5a100a exp=5a5a100a       ok
+  [read 11] data=5a5a100b exp=5a5a100b       ok
+[430000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[435000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[440000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[445000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[450000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[455000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[460000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[465000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[470000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[475000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[480000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[485000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[490000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[495000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[500000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[505000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[510000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[515000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[520000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[525000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[530000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[535000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[540000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[545000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[550000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[555000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[560000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[565000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[570000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[575000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[580000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[585000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[590000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[595000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[600000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[605000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[610000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[615000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[620000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[625000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[630000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[635000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[640000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[645000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[650000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[655000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[660000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[665000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[670000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[675000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[680000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[685000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[690000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[695000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[700000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[705000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[710000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[715000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[720000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[725000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[730000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[735000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[740000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[745000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[750000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[755000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[760000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[765000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[770000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[775000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[780000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[785000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[790000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+[795000000] wr_idx=8192 wrrdy=1 afull=0 wp=0 rp=0 rdg=000000000 rgs2=000000000 fifo_rd_en=0 rd_pend=0 wcnt=0 wready=0 cons=0
+
+RESULT: got=8192 err=0 wc=2048 wd=2048 rc=2048 rv=2048
+        words_expect=2048 (cmd per word = 1.000000)
+TEST PASSED
+$finish called at time : 799865 ns : File "C:/Users/zhaoy/Desktop/FPGA/sim/tb_ddr3_full.v" Line 239
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Nov  4 00:42:50 2026...

@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
-"""Build deliverables/technical_doc.docx from the official template.
+"""Fill deliverables/design_report.docx into the official competition template.
 
-Follows tech_doc_template.docx: A4, 3.17 cm side margins, 1.5 line spacing,
-Song/Times 12 pt body, 14 pt part headings, five parts, <=20 references.
-No school / advisor / team identity anywhere.
+The document is built *on* deliverables/template/design_report_template.docx: the
+template supplies the page size, 1.25 in side margins, 1 in top/bottom margins, the
+1.5 line spacing, the empty header/footer and the heading styles.  This script only
+replaces the instruction paragraphs with the real content, so the printed result keeps
+the template's format.  Body text is Song / Times New Roman 12 pt, part headings
+14 pt bold, figures and tables numbered sequentially.  No school / advisor / team
+identity anywhere.
 """
 import os
+from pathlib import Path
+
 from docx import Document
 from docx.shared import Pt, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
@@ -22,6 +28,9 @@ LIGHT = RGBColor(0x8A, 0x94, 0xA6)
 SONG = "宋体"
 HEI = "黑体"
 TNR = "Times New Roman"
+
+ROOT = Path(__file__).resolve().parent.parent
+TEMPLATE = ROOT / "deliverables" / "template" / "design_report_template.docx"
 
 BODY_PT = 12
 CAP_PT = 10.5
@@ -69,36 +78,34 @@ def body(text, indent=True, after=0, bold=False, size=BODY_PT, align=WD_ALIGN_PA
 
 
 def part_heading(text):
-    p = doc.add_paragraph(style="Heading 1")
+    p = doc.add_paragraph()
     fmt_par(p, align=WD_ALIGN_PARAGRAPH.LEFT, indent_chars=0, size=14, before=16, after=6, keep=True)
+    head, _, tail = text.partition("  ")
+    if tail:
+        r = p.add_run(head + "  ")
+        set_run(r, size=14, bold=True, east=SONG)
+        r = p.add_run(tail)
+        set_run(r, size=12, bold=True, east=SONG)
+        return p
     r = p.add_run(text)
-    set_run(r, size=14, bold=True, color=NAVY, east=HEI)
+    set_run(r, size=14, bold=True, east=SONG)
     # bottom rule
-    pPr = p._element.get_or_add_pPr()
-    pbdr = OxmlElement("w:pBdr")
-    bottom = OxmlElement("w:bottom")
-    bottom.set(qn("w:val"), "single")
-    bottom.set(qn("w:sz"), "8")
-    bottom.set(qn("w:space"), "3")
-    bottom.set(qn("w:color"), "C98612")
-    pbdr.append(bottom)
-    pPr.append(pbdr)
     return p
 
 
-def h2(text, num=None):
-    p = doc.add_paragraph(style="Heading 2")
-    fmt_par(p, align=WD_ALIGN_PARAGRAPH.LEFT, indent_chars=0, size=12, before=10, after=4, keep=True)
+def h2(text, num=None, size=12):
+    p = doc.add_paragraph()
+    fmt_par(p, align=WD_ALIGN_PARAGRAPH.LEFT, indent_chars=0, size=size, before=10, after=4, keep=True)
     r = p.add_run((num + " " if num else "") + text)
-    set_run(r, size=12, bold=True, color=NAVY, east=HEI)
+    set_run(r, size=size, bold=True, east=SONG)
     return p
 
 
 def h3(text):
-    p = doc.add_paragraph(style="Heading 3")
+    p = doc.add_paragraph()
     fmt_par(p, align=WD_ALIGN_PARAGRAPH.LEFT, indent_chars=0, size=12, before=6, after=2, keep=True)
     r = p.add_run(text)
-    set_run(r, size=12, bold=True, color=RGBColor(0x1F, 0x3A, 0x5F), east=HEI)
+    set_run(r, size=12, bold=True, east=SONG)
     return p
 
 
@@ -116,7 +123,7 @@ def caption(text, before=2, after=8):
     p = doc.add_paragraph()
     fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=CAP_PT, before=before, after=after)
     r = p.add_run(text)
-    set_run(r, size=CAP_PT, color=GREY, east=SONG)
+    set_run(r, size=CAP_PT, east=SONG)
     return p
 
 
@@ -160,7 +167,7 @@ def shade(cell, hex_color):
     tcPr.append(shd)
 
 
-def cell_margins(table, top=60, bottom=60, left=90, right=90):
+def cell_margins(table, top=30, bottom=30, left=80, right=80):
     tblPr = table._tbl.tblPr
     mar = OxmlElement("w:tblCellMar")
     for name, val in (("top", top), ("left", left), ("bottom", bottom), ("right", right)):
@@ -171,7 +178,7 @@ def cell_margins(table, top=60, bottom=60, left=90, right=90):
     tblPr.append(mar)
 
 
-def table_borders(table, color="C9D2DE"):
+def table_borders(table, color="000000"):
     tblPr = table._tbl.tblPr
     borders = OxmlElement("w:tblBorders")
     for edge in ("top", "left", "bottom", "right", "insideH", "insideV"):
@@ -191,12 +198,12 @@ def repeat_header(row):
     trPr.append(el)
 
 
-def make_table(headers, rows, widths, cap=None, align_center=True, header_fill="0B2545"):
+def make_table(headers, rows, widths, cap=None, align_center=True, header_fill="D9D9D9"):
     if cap:
         p = doc.add_paragraph()
         fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=CAP_PT, before=8, after=2, keep=True)
         r = p.add_run(cap)
-        set_run(r, size=CAP_PT, color=GREY)
+        set_run(r, size=CAP_PT)
     t = doc.add_table(rows=1, cols=len(headers))
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     t.autofit = False
@@ -224,7 +231,7 @@ def make_table(headers, rows, widths, cap=None, align_center=True, header_fill="
         p.paragraph_format.space_after = Pt(2)
         p.paragraph_format.line_spacing = 1.15
         r = p.add_run(h)
-        set_run(r, size=10, bold=True, color=RGBColor(0xFF, 0xFF, 0xFF), east=HEI)
+        set_run(r, size=10.5, bold=True, east=SONG)
     for ridx, row in enumerate(rows):
         cells = t.add_row().cells
         for i, val in enumerate(row):
@@ -234,11 +241,11 @@ def make_table(headers, rows, widths, cap=None, align_center=True, header_fill="
                 shade(c, "F2F5F9")
             p = c.paragraphs[0]
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER if (align_center and i > 0) else WD_ALIGN_PARAGRAPH.LEFT
-            p.paragraph_format.space_before = Pt(2)
-            p.paragraph_format.space_after = Pt(2)
-            p.paragraph_format.line_spacing = 1.15
+            p.paragraph_format.space_before = Pt(1)
+            p.paragraph_format.space_after = Pt(1)
+            p.paragraph_format.line_spacing = 1.1
             r = p.add_run(str(val))
-            set_run(r, size=10, bold=False, east=SONG)
+            set_run(r, size=9.5, bold=False, east=SONG)
     for row in t.rows:
         trPr = row._tr.get_or_add_trPr()
         cant = OxmlElement("w:cantSplit")
@@ -287,65 +294,49 @@ def par_bottom_rule(p, color="C9D2DE", sz="6"):
 
 
 # ----------------------------------------------------------------------
-doc = Document()
+if not TEMPLATE.is_file():
+    raise SystemExit("missing template: %s" % TEMPLATE)
 
-# base style
+doc = Document(str(TEMPLATE))
+_body = doc.element.body
+for _child in list(_body):
+    if _child.tag != qn("w:sectPr"):
+        _body.remove(_child)
+
+# the template already defines page size, margins, 1.5 spacing and an empty
+# header/footer; only the body font is pinned explicitly so Chinese text renders
+# in Song on every machine
 normal = doc.styles["Normal"]
 normal.font.name = TNR
 normal.font.size = Pt(BODY_PT)
 normal.element.rPr.rFonts.set(qn("w:eastAsia"), SONG)
-
 sec = doc.sections[0]
-sec.page_width = Cm(21.0)
-sec.page_height = Cm(29.7)
-sec.left_margin = Cm(3.17)
-sec.right_margin = Cm(3.17)
-sec.top_margin = Cm(2.54)
-sec.bottom_margin = Cm(2.54)
-sec.header_distance = Cm(1.4)
-sec.footer_distance = Cm(1.4)
-sec.different_first_page_header_footer = True
-
-# header
-hp = sec.header.paragraphs[0]
-hp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-hr = hp.add_run("基于FPGA的细分编码器 · 设计报告")
-set_run(hr, size=9, color=LIGHT, east=SONG)
-par_bottom_rule(hp)
-# footer with page x of y
-fp = sec.footer.paragraphs[0]
-fp.alignment = WD_ALIGN_PARAGRAPH.CENTER
-r = fp.add_run("第 ")
-set_run(r, size=9, color=GREY)
-add_field(fp, "PAGE")
-r = fp.add_run(" 页 / 共 ")
-set_run(r, size=9, color=GREY)
-add_field(fp, "NUMPAGES")
-r = fp.add_run(" 页")
-set_run(r, size=9, color=GREY)
 
 # ---------------- 作品名称 ----------------
-h2("作品名称")
+p = doc.add_paragraph()
+fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=18, before=0, after=0, keep=True)
+r = p.add_run("作品名称")
+set_run(r, size=18, bold=True, east=SONG)
 
 p = doc.add_paragraph()
-fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=20, before=2, after=4, line=1.15)
+fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=20, before=2, after=4, line=1.5)
 r = p.add_run("基于 FPGA 的 SMR 高精度细分磁编码器")
-set_run(r, size=20, bold=True, color=NAVY, east=HEI)
+set_run(r, size=20, bold=True, east=SONG)
 
 p = doc.add_paragraph()
-fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=11, after=12)
-r = p.add_run("单芯片 16 位细分 · ABZ / UVW / 1 GbE / UART-SPI 多协议输出 · 板载触摸诊断")
-set_run(r, size=11, color=RGBColor(0x33, 0x44, 0x5C), east=SONG)
+fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=12, after=12)
+r = p.add_run("单芯片 16 位细分 · ABZ/UVW/1 GbE/UART-SPI 多协议输出 · 板载触摸诊断")
+set_run(r, size=12, east=SONG)
 
 # ---------------- 摘要 ----------------
-h2("摘要")
+h2("摘要", size=14)
 body("本作品面向伺服驱动、机床转台与机器人关节对高分辨、抗污染位置反馈的需求，设计了一款基于 SMR 磁阻传感器与 FPGA 的高精度细分磁编码器。系统以 XC7A35TFGG484-2 为唯一计算单元，在 50 MHz 单时钟域内完成双通道 12 bit 同步采样、÷4 抽取、六参数闭式误差校正、17 级全流水 CORDIC 解算、Ⅱ 型 PI 跟踪与增量展开，输出 16 位角度与 ABZ、UVW、1 GbE UDP、UART/SPI 多协议接口，并集成 1024×600 触摸诊断界面，全链路延迟 41.5 拍、约 830 ns（设计预算）。六参数校正由一阶/二阶矩一次解算，无查找表、不依赖上位机迭代；正反向 UVW 采用对称宽基分支，消除 0/5 扇区回绕吞并；多圈计数以无符号差分零扩展累加，消除跨半量程死锁。v90 生产位流已在真实转台闭环（2026-11-04）：Z 7.62/7.65 Hz ⇒ 457–459 rpm，每转恰好 1 个 Z，停位无喘振；UVW 六态计数均衡；60 s 遥测连续上传 597,886 帧（9,964.8 fps）；板级角度一致性 offset 1.76°、RMS 0.71°、max 2.88°。资源 10,978 LUT（52.78%）、8,724 FF、32/50 BRAM、17 DSP，WNS +0.199 ns、0 失败端点。作品以“建模—位精确仿真—构建签核—真机判据”的证据链交付，配套 57 个仿真台、320 件可追溯证据（323 条 SHA-256）与一条命令签核。")
 p = doc.add_paragraph()
-fmt_par(p, align=WD_ALIGN_PARAGRAPH.LEFT, indent_chars=0, size=10.5, before=6, after=8)
+fmt_par(p, align=WD_ALIGN_PARAGRAPH.LEFT, indent_chars=0, size=12, before=6, after=8)
 r = p.add_run("关键词：")
-set_run(r, size=10.5, bold=True, color=NAVY, east=HEI)
+set_run(r, size=12, bold=True, east=SONG)
 r = p.add_run("磁编码器；SMR 磁阻传感；CORDIC；FPGA")
-set_run(r, size=10.5, color=RGBColor(0x33, 0x44, 0x5C))
+set_run(r, size=12)
 
 # ---------------- 第一部分 ----------------
 part_heading("第一部分  作品概述")
@@ -626,7 +617,7 @@ for i, ref in enumerate(refs, 1):
     p.paragraph_format.left_indent = Cm(0.95)
     p.paragraph_format.first_line_indent = Cm(-0.95)
     r = p.add_run("[%d] " % i)
-    set_run(r, size=10.5, color=NAVY, bold=True)
+    set_run(r, size=12, bold=True, east=SONG)
     r = p.add_run(ref)
     set_run(r, size=10.5, east=SONG)
 

@@ -1,0 +1,191 @@
+﻿###### xvlog ######
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module abz_gen
+INFO: [VRFC 10-311] analyzing module z_index_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ad9238_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module ad9238_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/amp_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module amp_monitor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/angle_lut.v" into library work
+INFO: [VRFC 10-311] analyzing module angle_lut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/bias_track.v" into library work
+INFO: [VRFC 10-311] analyzing module bias_track
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/calib_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module calib_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cap_regs.v" into library work
+INFO: [VRFC 10-311] analyzing module cap_regs
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cdc_sync2.v" into library work
+INFO: [VRFC 10-311] analyzing module cdc_sync2
+INFO: [VRFC 10-311] analyzing module cdc_pulse
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/decim_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module decim_avg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/enc_top.v" into library work
+INFO: [VRFC 10-311] analyzing module enc_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lag_ff.v" into library work
+INFO: [VRFC 10-311] analyzing module lag_ff
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lock_sm.v" into library work
+INFO: [VRFC 10-311] analyzing module lock_sm
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/loop_filter.v" into library work
+INFO: [VRFC 10-311] analyzing module loop_filter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/pole_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module pole_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/reg_file.v" into library work
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/sc_correct.v" into library work
+INFO: [VRFC 10-311] analyzing module sc_correct
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_dump.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_dump
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/spi_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-311] analyzing module uart_scope
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_spi_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_spi_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uvw_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module uvw_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/async_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_reply.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_reply
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_rx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_rx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_top.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_tx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_tx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/rgmii_if.v" into library work
+INFO: [VRFC 10-311] analyzing module rgmii_if
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/scope_udp.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_udp
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/stream_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module stream_tx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ddr3/ddr3_ring.v" into library work
+INFO: [VRFC 10-311] analyzing module ddr3_ring
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/xilinx_prims_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module BUFG
+INFO: [VRFC 10-311] analyzing module ODDR
+INFO: [VRFC 10-311] analyzing module IDDR
+INFO: [VRFC 10-311] analyzing module MMCME2_BASE
+INFO: [VRFC 10-311] analyzing module IDELAYE2
+INFO: [VRFC 10-311] analyzing module BUFIO
+INFO: [VRFC 10-311] analyzing module IDELAYCTRL
+INFO: [VRFC 10-311] analyzing module IOBUF
+INFO: [VRFC 10-311] analyzing module IBUF
+INFO: [VRFC 10-311] analyzing module OBUF
+INFO: [VRFC 10-311] analyzing module OBUFT
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/mig_ui_model.v" into library work
+INFO: [VRFC 10-311] analyzing module mig_ui_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/tb_calib_min.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_calib_min
+###### xelab ######
+Vivado Simulator v2026.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Vivado/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical tb_calib_min -s tb_calib_min_sim 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3645] port 'dbg_int_min' remains unconnected for this instance [C:/Users/zhaoy/Desktop/FPGA/sim/tb_calib_min.v:72]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.calib_ctrl_default
+Compiling module work.tb_calib_min
+Built simulation snapshot tb_calib_min_sim
+###### xsim ######
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Wed Nov  4 00:42:39 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_calib_min_sim/xsim_script.tcl
+# xsim {tb_calib_min_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+=================================================================
+ tb_calib_min -- rtl/calib_ctrl.v 最小自检
+ win_cycles=4  理想正交输入，期望 ofs=0 phase_k=0 gain_s==gain_c
+=================================================================
+ [ok]   T������������ state == S_IDLE
+ [ok]   T1b���������� busy == 0
+ [ok]   T1c���������� done == 0
+ [ok]   T2a-start ��������� S_IDLE
+ [ok]   T2b-sta������ busy == 1
+ 观测：nsamp_max=32  pulse_cnt=5  we_cnt=11  busy_cyc=564
+ [ok]    win_cycles ��������������������
+ [ok]   ��win_cycles��������������� ����
+ [ok]   T3c-��������� MAX_SAMPLE��������
+ [ok]   ������������������4 ������������
+ [ok]   ���������������retry_cnt == ����
+ [ok]   T4�������������� done == 1
+ [ok]   T4b-do������ busy == 0
+ [ok]   ������������������������ win_bad
+ 结果：ofs_s=0 ofs_c=0 gain_s=42949 gain_c=42949 phase_k=0 sh=1/1
+ [ok]   T5a������������� ofs_s == 0
+ [ok]   T5b������������� ofs_c == 0
+ [ok]   ��32767 ������������������������
+ [ok]   ��������������� gain_s == gain_c
+ [ok]   ������������� shift_s == shift_c
+ [ok]   in_s���������������������� 42949
+ [ok]   in_c���������������������� 42949
+ [ok]   T6a������� ������������
+ [ok]   [0]  addr=0x0510 OFS������������
+ [ok]   [1]  addr=0x0511 OFS������������
+ [ok]   [2]  addr=0x0512 OFS������������
+ [ok]   [3]  addr=0x0513 OFS������������
+ [ok]   4]  addr=0x0514 GAIN������������
+ [ok]   5]  addr=0x0515 GAIN������������
+ [ok]   6]  addr=0x0516 GAIN������������
+ [ok]   7]  addr=0x0517 GAIN������������
+ [ok]   ]  addr=0x0518 PHASE������������
+ [ok]   ]  addr=0x0519 PHASE������������
+ [ok]   T6l-������[10] addr=0x051A SHIFT
+ [ok]   FS_S���������� == res_ofs_s[7:0]
+ [ok]   S_S ��������� == res_ofs_s[15:8]
+ [ok]   FS_C���������� == res_ofs_c[7:0]
+ [ok]   S_C ��������� == res_ofs_c[15:8]
+ [ok]   N_S ��������� == res_gain_s[7:0]
+ [ok]   ������������ == res_gain_s[15:8]
+ [ok]   N_C ��������� == res_gain_c[7:0]
+ [ok]   ������������ == res_gain_c[15:8]
+ [ok]   ������������ == res_phase_k[7:0]
+ [ok]   ����������� == res_phase_k[15:8]
+ [ok]   �����[1:0]=shift_s [3:2]=shift_c
+ T8 观测：retry_cnt=1 win_bad=0 truncated=0 nsamp=32 wcnt=4
+ [ok]   ��������������������������������
+ [ok]   ������������������������ win_bad
+ [ok]   T������������������������
+ [ok]   ��������������������������������
+ [ok]   T8e-��������� ofs_c == 0
+ [ok]   ���������������������� done == 1
+ [ok]   T��������� S_IDLE
+ [ok]   T7�������� S_ACCUM
+ [ok]   T7c������� S_OFFSET
+ [ok]   T7d-������ S_AMP
+ [ok]   T7�������� S_SQRT1
+ [ok]   T7�������� S_SQRT2
+ [ok]   T7�������� S_PHASE
+ [ok]   T��������� S_GAIN
+ [ok]   T7i-������ S_DIV
+ [ok]   T7�������� S_SHIFT
+ [ok]   T7�������� S_WRITE
+ [ok]   T��������� S_DONE
+ [ok]   T7m������������� S_IDLE
+=================================================================
+ TEST PASSED  (62 checks)
+=================================================================
+$finish called at time : 202701 ns : File "C:/Users/zhaoy/Desktop/FPGA/sim/tb_calib_min.v" Line 316
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Nov  4 00:42:41 2026...

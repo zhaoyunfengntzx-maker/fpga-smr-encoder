@@ -1,0 +1,212 @@
+﻿###### xvlog ######
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module abz_gen
+INFO: [VRFC 10-311] analyzing module z_index_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ad9238_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module ad9238_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/amp_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module amp_monitor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/angle_lut.v" into library work
+INFO: [VRFC 10-311] analyzing module angle_lut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/bias_track.v" into library work
+INFO: [VRFC 10-311] analyzing module bias_track
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/calib_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module calib_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cap_regs.v" into library work
+INFO: [VRFC 10-311] analyzing module cap_regs
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cdc_sync2.v" into library work
+INFO: [VRFC 10-311] analyzing module cdc_sync2
+INFO: [VRFC 10-311] analyzing module cdc_pulse
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/decim_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module decim_avg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/enc_top.v" into library work
+INFO: [VRFC 10-311] analyzing module enc_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lag_ff.v" into library work
+INFO: [VRFC 10-311] analyzing module lag_ff
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/lock_sm.v" into library work
+INFO: [VRFC 10-311] analyzing module lock_sm
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/loop_filter.v" into library work
+INFO: [VRFC 10-311] analyzing module loop_filter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/pole_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module pole_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/reg_file.v" into library work
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/sc_correct.v" into library work
+INFO: [VRFC 10-311] analyzing module sc_correct
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/scope_dump.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_dump
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/spi_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-311] analyzing module uart_scope
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_spi_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_spi_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uvw_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module uvw_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/async_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_reply.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_reply
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_rx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_rx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_top.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/eth_tx_mac.v" into library work
+INFO: [VRFC 10-311] analyzing module eth_tx_mac
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/rgmii_if.v" into library work
+INFO: [VRFC 10-311] analyzing module rgmii_if
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/scope_udp.v" into library work
+INFO: [VRFC 10-311] analyzing module scope_udp
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/eth/stream_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module stream_tx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ddr3/ddr3_ring.v" into library work
+INFO: [VRFC 10-311] analyzing module ddr3_ring
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/xilinx_prims_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module BUFG
+INFO: [VRFC 10-311] analyzing module ODDR
+INFO: [VRFC 10-311] analyzing module IDDR
+INFO: [VRFC 10-311] analyzing module MMCME2_BASE
+INFO: [VRFC 10-311] analyzing module IDELAYE2
+INFO: [VRFC 10-311] analyzing module BUFIO
+INFO: [VRFC 10-311] analyzing module IDELAYCTRL
+INFO: [VRFC 10-311] analyzing module IOBUF
+INFO: [VRFC 10-311] analyzing module IBUF
+INFO: [VRFC 10-311] analyzing module OBUF
+INFO: [VRFC 10-311] analyzing module OBUFT
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/mig_ui_model.v" into library work
+INFO: [VRFC 10-311] analyzing module mig_ui_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/tb_loop_abz_chain.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_loop_abz_chain
+###### xelab ######
+Vivado Simulator v2026.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Vivado/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical tb_loop_abz_chain -s tb_loop_abz_chain_sim 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3645] port 'speed_out' remains unconnected for this instance [C:/Users/zhaoy/Desktop/FPGA/sim/tb_loop_abz_chain.v:100]
+WARNING: [VRFC 10-3645] port 'speed_out' remains unconnected for this instance [C:/Users/zhaoy/Desktop/FPGA/sim/tb_loop_abz_chain.v:105]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.loop_filter_default
+Compiling module work.abz_gen_default
+Compiling module work.tb_loop_abz_chain
+Built simulation snapshot tb_loop_abz_chain_sim
+###### xsim ######
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Wed Nov  4 00:47:49 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_loop_abz_chain_sim/xsim_script.tcl
+# xsim {tb_loop_abz_chain_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+WARNING: File abz_angle_raw_stage2.mem referenced on C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v at line 361 cannot be opened for reading. Please ensure that this file is available in the current working directory or parent directory of xsim.dir location specified via -xsimdir switch.
+WARNING: File abz_glitch_stage2.mem referenced on C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v at line 361 cannot be opened for reading. Please ensure that this file is available in the current working directory or parent directory of xsim.dir location specified via -xsimdir switch.
+=== tb_loop_abz_chain：ILA 实测 dbg_angle_raw 回放（1024 点 / 节拍 256 个）===
+    源序列首点 51818 末点 53151；每遍拼接行程 1342 LSB
+
+  === [P0-now-4-3] kp=4 ki=3 hyst=0 ===
+    理想: 窗口内角度行程 8052 LSB, 理想计数 125 (idx 单位)
+    A(现状 GATE_STATE=0): AB 跳变 482, edge_cnt 净 126 (增 304/减 178), 计数误差 1
+       滤波角节拍步进 |d| 均值 122 最大 11789 LSB, 非零步 2530, 方向反转 816 (统计 6 遍共 1536 拍)
+       跟踪误差(相对窗口起点): 均值 0, 均值绝对值 32, 最大 1727 LSB
+    B(候选 GATE_STATE=1): AB 跳变 126, edge_cnt 净 126 (增 126/减 0), 计数误差 1
+       滤波角节拍步进 |d| 均值 115 最大 3331 LSB, 非零步 2520, 方向反转 72
+       跟踪误差(相对窗口起点): 均值 5, 均值绝对值 28, 最大 1791 LSB
+       limiter A=0 B=0, lag_warn A=0 B=0
+
+  === [P1-ki1-cmp] kp=4 ki=1 hyst=0 ===
+    理想: 窗口内角度行程 8052 LSB, 理想计数 125 (idx 单位)
+    A(现状 GATE_STATE=0): AB 跳变 259, edge_cnt 净 126 (增 192/减 66), 计数误差 1
+       滤波角节拍步进 |d| 均值 12 最大 34 LSB, 非零步 2491, 方向反转 399 (统计 6 遍共 1536 拍)
+       跟踪误差(相对窗口起点): 均值 46, 均值绝对值 60, 最大 1727 LSB
+    B(候选 GATE_STATE=1): AB 跳变 126, edge_cnt 净 126 (增 126/减 0), 计数误差 1
+       滤波角节拍步进 |d| 均值 5 最大 11 LSB, 非零步 2480, 方向反转 0
+       跟踪误差(相对窗口起点): 均值 -15, 均值绝对值 25, 最大 1791 LSB
+       limiter A=0 B=0, lag_warn A=0 B=0
+
+  === [P2-ki0-cmp] kp=4 ki=0 hyst=0 ===
+    理想: 窗口内角度行程 8052 LSB, 理想计数 125 (idx 单位)
+    A(现状 GATE_STATE=0): AB 跳变 126, edge_cnt 净 126 (增 126/减 0), 计数误差 1
+       滤波角节拍步进 |d| 均值 5 最大 7 LSB, 非零步 2559, 方向反转 0 (统计 6 遍共 1536 拍)
+       跟踪误差(相对窗口起点): 均值 4, 均值绝对值 25, 最大 1727 LSB
+    B(候选 GATE_STATE=1): AB 跳变 126, edge_cnt 净 126 (增 126/减 0), 计数误差 1
+       滤波角节拍步进 |d| 均值 5 最大 7 LSB, 非零步 2558, 方向反转 2
+       跟踪误差(相对窗口起点): 均值 9, 均值绝对值 28, 最大 1727 LSB
+       limiter A=0 B=0, lag_warn A=0 B=0
+
+  === [P3-ki1-h2] kp=4 ki=1 hyst=2 ===
+    理想: 窗口内角度行程 8052 LSB, 理想计数 125 (idx 单位)
+    A(现状 GATE_STATE=0): AB 跳变 13, edge_cnt 净 13 (增 13/减 0), 计数误差 -112
+       滤波角节拍步进 |d| 均值 12 最大 43 LSB, 非零步 2497, 方向反转 399 (统计 6 遍共 1536 拍)
+       跟踪误差(相对窗口起点): 均值 -3549, 均值绝对值 3549, 最大 8373 LSB
+    B(候选 GATE_STATE=1): AB 跳变 5, edge_cnt 净 5 (增 5/减 0), 计数误差 -120
+       滤波角节拍步进 |d| 均值 5 最大 17 LSB, 非零步 2547, 方向反转 6
+       跟踪误差(相对窗口起点): 均值 -3877, 均值绝对值 3877, 最大 8821 LSB
+       limiter A=0 B=0, lag_warn A=0 B=0
+
+  === [P4-ki0-h2] kp=4 ki=0 hyst=2 ===
+    理想: 窗口内角度行程 8052 LSB, 理想计数 125 (idx 单位)
+    A(现状 GATE_STATE=0): AB 跳变 6, edge_cnt 净 6 (增 6/减 0), 计数误差 -119
+       滤波角节拍步进 |d| 均值 5 最大 7 LSB, 非零步 2559, 方向反转 0 (统计 6 遍共 1536 拍)
+       跟踪误差(相对窗口起点): 均值 -3835, 均值绝对值 3835, 最大 8757 LSB
+    B(候选 GATE_STATE=1): AB 跳变 6, edge_cnt 净 6 (增 6/减 0), 计数误差 -119
+       滤波角节拍步进 |d| 均值 5 最大 6 LSB, 非零步 2555, 方向反转 0
+       跟踪误差(相对窗口起点): 均值 -3833, 均值绝对值 3833, 最大 8757 LSB
+       limiter A=0 B=0, lag_warn A=0 B=0
+
+  === [P5-ki0-h1] kp=4 ki=0 hyst=1 ===
+    理想: 窗口内角度行程 8052 LSB, 理想计数 125 (idx 单位)
+    A(现状 GATE_STATE=0): AB 跳变 126, edge_cnt 净 126 (增 126/减 0), 计数误差 1
+       滤波角节拍步进 |d| 均值 5 最大 7 LSB, 非零步 2559, 方向反转 0 (统计 6 遍共 1536 拍)
+       跟踪误差(相对窗口起点): 均值 -6, 均值绝对值 25, 最大 1727 LSB
+    B(候选 GATE_STATE=1): AB 跳变 126, edge_cnt 净 126 (增 126/减 0), 计数误差 1
+       滤波角节拍步进 |d| 均值 5 最大 6 LSB, 非零步 2559, 方向反转 0
+       跟踪误差(相对窗口起点): 均值 3, 均值绝对值 25, 最大 1727 LSB
+       limiter A=0 B=0, lag_warn A=0 B=0
+
+  === [P6-ki1-h1] kp=4 ki=1 hyst=1 ===
+    理想: 窗口内角度行程 8052 LSB, 理想计数 125 (idx 单位)
+    A(现状 GATE_STATE=0): AB 跳变 286, edge_cnt 净 126 (增 206/减 80), 计数误差 1
+       滤波角节拍步进 |d| 均值 12 最大 43 LSB, 非零步 2497, 方向反转 399 (统计 6 遍共 1536 拍)
+       跟踪误差(相对窗口起点): 均值 0, 均值绝对值 36, 最大 1727 LSB
+    B(候选 GATE_STATE=1): AB 跳变 126, edge_cnt 净 126 (增 126/减 0), 计数误差 1
+       滤波角节拍步进 |d| 均值 6 最大 45 LSB, 非零步 2548, 方向反转 12
+       跟踪误差(相对窗口起点): 均值 -2, 均值绝对值 26, 最大 1785 LSB
+       limiter A=0 B=0, lag_warn A=0 B=0
+
+  ---- 汇总（理想计数 ≈ 21/遍 × 6 遍 = 125）----
+  相位          A(kp/ki/hyst) B(kp/ki/hyst) | A:跳变 净 增/减 | B:跳变 净 | |d| A/B | 反转 A/B
+            P0-now-4-3 4/3/0        4/3/0        |  482  126  304/ 178 |  126  126 | 122/115 |  816/  72
+            P1-ki1-cmp 4/1/0        2/3/0        |  259  126  192/  66 |  126  126 |  12/  5 |  399/   0
+            P2-ki0-cmp 4/0/0        2/0/0        |  126  126  126/   0 |  126  126 |   5/  5 |    0/   2
+             P3-ki1-h2 4/1/2        4/1/2        |   13   13   13/   0 |    5    5 |  12/  5 |  399/   6
+             P4-ki0-h2 4/0/2        4/0/2        |    6    6    6/   0 |    6    6 |   5/  5 |    0/   0
+             P5-ki0-h1 4/0/1        4/0/1        |  126  126  126/   0 |  126  126 |   5/  5 |    0/   0
+             P6-ki1-h1 4/1/1        4/1/1        |  286  126  206/  80 |  126  126 |  12/  6 |  399/  12
+
+ok : P0 复现抖动群（跳变 482，板上 139）
+ok : P0 计数不丢（净 126 vs 理想 125）
+?? P1(ki1 门控补偿) A/B: 跳变 259/126, 净 126/126, |d| 12/5
+?? P2(ki0 门控补偿) A/B: 跳变 126/126, 净 126/126, |d| 5/5
+ok : P2(ki=0 纯 P) 达到理想边沿数（126 vs 理想 125）
+TEST PASSED
+$finish called at time : 1433830 ns : File "C:/Users/zhaoy/Desktop/FPGA/sim/tb_loop_abz_chain.v" Line 418
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Nov  4 00:47:51 2026...

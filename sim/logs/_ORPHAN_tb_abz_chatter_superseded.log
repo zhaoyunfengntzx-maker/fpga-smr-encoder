@@ -1,0 +1,191 @@
+﻿# ===== 归档说明（2026-10-11）=====
+# 产生本日志的 sim/tb_abz_chatter.v 已删除：它把 ILA 抓到的【已滤波】角度序列直接
+# 回放给 abz_gen，实测 edge_cnt 净增量恒为 0～6（硬件同一窗口是 +20 = 理想），
+# 即该回放方式本身不能代表硬件（缺预热/节拍重构），其 7 条断言编码了错误期望。
+# 它的问题已由 sim/tb_loop_abz_chain.v（回放【原始】角度经真实 loop_filter，§1.39）取代：
+# 净计数 126 vs 理想 125 正确、抖动 482 vs 理想 125 = 3.86×（板上 139 vs 21 = 6.6×，同量级）。
+# 绿/红判据永远是 sim/logs/SUMMARY.md。
+# ================================
+
+###### xvlog ######
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module abz_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/ad9238_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module ad9238_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/amp_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module amp_monitor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/biss_c_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module biss_c_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/calib_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module calib_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cdc_sync2.v" into library work
+INFO: [VRFC 10-311] analyzing module cdc_sync2
+INFO: [VRFC 10-311] analyzing module cdc_pulse
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/decim_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module decim_avg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/enc_top.v" into library work
+INFO: [VRFC 10-311] analyzing module enc_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/loop_filter.v" into library work
+INFO: [VRFC 10-311] analyzing module loop_filter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/pole_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module pole_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/reg_file.v" into library work
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/sc_correct.v" into library work
+INFO: [VRFC 10-311] analyzing module sc_correct
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/spi_slave.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_scope.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-311] analyzing module uart_scope
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uart_spi_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_spi_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/rtl/uvw_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module uvw_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/xilinx_prims_stub.v" into library work
+INFO: [VRFC 10-311] analyzing module BUFG
+INFO: [VRFC 10-311] analyzing module ODDR
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "C:/Users/zhaoy/Desktop/FPGA/sim/tb_abz_chatter.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_abz_chatter
+###### xelab ######
+Vivado Simulator v2026.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: D:/Vivado/2026.1/Vivado/bin/unwrapped/win64.o/xelab.exe -debug typical tb_abz_chatter -s tb_abz_chatter_sim 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.abz_gen_default
+Compiling module work.tb_abz_chatter
+Built simulation snapshot tb_abz_chatter_sim
+###### xsim ######
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:02:23 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Sun Oct 11 15:27:04 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/tb_abz_chatter_sim/xsim_script.tcl
+# xsim {tb_abz_chatter_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+================================================================
+ tb_abz_chatter —— 上板角度序列回放：ABZ 抖动群 + v7 候选（角度整形）
+ 配置与板上一致: inter=256 div=1 ablimit=0 zwidth=4, 预热 6 遍
+ 节拍: in_valid 每 4 clk 一拍 = 12.5 MHz（LOG2DEC=2）
+================================================================
+WARNING: File abz_angle_stage2.mem referenced on C:/Users/zhaoy/Desktop/FPGA/rtl/abz_gen.v at line 313 cannot be opened for reading. Please ensure that this file is available in the current working directory or parent directory of xsim.dir location specified via -xsimdir switch.
+  回放数据: 1024 点(50MHz), 首 51844 末 53165, 范围 51355..53798
+  输入侧证据: 净 +1321 LSB(=20.6 idx) 但总变动 31215 LSB(=488 idx)
+              ⇒ 每节拍毛刺 1~2 个 idx 单位，而发生器每拍最多消化 1 个
+
+  === [R0-raw-hyst0] mode=0 slew=0 iir_k=2 hyst=0 (第 6/6 遍) ===
+      AB 跳变 = 150 次 (本窗口理想 21 次)
+      edge_cnt 净增量 = 0 (增 75 / 减 75 次)
+      跳变间隔: min 4 clk, 中位 4 clk, max 76 clk
+                  平均 6.819 clk (136.4 ns)
+      输入侧: 原样 |d| max 1314 / 平均 121 LSB·节拍^-1; 整形后 max 1314 / 平均 121
+      间隔直方图(<=64clk):
+         4:110 8:14 12:13 16:5 24:5 32:1
+      limiter 高 0 clk, lag_warn 0 clk, lag_fatal 0 clk
+
+  === [R1-raw-hyst2] mode=0 slew=0 iir_k=2 hyst=2 (第 6/6 遍) ===
+      AB 跳变 = 108 次 (本窗口理想 21 次)
+      edge_cnt 净增量 = 6 (增 57 / 减 51 次)
+      跳变间隔: min 4 clk, 中位 4 clk, max 272 clk
+                  平均 8.860 clk (177.2 ns)
+      输入侧: 原样 |d| max 1314 / 平均 121 LSB·节拍^-1; 整形后 max 1314 / 平均 121
+      间隔直方图(<=64clk):
+         4:98 8:2 16:1 20:2 24:1 48:1
+      limiter 高 0 clk, lag_warn 0 clk, lag_fatal 0 clk
+
+  === [R2-slew8-hyst0] mode=1 slew=8 iir_k=2 hyst=0 (第 6/6 遍) ===
+      AB 跳变 = 40 次 (本窗口理想 21 次)
+      edge_cnt 净增量 = 0 (增 20 / 减 20 次)
+      跳变间隔: min 4 clk, 中位 32 clk, max 88 clk
+                  平均 25.128 clk (502.6 ns)
+      输入侧: 原样 |d| max 1314 / 平均 121 LSB·节拍^-1; 整形后 max 8 / 平均 7
+      间隔直方图(<=64clk):
+         4:8 12:3 16:1 20:5 32:19 48:1 52:1
+      limiter 高 0 clk, lag_warn 0 clk, lag_fatal 0 clk
+
+  === [R3-slew4-hyst0] mode=1 slew=4 iir_k=2 hyst=0 (第 6/6 遍) ===
+      AB 跳变 = 14 次 (本窗口理想 21 次)
+      edge_cnt 净增量 = 0 (增 7 / 减 7 次)
+      跳变间隔: min 4 clk, 中位 64 clk, max 208 clk
+                  平均 73.846 clk (1476.9 ns)
+      输入侧: 原样 |d| max 1314 / 平均 121 LSB·节拍^-1; 整形后 max 4 / 平均 3
+      间隔直方图(<=64clk):
+         4:1 64:9
+      limiter 高 0 clk, lag_warn 0 clk, lag_fatal 0 clk
+
+  === [R4-iir4-hyst0] mode=2 slew=0 iir_k=2 hyst=0 (第 6/6 遍) ===
+      AB 跳变 = 108 次 (本窗口理想 21 次)
+      edge_cnt 净增量 = 0 (增 54 / 减 54 次)
+      跳变间隔: min 4 clk, 中位 4 clk, max 56 clk
+                  平均 9.495 clk (189.9 ns)
+      输入侧: 原样 |d| max 1314 / 平均 121 LSB·节拍^-1; 整形后 max 337 / 平均 38
+      间隔直方图(<=64clk):
+         4:72 8:14 12:4 16:5 32:6 44:1 48:3 52:1
+         56:1
+      limiter 高 0 clk, lag_warn 0 clk, lag_fatal 0 clk
+
+  === [R5-iir8-hyst0] mode=2 slew=0 iir_k=3 hyst=0 (第 6/6 遍) ===
+      AB 跳变 = 76 次 (本窗口理想 21 次)
+      edge_cnt 净增量 = 0 (增 38 / 减 38 次)
+      跳变间隔: min 4 clk, 中位 4 clk, max 68 clk
+                  平均 13.227 clk (264.5 ns)
+      输入侧: 原样 |d| max 1314 / 平均 121 LSB·节拍^-1; 整形后 max 158 / 平均 21
+      间隔直方图(<=64clk):
+         4:44 8:9 12:7 16:1 28:3 40:2 44:1 48:2
+         52:2 56:3
+      limiter 高 0 clk, lag_warn 0 clk, lag_fatal 0 clk
+
+  === [R6-iir4-hyst2] mode=2 slew=0 iir_k=2 hyst=2 (第 6/6 遍) ===
+      AB 跳变 = 55 次 (本窗口理想 21 次)
+      edge_cnt 净增量 = -3 (增 26 / 减 29 次)
+      跳变间隔: min 4 clk, 中位 4 clk, max 464 clk
+                  平均 14.815 clk (296.3 ns)
+      输入侧: 原样 |d| max 1314 / 平均 121 LSB·节拍^-1; 整形后 max 337 / 平均 38
+      间隔直方图(<=64clk):
+         4:46 8:3 16:1 20:2
+      limiter 高 0 clk, lag_warn 0 clk, lag_fatal 0 clk
+
+  ---- 汇总（同一段上板序列，理想 21 次跳变 / 净 +20..+21）----
+  相位              跳变  净   增/减   中位  原样|d|  整形|d|
+  R0-raw-hyst0       150    0   75/ 75     4    121    121
+  R1-raw-hyst2       108    6   57/ 51     4    121    121
+  R2-slew8-hyst0      40    0   20/ 20    32    121      7
+  R3-slew4-hyst0      14    0    7/  7    64    121      3
+  R4-iir4-hyst0      108    0   54/ 54     4    121     38
+  R5-iir8-hyst0       76    0   38/ 38     4    121     21
+  R6-iir4-hyst2       55   -3   26/ 29     4    121     38
+
+  ---- 判据 ----
+    ok  : R0-reproduces-hardware-chatter (>=110 transitions)
+    FAIL: R0-net-count-tracked (net=0, want 14..26)
+    FAIL: R1-net-count-tracked (net=6, want 14..26)
+    FAIL: R2-net-count-tracked (net=0, want 14..26)
+    FAIL: R3-net-count-tracked (net=0, want 14..26)
+    FAIL: R4-net-count-tracked (net=0, want 14..26)
+    FAIL: R5-net-count-tracked (net=0, want 14..26)
+    FAIL: R6-net-count-tracked (net=-3, want 14..26)
+    ok  : all-phases net count in 14..26
+
+================================================================
+ TEST FAILED (7 errors)
+================================================================
+$finish called at time : 865050 ns : File "C:/Users/zhaoy/Desktop/FPGA/sim/tb_abz_chatter.v" Line 370
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 15:27:06 2026...
