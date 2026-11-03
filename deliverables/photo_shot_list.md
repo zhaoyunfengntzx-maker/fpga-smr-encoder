@@ -1,4 +1,4 @@
-﻿# photo_shot_list（视频分镜 + 上板取证）
+# photo_shot_list（视频分镜 + 上板取证）
 
 > 用途：① 演示视频拍摄执行表；② 报告插图与"作品照片"的取证清单。
 > 与 [`evidence_index.md`](evidence_index.md) §8「待补数据」一一对应：**本文件的 P0 项 = 索引 §8 的阻塞项**。
@@ -77,7 +77,7 @@
 | P2-5 | **实现报告整页截图**（Sign-off 证据） | 打开 `data/v90/prod_timing.rpt` 的 Summary 段（**不要用旧版**），同框拍 `data/v90/prod_util.rpt` | `figures/timing_summary.png` | 🔴（v90 版） |
 | P2-6 | **★ 真实传感头 / 磁环实测片段** | 接真实磁环（2048 周期/转），**手转**并拍 ABZ/UVW 随转动变化；v90 已用转台跑过闭环（457–459 rpm），本项只需补**画面** | `video/real_sensor.mp4` + `figures/` 静帧 | 🔴 只缺画面 |
 | P2-7 | **串口直接看 ABZ/UVW 六路电平** | `python tools\demo_abz_uvw.py --port COM6 --seconds 30 --archive`（输出 `DEMO PASS`）或 `uart_scope.py --seconds 30 --csv io.csv --png figures/telemetry_abz_uvw.png`；PNG 第 3 行是按电角度的等效采样图 | `figures/telemetry_abz_uvw.png` + `data/telemetry_abz_uvw.csv` | 🟢（旧轮次，v90 建议重拍） |
-| P2-8 | ★ **本机四页屏实拍（v90 显示位流）** | 逐页拍：P1 总览 / P2 输入波形 / P4 逻辑时序 / P6 设置，每页一张同框照（含手与触摸动作）；**P7 标定页已在 v88/v90 删除**，标定入口是 P1 标题带按钮（写 `0x0502=0x0001`）或 KEY0 长按；KEY1=Y9 翻页、J9/J10 都要 3.3 V、必须裸指 | `figures/screen_p{1,2,4,6}.jpg`、`figures/screen_touch.jpg` | 🔴 **v90 必拍** |
+| P2-8 | ★ **本机四页屏实拍（v90 显示位流）** | 逐页拍：P1 总览 / P2 输入波形 / P4 逻辑时序 / P6 设置，每页一张同框照（含手与触摸动作）；**P7 标定页已在 v88/v90 删除**，标定入口是 P1 标题带按钮（写 `0x0502=0x0001`）或 KEY0 长按；KEY1=Y9 翻页、J9/J10 都要 3.3 V、必须裸指 | `figures/screen_p{1,2,4,6}.jpg`、`figures/screen_touch.jpg` | ✅ 已拍（2026-11-04，原图由队伍留存） |
 | P2-9 | ★ **千兆网端到端演示** | `host/dist_onedir/host_app/host_app.exe` → 以太网 → 抓包 **28,672 点** → ping 4/4；录屏 + 拍网口指示灯 | `video/clip_eth.mp4`、`figures/host_capture_ethernet.png` | 🔴 |
 
 > ★ **P2-6 是答辩"送命题"的唯一解**（`../docs/02` §5.3）。
@@ -128,7 +128,7 @@
 | 0-3 | `DEVICE_ID` 读回 | `tools\uart_spi.py read 0x05F0` → `5A 01 F0 10 0C xx` | `figures/device_id.png` | P2-4 |
 | 0-4 | 时序签核页 | 打开 `deliverables/data/v90/prod_timing.rpt`，截 Summary 段（`All user specified timing constraints are met.` / WNS **+0.199** / 0 失败 / **24,691** 端点）；再截 `prod_util.rpt` 的 **10,978 = 52.78%** ★ **不要用旧版报告** | `figures/timing_summary.png` | P2-5 |
 | 0-5 | 板载版本画面 | `tools\uart_spi.py read 0x05F2` → **0x0019**（读到别的值说明板上不是 v90，需重下） | `figures/build_id.png` | §C 检查项 |
-| 0-6 | **屏四页实拍 + 触摸** | 逐页：P1→KEY1→P2→P4→P6；每页拍一张含屏与手（裸指）的同框照；P6 改一个参数并回读确认；**P7 标定页已删，标定走 P1 标题按钮或 KEY0 长按** | `figures/screen_p1.jpg` … `screen_p6.jpg`、`screen_touch.jpg` | P2-8 |
+| 0-6 | **屏四页实拍 + 触摸** | 逐页：P1→KEY1→P2→P4→P6；每页拍一张含屏与手（裸指）的同框照；P6 改一个参数并回读确认；**P7 标定页已删，标定走 P1 标题按钮或 KEY0 长按** | `figures/screen_p1.jpg` … `screen_p6.jpg`、`screen_touch.jpg` | P2-8 ✅ 已拍（2026-11-04） |
 | 0-7 | **以太网演示录屏** | `host\dist_onedir\host_app\host_app.exe` → 以太网模式 → 抓包（28,672 点）→ ping 4/4；同时拍板卡网口指示灯 | `video/clip_eth.mp4` + `figures/host_capture_ethernet.png` | P2-9 |
 
 ### D.2 Phase 1 —— 示波器一次接齐（≈45 min，AFG 保持 1 kHz / 8 Vpp / 90°）

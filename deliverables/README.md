@@ -1,4 +1,4 @@
-﻿# deliverables/ —— 竞赛提交物目录
+# deliverables/ —— 竞赛提交物目录
 
 > 本目录是 **2026 年第九届全国大学生嵌入式芯片与系统设计竞赛 · FPGA 创新设计赛道（AMD 赛道 · 自主选题）**
 > 的提交物工作区。**提交截止：2026-11-04 18:00**。
@@ -16,7 +16,7 @@
   板上：**Z 频率 7.62 / 7.65 Hz ⇒ 457–459 rpm（每转 1 个 Z）**、UVW 六态计数 `{5174,4761,4423,4776,4763,4786}`、`lock = 0x0301`、60 s **597,886 帧 / 9,964.8 fps** 不丢帧、以太网 ping 4/4 + UDP 抓窗 28,672 点 @50 MSPS。
 - **显示位流 = v90 显示版**：`data/v90/enc_top_disp_v90.bit`（构建输出目录 `_synth_work_v90`，另有 `_impl_disp_v90` 同哈希副本），**1,688,245 B**，
   SHA256 `69FE313C45C3F36D39307CE0948C6D0AB191183397E2408E694588FC5F81BAD4`；WNS **+0.221** / 0 失败（33,365）、WHS +0.049；
-  LUT **17,090 = 82.16%**、FF 11,601、BRAM **45.5/50 = 91%**、DSP 20、IOB 104。**已写 Flash、冷启动通过**；逐页目视记录未逐条留图（报告 §7 R14）。
+  LUT **17,090 = 82.16%**、FF 11,601、BRAM **45.5/50 = 91%**、DSP 20、IOB 104。**已写 Flash、冷启动通过**；**P1/P2/P4/P6 四页逐页人工核对通过（2026-11-04，报告 §7 R13 已关闭）**。
 - **v90 相对 v74 的 RTL 改动只有两处**：`rtl/abz_gen.v` 新增 `z_index_gen`（`Z_ARM_DIST = 1<<(AW-3)`，出 Z 撤防、离开 ≥1/8 圈重新布防，治停位 Z 喘振）；
   `rtl/uvw_gen.v` **保持 v74 板级验证版**（`e_uw`/K=4 去抖版回退，勿再合）。派生脚本 `tools/make_v90_rtl.py`，`_synth_work_v90/VARIANT_INFO.txt` 逐行自检。
 - 构建命令：生产 `tools/impl_check_v90.tcl`、显示 `tools/impl_check_disp_v90.tcl`；判据唯一入口 [`../docs/39_acceptance_criteria_v90.md`](../docs/39_acceptance_criteria_v90.md)。
@@ -29,7 +29,7 @@
 ```
 deliverables/
 ├── README.md                    ← 本文件：提交物清单 + 状态 + 写作规范
-├── design_report.docx/pdf       ★ 技术文档（《报告模版》骨架 + 五部分 + 附录）——24 页
+├── design_report.docx/pdf       ★ 技术文档（《报告模版》骨架 + 五部分 + 附录）——25 页
 ├── design_report.md                 详细工程版源文件（185,526 B）
 ├── design_report_full.pdf       ← 详细工程版 60 页（md2pdf 导出，答辩技术底稿）
 ├── technical_doc.docx/pdf       ★ 另一版技术文档（同模板骨架，17 页，精简可读）
@@ -64,7 +64,7 @@ deliverables/
 |---|---|---|---|
 | 1 | 作品名称 | 基于FPGA的细分编码器 | 🟢 全文统一，无别名 |
 | 2 | 演示视频（MP4/AVC/≤3 min/≤300 MB） | `video_script_v3.md` + `video/assets/` CG + `video/subs/` SRT；成片在 `video/` | 🔴 **未成片**：需真实转台 + 触摸屏 + 上位机同框实拍 |
-| 3 | 技术文档（PDF/≤50 MB/按模板） | `submission/design_report.pdf`（1,677,773 B）+ `submission/technical_doc.pdf`（988,426 B），二选一提交，建议用 design_report | ✅ 已按 v90 重导（2026-11-04，24 页）；零身份信息，见 §5 |
+| 3 | 技术文档（PDF/≤50 MB/按模板） | `submission/design_report.pdf`（1,677,401 B）+ `submission/technical_doc.pdf`（988,465 B），二选一提交，建议用 design_report | ✅ 已按 v90 重导（2026-11-04，25 页）；零身份信息，见 §5 |
 | 4 | 全部代码（RAR/≤200 MB） | `submission/source_code.zip`（55,699,991 B / 701 条目）+ `make_rar.bat` | 🟡 **本机无 WinRAR/Rar.exe**，只能产出 ZIP；须在装有 WinRAR 的机器上执行 `make_rar.bat` 转 RAR |
 | 5 | 参赛作品承诺及使用授权书（PDF） | `submission/authorization_letter.pdf`（1 页 / 662,110 B） | 🟢 **已签署（2026-11-03）**：全体队员签名齐全；实名件只提交大赛系统 |
 | 6 | 作品海报（选填，PDF/PPT/≤50 MB） | `poster/poster_A4_EN.pdf`（104,803 B）、`poster/poster_amd_A4.pdf`（354,000 B）、`poster/poster_amd_official.pdf`（326,045 B） | 🟢 三版均已重建、零身份信息（海报图形未随 v90 重出，见遗留） |
@@ -123,7 +123,7 @@ cscript //nologo tools\pptx2pdf.vbs "C:\Users\zhaoy\Desktop\FPGA\deliverables\po
 & E:\Anaconda\python.exe tools\md2pdf.py deliverables\design_report.md
 ```
 
-当前体积（Test-Path 实测）：`design_report.pdf` 1,677,773 B；`technical_doc.pdf` 988,426 B；`design_report_full.pdf` 5,606,596 B；`submission/design_report.pdf` 1,677,773 B。
+当前体积（Test-Path 实测）：`design_report.pdf` 1,677,401 B；`technical_doc.pdf` 988,465 B；`design_report_full.pdf` 5,607,882 B；`submission/design_report.pdf` 1,677,401 B。
 
 ## 7. 本轮（v90）文档改写的遗留
 

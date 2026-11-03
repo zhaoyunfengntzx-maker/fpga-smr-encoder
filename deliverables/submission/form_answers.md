@@ -1,4 +1,4 @@
-﻿# 报名系统逐项填写文本（可直接复制）
+# 报名系统逐项填写文本（可直接复制）
 
 > 作品名称统一为 **基于FPGA的细分编码器**。本文不含学校、学院、指导教师、团队、学号、邮箱等身份信息。
 
@@ -53,7 +53,7 @@ https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder
 | 表单项 | 上传文件 | 大小 |
 |---|---|---|
 | 演示视频 | 待录制（现行脚本 `../video_script_v3.md`，MP4/AVC/≤3 min/≤300 MB） | — |
-| 技术文档 | `design_report.pdf`（24 页，按《报告模版》） | 1,677,773 B |
+| 技术文档 | `design_report.pdf`（25 页，按《报告模版》） | 1,677,401 B |
 | 技术文档（备选） | `technical_doc.pdf`（15 页，同骨架精简版） | 952,521 B |
 | 全部代码 | `source_code.zip` → 在装有 WinRAR 的机器上执行 `make_rar.bat` 转 `source_FPGA_encoder.rar`（701 文件条目 = 700 个内容文件 + `MANIFEST.sha256`，zip 55.70 MB = 55,699,991 B，远低于 200 MB） | 55.70 MB |
 | 承诺及使用授权书 | `authorization_letter.pdf`（1 页，2026-11-03 全体队员签名扫描） | 662,110 B |

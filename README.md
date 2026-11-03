@@ -226,7 +226,7 @@ vivado -mode batch -source tools\impl_check_disp_v90.tcl
 | 版本 | 状态 |
 |---|---|
 | **v90 生产位流** | ★ **当前交付基线**（2026-11-04）：`BUILD 0x0019`、1,504,220 B、WNS +0.199 / 0 失败、LUT 52.78%。新增 `z_index_gen` 修 Z 停位喘振，板上 Z 严格 1 个/转 |
-| **v90 显示位流** | ★ **已上板 + 已固化 Flash + 冷启动通过**：1,688,245 B、WNS +0.221、LUT 82.16%、BRAM 45.5/50；验收判据见 [`docs/39_acceptance_criteria_v90.md`](docs/39_acceptance_criteria_v90.md) |
+| **v90 显示位流** | ★ **已上板 + 已固化 Flash + 冷启动通过**：1,688,245 B、WNS +0.221、LUT 82.16%、BRAM 45.5/50；**P1/P2/P4/P6 四页逐页人工核对通过（2026-11-04）**；验收判据见 [`docs/39_acceptance_criteria_v90.md`](docs/39_acceptance_criteria_v90.md) |
 | v85 / v89 显示位流 | 显示 UI 迭代（P2 三档 / 中线、P7 整页删除、删标定按钮），作为 v90 显示位流的前身 |
 | v74 生产位流 | 历史基线（2026-11-02）：`BUILD 0x0018`、WNS +0.409、LUT 52.53% |
 | v62 | 参赛演示基线：编码器 + UI + 千兆网，2026-10-23 上板 |

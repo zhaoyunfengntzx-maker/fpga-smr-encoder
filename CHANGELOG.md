@@ -34,8 +34,15 @@
   删除 `docs/` 下厂商手册的逐页数值摘录（原 `*_digest.md/.pdf`，已整篇移除）；`NOTICE`、
   设计报告、技术文档与 README 的参考资料、历史清理命令同步改写；`rtl/spi_slave.v`
   的包模式参数改名为 `USE_PKT_MODE`（纯标识符，行为不变）。
+- **屏上四页逐页人工核对通过（2026-11-04）**：v90 显示位流写 Flash、冷启动进入 P1 后，
+  P1/P2/P4/P6 逐页核对 —— P1 四卡数值/单位不重叠且 `Z计数` 递增；P2 三档 + `AUTO` 波形
+  左右连续、标记在中线；P4 上半 A/B 各 4 周期、下半 U/V/W 60° 台阶 + Z 竖标；P6 参数与
+  `S0C0` 回读一致；裸指触摸与 KEY1 翻页正常，P7 标定页确认不存在。`docs/39` 的 E 类判据
+  据此收敛为全过，报告 §7 **R13 / R14 关闭**，`docs/43`、`REPRODUCE`、`board_day_checklist.md`
+  与 v90 归档 README 同步回填；`design_report.pdf` 重导为 **25 页**，full PDF 60 页，
+  `technical_doc.pdf` 17 页。
 - **报告与文档重写**：`deliverables/design_report.md`（1732 行 / 60 页 full PDF）、
-  `tools/build_report_doc.py`（docx 23 页）、`build_tech_doc.py`、`build_intro_doc.py`、
+  `tools/build_report_doc.py`（docx 25 页）、`build_tech_doc.py`、`build_intro_doc.py`、
   `docs/01_technical_solution.md`、`docs/05_vivado_sim_impl_report.md`、
   `docs/REPRODUCE.md`、`docs/COMPLIANCE.md`、`docs/README.md`、`docs/BASELINES.md`
   全部改成 v90 口径；v62/v66/v70/v74/v85/v89 一律标为历史基线，只在演进/对照章节出现。

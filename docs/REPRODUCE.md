@@ -208,12 +208,13 @@ vivado -mode batch -source tools\program_bit.tcl -tclargs _synth_work_v90\enc_to
 | 9 | UVW | 六态 `{5174,4761,4423,4776,4763,4786}`、换相无跳变 | `check_v70.py` 60 s 段 |
 | 10 | 以太网 | ping 4/4、UDP 抓窗 `missing=0`、28,672 点 @50 MSPS | `tools\board_eth_check.py` |
 | 11 | 长跑 | 60 s 内 597,886 帧 / 9,964.8 fps，`lock` 全程 TRACK | `soak_v68.py COMx 60` |
-| 12 | 屏（仅显示位流） | **4 页可切换**（P1/P2/P4/P6）、触摸命中、无花屏；**无 P7 标定页** | 人工逐页 |
+| 12 | 屏（仅显示位流） | **4 页可切换**（P1/P2/P4/P6）、触摸命中、无花屏；**无 P7 标定页** | 人工逐页（2026-11-04 通过） |
 | 13 | 标定入口 | KEY0 长按或串口写 `0x0502=0x0001` 触发；完成后角度连续 | 人工 + `check_v70.py` |
 | 14 | Flash 冷启动 | 断电重上电后自动运行 | 人工（v90 已通过） |
 
-> 第 12 项的四页**逐页人工确认**仍在待补清单（`docs/39_acceptance_criteria_v90.md` 的
-> E 类）；冷启动点亮已通过。报告与 README 中不要把"构建签核"写成"上板验收"。
+> 第 12 项的四页**逐页人工确认**已于 **2026-11-04 通过**（P1/P2/P4/P6，含裸指触摸与 KEY1 翻页），
+> 记录见 `docs/39_acceptance_criteria_v90.md` §5 与 `deliverables/board_day_checklist.md` §1；
+> 冷启动点亮亦通过。报告与 README 中不要把"构建签核"写成"上板验收"——现在这两件事都有据可查。
 
 ### 7.3 参考读数（2026-11-04 实测，v90）
 
@@ -222,7 +223,7 @@ v90 生产（0x0019）：10.6 kfps / r 峰 0.845–0.850 FS / lock=0x0301 /
                     Z 7.62,7.65 Hz -> 457–459 rpm（每转 1 个 Z）/
                     UVW 六态 523 次/3 s / angle_vs_sc offset 1.76°、RMS 0.71°、max 2.88° /
                     60 s 597,886 帧、9,964.8 fps / ping 4/4 + UDP 抓窗 28,672 点
-v90 显示：          已写 Flash，FLASH_OK，冷启动点亮进入 P1；四页逐页人工确认待补
+v90 显示：          已写 Flash，FLASH_OK，冷启动点亮进入 P1；四页逐页人工核对通过（2026-11-04）
 历史：v74（0x0018）719–740 rpm、Z ≈12 Hz；v70（0x0015）719–731 rpm
 ```
 
@@ -265,7 +266,7 @@ v90 显示：          已写 Flash，FLASH_OK，冷启动点亮进入 P1；四�
 [ ] z_rate.py：Z 7.62–7.65 Hz（457–459 rpm），每转 1 个 Z
 [ ] UVW 六态、angle_vs_sc RMS ≤0.71°、60 s 长稳不掉锁
 [ ] board_eth_check.py 退出码 0
-[ ] （显示）4 页逐页目视 + 触摸 + Flash 冷启动
+[x] （显示）4 页逐页目视 + 触摸 + Flash 冷启动（2026-11-04 通过）
 [ ] sha256sum -c deliverables\data\SHA256SUMS.txt
 ```
 

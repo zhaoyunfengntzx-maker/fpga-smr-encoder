@@ -6,7 +6,7 @@
   * 「显示」下拉的档位能存进 ui_prefs 再读回来；
   * 包络一定含每列极值（尖峰不会像点采样那样被丢掉）。
 
-用法：python host\selftest_display.py
+用法：python host\\selftest_display.py
 """
 
 import os
