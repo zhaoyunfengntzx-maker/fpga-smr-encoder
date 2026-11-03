@@ -19,7 +19,8 @@
 ```bash
 # 第 1 步：先证明这套判据本身可信（不碰你的工程，只读 examples/）
 python skill/scripts/skill_selftest.py
-# 期望最后两行：结果：14/14 用例符合预期 / => 四个校验脚本在自带样例上都给出预期判决
+# 期望最后两行：结果：24/24 用例符合预期 / => 四个校验脚本在自带样例上都给出预期判决
+# 只有一张 A4 的位置？看 skill/CHEATSHEET.md（三条命令 + 五个最常踩的坑）
 
 # 第 2 步：挑一个模板复制进你的工程
 cp skill/templates/tb_skeleton.v        sim/tb_my_top.v      # 测试台骨架
@@ -138,6 +139,11 @@ python skill/scripts/check_impl_reports.py --dir skill/examples/reports_pass --j
 **这个包自己也接受检验**：两套自检里各有一批"必须失败"的负对照（`skill_selftest.py` 24 条里 10 条、`pynq_selftest.py` 18 条里 5 条），`tools/gen_pitfall_index.py --check` 则保证症状索引与清单不脱钩。
 只验证"该过的过了"是不够的——那正是我们踩过的坑（见 pitfalls P-16）。
 
+**换路径实测（2026-11-03）**：把整个 `skill/` 拷到含**空格与中文**的目录
+（`%TEMP%\移植 测试 space\skill`），在副本里跑 `scripts/skill_selftest.py` 与 `pynq/pynq_selftest.py`，
+再进 `pynq/` 子目录跑一次，三次都是 `24/24` 与 `18/18`。这条测的是"脚本不依赖仓库路径、
+不依赖当前工作目录"——2026-11-03 之前它其实是从仓库根硬编码路径的，正是因为换了目录跑才暴露（同类问题见 pitfalls P-11）。
+
 ---
 
 ## 7. 换题目/换板卡时的移植指引
@@ -164,7 +170,7 @@ python skill/scripts/check_impl_reports.py --dir skill/examples/reports_pass --j
 | `pynq/pynq_hwh.py` | 解析 `.hwh`：IP 清单、从口地址表、时钟域；判据 `ADDR-00x/01x`、`CLK-00x`、`REG-001` | 真实 BD 导出 hwh（57,252 B）：无地址 → `ADDR-000 FAIL`；补地址 → `PASS 3 IP / 2 段`；重叠 → `ADDR-010 FAIL` |
 | `pynq/pynq_bundle.py` | 交付目录体检：位流↔地址表配对、时间戳、sha256、两版 IP 清单对比 | `bundle` → `PASS`；`bundle_nohwh` → EXIT 1 |
 | `pynq/pynq_overlay.py` | 上板 5 条判据（Walking-ones / CTRL-STATUS / DMA 长度 / 逐点比对 / 计数一致）+ `--mock` 离线版 | `--selftest 4/4`（3 条负对照）、`--mock PASS 5/5` |
-| `pynq/pynq_selftest.py` | 这套包的自我验收，13 个用例 | `13/13 用例符合预期` |
+| `pynq/pynq_selftest.py` | 这套包的自我验收，18 个用例 | `18/18 用例符合预期` |
 | `pynq/pitfalls_pynq.md` | 14 条 PYNQ 专有坑，每条标 `[实测]/[文档]/[待验]` | 每条对应一个判据或文档事实 |
 | `pynq/prompts/P6,P7` | hwh→寄存器映射；上板前证伪两轮法 | P6 的地址表与本包 `--md` 输出逐行一致 |
 | `pynq/examples/` | 真实 hwh（3 份变体）+ 位流配对样例 | 全部用例都跑在它上面 |
@@ -175,7 +181,7 @@ Artix/Kintex 器件族，**没有任何一条上板实测**；`.hwh` 解析与�
 上板部分是检查单，不是结论——这个区别写在 `skill/pynq/README.md` §4。
 
 ```bash
-python skill/pynq/pynq_selftest.py     # 13/13
+python skill/pynq/pynq_selftest.py     # 18/18
 ```
 
 ---

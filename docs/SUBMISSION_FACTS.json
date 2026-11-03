@@ -1,0 +1,21 @@
+{
+  "zip": {
+    "entries": 684,
+    "bytes": 30074313,
+    "mb": 30.07
+  },
+  "manifest_lines": 683,
+  "pdf": {
+    "pages": 21,
+    "bytes": 1254450,
+    "mb": 1.25
+  },
+  "assets": {
+    "scripts": 6,
+    "templates": 7,
+    "prompts": 5,
+    "longform": 7,
+    "pitfalls": 18,
+    "total": 19
+  }
+}

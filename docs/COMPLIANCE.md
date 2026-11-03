@@ -96,7 +96,7 @@ python tools\check_links.py                  # 文档相对链接 0 死链
 python tools\check_anonymity.py --strict-new # 公开面 0 命中
 python tools\check_names.py                  # 静态未定义名 0
 python tools\check_citations.py              # "记录 N" 都能追到协作日志标题（0 ERROR / 0 WARN）
-python tools\check_counts.py                 # 文档口径 vs 现场事实（zip 683 条目 / 清单 682 行 / PDF 21 页）
+python tools\check_counts.py                 # 文档口径 vs 现场事实（zip 684 条目 / 清单 683 行 / PDF 21 页）
 python tools\gen_pitfall_index.py --check     # 症状索引与两份清单不脱钩
 python host\regs.py --selftest               # 寄存器表自检
 python host\analysis.py --selftest           # 分析链自检

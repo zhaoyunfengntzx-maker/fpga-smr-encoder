@@ -44,6 +44,12 @@ jobs:
       - name: Anonymity / path hygiene
         run: python tools/check_anonymity.py --strict-new
 
+      # 技能包的判据不能只在作者机器上活着：24+18 个自检用例 + 5 项仓库门禁一条命令。
+      # check_counts 在没有 zip 的克隆里改用 docs/SUBMISSION_FACTS.json（提交时的快照）比对，
+      # 所以这一步不需要先跑 make_source_package.py，也不会退化成 SKIP。
+      - name: Skill package gates
+        run: python skill/scripts/run_all_checks.py
+
   cff:
     runs-on: ubuntu-latest
     steps:

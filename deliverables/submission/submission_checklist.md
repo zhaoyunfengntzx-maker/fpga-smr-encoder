@@ -7,8 +7,8 @@
 | # | 项目 | 状态 | 文件 / 说明 |
 |---|---|---|---|
 | 1 | 演示视频（MP4 / AVC(H264) / ≤3 min / ≤300 MB） | **脚本完成，待录制** | 脚本 `../video_script.md` / `.pdf`（3:00、29 镜、旁白逐句时间码、特效与拍摄表）；成片需真实转台 + 触摸屏 + 上位机同框，本机无采集设备、无实拍素材，无法代录 |
-| 2 | 技术文档（PDF / ≤50 MB / 按模板） | ✅ 完成 | 主用 `design_report.pdf`（21 页 / 1.25 MB，严格按《报告模版》）；备选 `technical_doc.pdf`（15 页 / 0.91 MB，同骨架精简版）。两者均为 v74 口径、零身份信息 |
-| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 已整理，待转 RAR | `source_code.zip`（**30.06 MB / 683 文件**，含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*`、`skill/`（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包 + 夹具）、`data/*/README.md` 与 `SHA256SUMS.txt`；`MANIFEST.sha256` 用 `skill/scripts/check_manifest.py` 逐文件 682/682 校验通过）；本机未安装 WinRAR，已附 `make_rar.bat` |
+| 2 | 技术文档（PDF / ≤50 MB / 按模板） | ✅ 完成 | 主用 `design_report.pdf`（21 页 / 1.25 MB，严格按《报告模版》）；备选 `technical_doc.pdf`（16 页 / 0.97 MB，同骨架精简版）。两者均为 v74 口径、零身份信息 |
+| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 已整理，待转 RAR | `source_code.zip`（**30.07 MB / 684 文件**，含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*`、`skill/`（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包 + 夹具）、`data/*/README.md` 与 `SHA256SUMS.txt`；`MANIFEST.sha256` 用 `skill/scripts/check_manifest.py` 逐文件 683/683 校验通过）；本机未安装 WinRAR，已附 `make_rar.bat` |
 | 4 | 参赛作品承诺及使用授权书（PDF） | **待签署** | 从大赛系统下载后签字/盖章扫描；程序无法代签 |
 | 5 | GitHub 链接 | ✅ 已开源 | [https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)（MIT，`main` 默认分支，tag `v1.0.0`） |
 | 6 | 作品全貌图（JPG/PNG ≤10 MB ×1） | ✅ **已拍摄（2026-11-03 20:02）** | `photos/01_overview_full.jpg`（8064×6048 / 6.89 MB）：转台夹具 + 传感头 + 模拟板 + AD9238/FPGA + 7 寸屏 + 示波器 + 上位机同框 |
@@ -69,6 +69,6 @@ rem 双击本目录的 make_rar.bat 即可（自动查找 WinRAR 并生成 sourc
 
 | 指南要求 | 本仓库对应 | 状态 |
 |---|---|---|
-| 工程包：源码、仿真/验证结果、综合与实现报告、上板工程与实测对比、可复现构建脚本 | `source_code.zip`（rtl/sim/constr/tools/host/_boardtest/docs/skill/deliverables，`MANIFEST.sha256` 682 行）+ 根 `README.md` 目录对照 + 附录 C | ✅ |
+| 工程包：源码、仿真/验证结果、综合与实现报告、上板工程与实测对比、可复现构建脚本 | `source_code.zip`（rtl/sim/constr/tools/host/_boardtest/docs/skill/deliverables，`MANIFEST.sha256` 683 行）+ 根 `README.md` 目录对照 + 附录 C | ✅ |
 | 技能包：`skill/`，每项写适用范围 / 使用方法 / 失效条件 | `skill/README.md`（9 节索引）+ 7 篇方法长文（六节模板）+ 19 项可执行资产：6 个校验脚本 / 7 个模板 / 5 篇提示词工作流 / 18 条踩坑清单（索引由脚本生成），全部带夹具与失败来源 | ✅ |
 | 设计报告：选题背景与创新点、原理与框图、软硬件划分与接口、优化前后对比、大模型协作、技能包提炼、复现说明 | `design_report.pdf`（模板版 21 页 / 1.25 MB）含选题背景、3.3 优化对比、附录 A/B/C（附录 B 含可执行资产与自检证据）；详细版 `design_report_full.pdf` 59 页 | ✅ |

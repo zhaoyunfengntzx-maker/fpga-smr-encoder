@@ -194,7 +194,7 @@ vivado -mode batch -source tools\impl_check_disp_v74.tcl
 |---|---|
 | [`deliverables/design_report.pdf`](deliverables/design_report.pdf) | **主设计报告**（21 页，按竞赛模板，提交用） |
 | [`deliverables/design_report_full.pdf`](deliverables/design_report_full.pdf) | 详细工程版（60 页，答辩技术底稿） |
-| [`deliverables/technical_doc.pdf`](deliverables/technical_doc.pdf) | 精简技术文档（15 页） |
+| [`deliverables/technical_doc.pdf`](deliverables/technical_doc.pdf) | 精简技术文档（16 页） |
 | [`deliverables/evidence_index.md`](deliverables/evidence_index.md) | 每个数字 → 可复核产物 |
 | [`docs/README.md`](docs/README.md) | 文档总索引（按主题） |
 | [`docs/REPRODUCE.md`](docs/REPRODUCE.md) | **从零复现**：环境、构建、上板、验收 |

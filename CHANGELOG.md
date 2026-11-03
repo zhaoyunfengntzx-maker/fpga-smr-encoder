@@ -14,6 +14,21 @@
 
 ### Added
 
+- **第三轮改进（A1–A3 + B4 + B5）**：技能包进 CI、技术文档补 §3.3.5、提交事实快照、
+  一页速查表。动机是三条自查结论：`.github/workflows/ci.yml` 从来没跑过技能包门禁；
+  `technical_doc.pdf` 里 `skill/` 出现 0 次；`skill/README.md` 把 18 个用例写成 13 个
+  写了两周而没人发现。
+  - `.github/workflows/ci.yml` 新增 `Skill package gates` 步骤，跑
+    `python skill/scripts/run_all_checks.py`；
+  - `docs/SUBMISSION_FACTS.json`：打包时的事实快照（zip 条目/体积、MANIFEST 行数、
+    PDF 页数与字节、资产计数），`tools/check_counts.py` 在**没有 zip 的克隆**里改用它
+    比对，因此 CI 上不再退化成 SKIP；
+  - `tools/check_counts.py` 新增 `COUNT-FACTS`（快照 vs 现场）与 `COUNT-SKILLDOC`
+    （`skill/README.md` 里不许出现 `13/13`/`14/14`，必须写 `24/24`/`18/18` 与现场
+    资产数）；zip 体积改为 ±0.05 MB 容差并写明原因（文档在 zip 里，自指）；
+  - `skill/CHEATSHEET.md`：一页纸（三条命令、退出码语义、五个最常踩的坑）；
+  - `tools/build_tech_doc.py` 新增 §3.3.5「技能包与通用 PYNQ 子包」，
+    `technical_doc.pdf` 15 → 16 页（967,938 B）。
 - `skill/scripts/`：5 个仅依赖 Python 标准库的校验脚本，退出码 0 通过 / 1 判据失败 /
   2 无法判断。
   - `check_impl_reports.py`：解析 Vivado 实现报告（WNS/WHS/失败端点/资源/DRC/
