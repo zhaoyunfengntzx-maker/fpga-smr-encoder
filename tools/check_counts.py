@@ -328,12 +328,27 @@ def main(argv: list[str] | None = None) -> int:
 
     n_files = effective["zip"]["entries"]
     zip_mb = effective["zip"]["mb"]
-    check("COUNT-ZIP", claims_for(docs, "source_code.zip", "zip", r"(\d+)\s*文件"), {str(n_files)},
-          "zip 条目数 = _pkg 里的文件数 + MANIFEST.sha256 自己；两个口径都要写清")
+    # 口径只认一种：**684 条目**（zip 里的条目数，含 MANIFEST.sha256 自己）；
+    # "683 文件" 是派生量（= 条目 - 清单），谁想写都得跟在"条目"后面，别单独当主数字。
+    entry_claims: dict[str, set[str]] = {}
+    size_claims: dict[str, set[str]] = {}
+    for path in docs:
+        name = path.name
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for line in text.splitlines():
+            if "zip" not in line:
+                continue
+            for m in re.finditer(r"(\d+)\s*(?:个内容文件|文件)?\s*条目", line):
+                entry_claims.setdefault(name, set()).add(m.group(1))
+            for m in re.finditer(r"([\d.]+)\s*MB\s*/\s*\d+\s*(?:个内容文件|文件)?\s*条目", line):
+                size_claims.setdefault(name, set()).add(m.group(1))
+    e_flat = {v for vs in entry_claims.values() for v in vs}
+    ok_zip = bool(e_flat) and all(v == str(n_files) for v in e_flat)
+    checks.append(("COUNT-ZIP", f"**{n_files} 条目**", str(sorted(e_flat)), ok_zip,
+                   "" if ok_zip else "zip 条目数 = _pkg 文件数 + MANIFEST.sha256 自己；只写这一种口径"))
     # 体积只核到 0.05 MB：zip 里装着这几份 md 自己，改一句文案 zip 就会变几百字节，
     # 而"把文档改到与 zip 完全一致"会陷入自指死循环。条目数/行数/页数仍是精确比对。
     tol = 0.05
-    size_claims = claims_for(docs, "source_code.zip", "zip", r"([\d.]+)\s*MB")
     flat = {v for vs in size_claims.values() for v in vs}
     ok_size = bool(flat) and all(abs(float(v) - zip_mb) <= tol for v in flat)
     checks.append(("COUNT-ZIPSIZE", str(sorted(flat)), f"{zip_mb:.2f} ±{tol}",
