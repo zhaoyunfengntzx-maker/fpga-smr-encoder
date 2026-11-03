@@ -69,7 +69,7 @@ def _set_ind_chars(p, first_line_chars):
 
 
 def fmt_par(p, align=None, indent_chars=0.0, size=BODY_PT, before=None, after=None,
-            line=1.5, keep=False, left_cm=None):
+            line=1.25, keep=False, left_cm=None):
     """Apply the template's paragraph look: 1.5 spacing, no extra space, left align."""
     pf = p.paragraph_format
     pf.alignment = align
@@ -100,7 +100,7 @@ def part_heading(text):
     if not text.startswith("摘要"):
         blank = doc.add_paragraph()
         blank.style = doc.styles["Normal"]
-        fmt_par(blank, indent_chars=0, line=1.5)
+        fmt_par(blank, indent_chars=0, line=1.25)
     if text.startswith("第") and "部分" in text:
         cn = "零一二三四五六七八九"
         ch = text[text.index("第") + 1:text.index("部分")]
@@ -121,7 +121,7 @@ def h2(text, num=None, size=12):
         return part_heading(text) if text.strip() == "摘要" else body(text, indent=False)
     blank = doc.add_paragraph()
     blank.style = doc.styles["Normal"]
-    fmt_par(blank, indent_chars=0, line=1.5)
+    fmt_par(blank, indent_chars=0, line=1.25)
     label = num
     if not label and _PART["no"]:
         _PART["sub"] += 1
@@ -348,7 +348,7 @@ r = p.add_run("作品名称")
 set_run(r, size=18, bold=True, east=SONG)
 
 p = doc.add_paragraph()
-fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=20, before=2, after=4, line=1.5)
+fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=20, before=2, after=4, line=1.25)
 r = p.add_run("基于 FPGA 的 SMR 高精度细分磁编码器")
 set_run(r, size=20, bold=True, east=SONG)
 
