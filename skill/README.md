@@ -116,6 +116,7 @@ python skill/scripts/check_impl_reports.py --dir <你的实现产物目录>
 
 ```bash
 python skill/scripts/skill_selftest.py -v     # 14 个用例，-v 打印每个脚本原始输出
+python skill/pynq/pynq_selftest.py            # PYNQ 包：13 个用例（5 条负对照）
 python skill/scripts/check_impl_reports.py --dir skill/examples/reports_pass --json /tmp/x.json
 ```
 
@@ -140,16 +141,34 @@ python skill/scripts/check_impl_reports.py --dir skill/examples/reports_pass --j
 | `fixedpoint_model.py` | 换 `model()`，保留三个原语 | 不变 | 不变 |
 | `xdc_source_sync.xdc` | 改管脚号与频率 | 必改管脚/电平标准 | 需另加 PS 侧时钟与 AXI 约束 |
 | `run_vivado.tcl` | 改 `-tclargs` 的 top/part | 改 part | 需改 block design 流程（本模板是非工程模式，不适用） |
+| `pynq/`（整包） | 直接用（只读 `.hwh` 与文件时间戳） | 重导 `.hwh`，地址判据不变 | 就是为 Zynq 写的；换板步骤见 `pynq/README.md` §6 |
 | 提示词 P1–P5 | 直接用 | 直接用 | P1 要加上"PS/PL 划分"的约束 |
-| `pitfalls.md` | 直接用（配方言/工具差异） | 直接用 | 加 PYNQ overlay/驱动相关的坑 |
+| `pitfalls.md` | 直接用（配方言/工具差异） | 直接用 | 与 `pynq/pitfalls_pynq.md` 配合用 |
 
 ---
 
-## 8. 关于 PYNQ
+## 8. 通用 PYNQ 技能包（`skill/pynq/`，申报 3.3.2 加分）
 
-本工程是**纯 RTL**（Artix-7，无 PS、无 PYNQ），因此不申报"通用 PYNQ Skill"加分；
-目录里也没有任何依赖 PYNQ 的内容，避免"看起来能用在 Zynq 上，实际跑不了"的误导。
-如果以后做 Zynq 平台，上面第 7 节表格的最后一列就是改造起点。
+`skill/pynq/` 是**独立于本队题目**的另一套东西：它面向 PYNQ 框架，换题目、换板卡都还能用。
+
+| 资产 | 作用 | 已验证 |
+|---|---|---|
+| `pynq/pynq_hwh.py` | 解析 `.hwh`：IP 清单、从口地址表、时钟域；判据 `ADDR-00x/01x`、`CLK-00x`、`REG-001` | 真实 BD 导出 hwh（57,252 B）：无地址 → `ADDR-000 FAIL`；补地址 → `PASS 3 IP / 2 段`；重叠 → `ADDR-010 FAIL` |
+| `pynq/pynq_bundle.py` | 交付目录体检：位流↔地址表配对、时间戳、sha256、两版 IP 清单对比 | `bundle` → `PASS`；`bundle_nohwh` → EXIT 1 |
+| `pynq/pynq_overlay.py` | 上板 5 条判据（Walking-ones / CTRL-STATUS / DMA 长度 / 逐点比对 / 计数一致）+ `--mock` 离线版 | `--selftest 4/4`（3 条负对照）、`--mock PASS 5/5` |
+| `pynq/pynq_selftest.py` | 这套包的自我验收，13 个用例 | `13/13 用例符合预期` |
+| `pynq/pitfalls_pynq.md` | 14 条 PYNQ 专有坑，每条标 `[实测]/[文档]/[待验]` | 每条对应一个判据或文档事实 |
+| `pynq/prompts/P6,P7` | hwh→寄存器映射；上板前证伪两轮法 | P6 的地址表与本包 `--md` 输出逐行一致 |
+| `pynq/examples/` | 真实 hwh（3 份变体）+ 位流配对样例 | 全部用例都跑在它上面 |
+
+**诚实边界（请照抄进你的报告）**：本队硬件是 Artix-7 XC7A35T（无 PS），本机 Vivado 也只装
+Artix/Kintex 器件族，**没有任何一条上板实测**；`.hwh` 解析与文件级判据是真的，
+真机路径 `PynqTransport` 只保证"没装 PYNQ 库时不崩、给出明确报错"。
+上板部分是检查单，不是结论——这个区别写在 `skill/pynq/README.md` §4。
+
+```bash
+python skill/pynq/pynq_selftest.py     # 13/13
+```
 
 ---
 
@@ -168,3 +187,8 @@ python skill/scripts/check_impl_reports.py --dir skill/examples/reports_pass --j
 | `run_vivado.tcl` | 手写文件清单漏文件；报告改名导致后处理脚本找不到 |
 | 提示词 P1–P5 | 86 条纠错记录（`docs/ai-collaboration-log.md`）里的通用部分 |
 | `pitfalls.md` | 上述记录的"出现 ≥3 次"项升级为清单 |
+| `pynq/pynq_hwh.py` | 想把 `.hwh` 当寄存器表用（Vivado 根本不导出寄存器表，`REG-001` 就是这么来的）；地址段没人核对 |
+| `pynq/pynq_bundle.py` | "位流换了、hwh 没换"导致读出全错位（本工程在报告里记过同类：报告与位流不同步） |
+| `pynq/pynq_overlay.py` | 判据永远为真（记录 47/49、`pitfalls.md` P-05/P-06）；用墙上时间当指标（P-15） |
+| `pynq/pynq_selftest.py` | 记录 73：门禁自己坏了最难发现——要有专门检查"检查工具"的东西 |
+| `pynq/pitfalls_pynq.md` | 造夹具时真实撞到的 Vivado 报错（无 Zynq 器件族、MicroBlaze 自动化失败、hwh 无 REGISTERS/无 MEMRANGES） |

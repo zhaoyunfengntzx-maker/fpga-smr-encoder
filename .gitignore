@@ -271,3 +271,8 @@ deliverables/video_shooting_plan.md
 tools/_*.py
 !tools/_smoke_net_mode.py
 !tools/_smoke_raw_wave.py
+
+# PYNQ 夹具里的 .bit 是 4 KB 占位文件（不是可用位流），必须进仓库：
+# 少了它，pynq_selftest 的 bundle 用例在全新克隆上会直接失败。
+!skill/pynq/examples/bundle/design_1.bit
+!skill/pynq/examples/bundle_nohwh/app.bit

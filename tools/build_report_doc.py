@@ -652,6 +652,7 @@ make_table(
 )
 body("陌生队伍的三步用法：只抄经验读 §3/§4；搬脚本改顶部路径常量；复现本工程按根 README 的快速开始执行。评价标准按指南原文执行——“拿到该目录能否直接用在自主题目上”。")
 body("可执行资产的可信度不靠自述：5 个脚本仅依赖 Python 标准库，夹具全部取自本工程真实数值（v74 报告 +0.409 ns / LUT 52.53%，另有 −0.123 ns / 7 个失败端点的失败回放），python skill/scripts/skill_selftest.py 在陌生机器上一条命令即可复验 14/14，其中 4 条是“必须失败”的负对照——只验证“该过的过”正是本工程踩过的坑。")
+body("通用 PYNQ 技能包（skill/pynq/，按指南 3.3.2 申报）：本项目本体是纯 RTL、没有 PS，但该加分项要求 Skill 不与本队题目绑定，因此另做了一套只读 .hwh 与文件时间戳的工具——pynq_hwh.py 解析 handoff（IP 清单 / 从口地址表 / 时钟域，判据 ADDR-000…010、CLK-001/002、REG-001，支持 --diff/--json/--md）、pynq_bundle.py 体检交付目录（位流与地址表配对、时间戳、两版 IP 清单对比）、pynq_overlay.py 给出上板 5 条判据与 --mock 离线版，pynq_selftest.py 13 用例（含 5 条负对照）全部通过。夹具是 Vivado 2026.1 在 XC7A35T 上真实导出的 handoff（57,252 B）：补入地址后 PASS、地址重叠 FAIL、缺 .hwh FAIL。必须说明的边界：本队没有 PYNQ 板卡、本机 Vivado 未装 Zynq 器件族，上板路径未实测，.hwh 解析与文件级判据是真、真机部分只是检查单；该边界写在 skill/pynq/README.md 第 4 节，pitfalls_pynq.md 逐条标 [实测]/[文档]/[待验]。")
 
 part_heading("附录 C  复现说明")
 body("以下命令均以仓库根目录为工作目录；环境为 Vivado 2026.1、Python 3.13、ModelSim（本机 xsim 启动即崩，回归改用 vsim）、正点原子达芬奇-lite XC7A35TFGG484-2 + HSEDA AD9238。")

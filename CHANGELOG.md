@@ -32,6 +32,17 @@
   修法 / 回归验证 / 失效 / 来源记录号）。
 - `skill/examples/`：与脚本配套的夹具（v74 真实数值的通过/失败报告回放、
   16 点角度向量、SHA-256 样例、好/坏测试台）。
+- `skill/pynq/`：**通用 PYNQ 技能包**（按指南 §3.3.2 申报加分，不与本题绑定）。
+  - `pynq_hwh.py`：解析 Vivado handoff `.hwh`（IP 清单 / 从口地址表 / 时钟域），判据
+    `ADDR-000/001/002/003/004/005/010`、`CLK-001/002`、`REG-001`，支持 `--diff/--json/--md`；
+  - `pynq_bundle.py`：交付目录体检（`.bit`↔`.hwh` 配对、时间戳、sha256、两版 IP 清单对比）；
+  - `pynq_overlay.py`：上板 5 条判据 + `--mock` 离线版 + `--selftest` 4 项（3 条负对照）；
+  - `pynq_selftest.py`：上述三个工具的 13 项自检（含 5 条负对照）；
+  - `pitfalls_pynq.md`：14 条 PYNQ 专有坑，逐条标 `[实测]` / `[文档]` / `[待验]`；
+  - `prompts/P6_hwh_to_register_map.md`、`prompts/P7_bringup_falsification.md`；
+  - `examples/`：Vivado 2026.1 在 Artix-7 上真实导出的 `.hwh`（3 份变体）+ 位流配对样例。
+  - **诚实边界**：本队硬件无 PS、本机 Vivado 无 Zynq 器件族，上板路径未实测；
+    边界写在 `skill/pynq/README.md` §4，`pitfalls_pynq.md` 逐条标证据等级。
 
 ### Changed
 

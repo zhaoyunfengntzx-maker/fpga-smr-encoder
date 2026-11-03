@@ -45,7 +45,8 @@ deliverables/
 │                                 `poster_A4_EN.pptx/.pdf/.png`（A4 竖版 210×297 mm，提交用）
 │                                 `poster_amd_A4.pptx/.pdf/.png`（A4 横版 297×210 mm，备选）
 ├── video_script.md/.pdf         演示视频脚本（3:00 / 29 镜 / 旁白 + 分镜 + 特效 + 拍摄表），待实拍
-├── submission/                  ★ 提交系统用成品包（清单 / 简介与关键词 / 技术文档 / 海报 / 源码 zip）
+├── submission/                  ★ 提交系统用成品包（清单 / 简介与关键词 / 技术文档 / 海报 / 源码 zip / 实物照片）
+│   └── photos/                   ★ 2026-11-03 实拍：全貌图 1 张 + 开发板角度 3 张（均 ≤10 MB，含屏上读数说明）
 └── video/                       视频工作区：`assets/` 3 段 CG（41.5 拍 / 系统框图 / 片尾）+ `subs/` 22 条 SRT
 ```
 
@@ -55,13 +56,13 @@ deliverables/
 |---|---|---|---|
 | 1 | 作品名称 | 基于FPGA的细分编码器 | 🟢 全文统一，无别名 |
 | 2 | 演示视频（MP4/AVC/≤3 min/≤300 MB） | `video_script.md/.pdf` + `video/assets/` 3 段 CG；成片在 `video/` | 🔴 **未成片**：本机无采集设备，需真实转台 + 触摸屏 + 上位机同框实拍 |
-| 3 | 技术文档（PDF/≤50 MB/按模板） | `design_report.pdf`（21 页 / 1.18 MB）+ `technical_doc.pdf`（15 页 / 0.91 MB），二选一提交，建议用 `design_report.pdf` | 🟢 完成（零身份信息，见 §5） |
+| 3 | 技术文档（PDF/≤50 MB/按模板） | `design_report.pdf`（21 页 / 1.19 MB）+ `technical_doc.pdf`（15 页 / 0.91 MB），二选一提交，建议用 `design_report.pdf` | 🟢 完成（零身份信息，见 §5） |
 | 4 | 全部代码（RAR/≤200 MB） | `submission/source_code.zip`（ZIP 等价物）+ `make_rar.bat` | 🟡 **本机无 WinRAR/Rar.exe**，只能产出 ZIP；须在装有 WinRAR 的机器上执行 `make_rar.bat` 转 RAR |
 | 5 | 参赛作品承诺及使用授权书（PDF） | — | 🔴 **待签署**：从大赛系统下载模板，签字/盖章后扫描为 PDF |
 | 6 | 作品海报（选填，PDF/PPT/≤50 MB） | `poster/poster_A4_EN.pdf`（A4 竖版）、`poster/poster_amd_A4.pdf`（A4 横版）、`poster/poster_amd_official.pdf`（官方模板 16:9） | 🟢 三版均已重建为 v74 口径、零身份信息 |
 | 7 | GitHub 链接 | [https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)（`main` @ `12c59ab`，tag `v1.0.0`） | 🟢 **已推送开源**（MIT，工作树干净） |
-| 8 | 作品全貌图（JPG/PNG ≤10 MB ×1） | — | 🔴 **待拍摄**（转台 + 板卡 + 屏 + 传感器全景） |
-| 9 | 开发板重要角度高清照片（≤4 张） | `photo_shot_list.md` 的取证清单 | 🔴 **待拍摄**（正面 / ADC 模拟前端 / 屏与触摸 / 磁环气隙） |
+| 8 | 作品全貌图（JPG/PNG ≤10 MB ×1） | `submission/photos/01_overview_full.jpg`（8064×6048 / 6.89 MB） | 🟢 **已拍摄（2026-11-03 20:02）**：转台夹具 + 传感头 + 模拟板 + AD9238/FPGA + 7 寸屏 + 示波器 + 上位机同框 |
+| 9 | 开发板重要角度高清照片（≤4 张） | `submission/photos/`：`02_board_adc_frontend.jpg`（ADC 模拟前端）、`03_board_front.jpg`（FPGA 板正面）、`04_board_screen.jpg`（屏与触摸，P1 实时读数） | 🟡 **已拍 3/4 类**；磁环气隙特写仍缺（四张名额已用满，补拍需替换，见 `submission/photos/README.md`） |
 | 10 | 作品简介 | `submission/intro_and_keywords.md`（v74 口径，可直接粘贴） | 🟢 完成 |
 | 11 | 是否参加其他赛事/往届获奖 | 建议口径见 submission/form_answers.md §4 | 🔴 **待你按实勾选** |
 | 12 | 是否为老师科研项目/实验室作品 | 建议口径见 submission/form_answers.md §5 | 🔴 **待你按实勾选**（本项目为自主选题） |
@@ -114,5 +115,5 @@ cscript //nologo tools\pptx2pdf.vbs "C:\Users\zhaoy\Desktop\FPGA\deliverables\po
 & E:\Anaconda\python.exe tools\md2pdf.py deliverables\design_report.md
 ```
 
-当前页数与体积：`design_report.pdf` **21 页 / 1,241,508 B**；`technical_doc.pdf` **15 页 / 952,521 B**；`design_report_full.pdf` **59 页 / 4,935,590 B**。
-（2026-11-03 重建：报告新增技能包可执行资产段落并修正正文里残留的 Markdown 反引号，故页数由 23 → 21。）
+当前页数与体积：`design_report.pdf` **21 页 / 1,251,133 B**；`technical_doc.pdf` **15 页 / 952,521 B**；`design_report_full.pdf` **59 页 / 4,935,590 B**。
+（2026-11-03 重建：报告新增技能包可执行资产段落与通用 PYNQ 子包段落，并修正正文里残留的 Markdown 反引号，故页数由 23 → 21。）
