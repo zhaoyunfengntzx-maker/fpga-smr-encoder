@@ -62,7 +62,7 @@ module stat_chip (
     input  wire        rst_n,          // 异步复位、低有效
     input  wire        start,          // vf_start：帧起始单拍
     input  wire [7:0]  io_flags,       // telemetry {amp_bad,cor_sat,uwven,abzen,uvw_warn,z_win,lag_fat,lag_warn}
-    input  wire [7:0]  stat,           // TW28 兼容状态字 {res,adapt,scamp,lagfatl,inclim,laglim,falarm,oflow}
+    input  wire [7:0]  stat,           // 状态字 {res,adapt,scamp,lagfatl,inclim,laglim,falarm,oflow}
     input  wire [5:0]  bad_mask,       // v60/R1：每卡一位"本卡数据不可信"（拆开故障源）
     input  wire        hold,           // 写口被占用（面板标签正在写）→ 本拍不写、不推进
 

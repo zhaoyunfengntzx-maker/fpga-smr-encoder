@@ -21,7 +21,7 @@
 //       scope_idle=0（帧内 sending=1；末字节 sending=0 但 tx_busy=1）。
 //    2) 写命令**只发一帧**：0x0502 CALIB_CTRL 的 start 位写两次会触发两次
 //       标定。本台用 calib_wr_cnt 直接数"对 0x0502 的 we 次数"，==1 才算过。
-//    3) 读命令**连发两帧**：spi_slave 是 TW28 重叠式（命令 N 的响应在命令
+//    3) 读命令**连发两帧**：spi_slave 是 应答滞后一帧的重叠式（命令 N 的响应在命令
 //       N+1 帧才移出）。用例 [D]/[G] 的期望就是"第二帧的 MISO"，只发一帧会
 //       得到上一次读的旧值，必然失败 —— 这是两帧逻辑的唯一证据。
 //    4) scope_hold（别再起新帧）与 tx_drive（线上归我）必须分开：
@@ -133,7 +133,7 @@ module tb_uart_spi_bridge;
     spi_slave #(
         .AW              (16),
         .DW              (8),
-        .USE_TW28_PACKET (1)
+        .USE_PKT_MODE (1)
     ) u_spi (
         .clk   (clk),
         .rst_n (rst_n),

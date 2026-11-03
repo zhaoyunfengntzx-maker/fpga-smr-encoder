@@ -106,17 +106,15 @@ C_SEC = UIG.colour("C_SEC")
 C_TEXT = UIG.colour("C_TEXT")
 C_CARD_W = C_CARD
 C_PLOT = UIG.colour("C_PLOT")
-C_EPRE = UIG.colour("C_EPRE")
-C_EPOST = UIG.colour("C_EPOST")
 
-# P7 的两块面板不像其它页是卡片墙，几何在 disp/disp_engine.v 的 P7_* 常量里
+# ★ v88：P7 标定页整页删除（用户：「标定页直接去掉吧」）。这里原本读
+#   disp/disp_engine.v 的 P7_* 常量与 C_EPRE/C_EPOST 两个曲线色来画两块面板，
+#   现在那些常量已随页删除（色板里的 C_EPRE/C_EPOST 也一起去掉了），预览
+#   也不再出 page_p7.png；标定改成 P1 标题带一键触发（状态文字在
+#   disp/p1_cal_lab.v 里，静态文字层看不到）。
+#   ★ v89：那颗按钮也删了（用户：「把标定按钮删去」）⇒ 预览里 P1 标题带本就
+#     没有按钮框（TBTN_PAGES 只剩 p6），p1_cal_lab.v 也已删除。
 _P = UIG.PARAMS
-P7_BX0, P7_BX1 = _P["P7_BX0"], _P["P7_BX1"]
-P7_BY0, P7_BY1 = _P["P7_BY0"], _P["P7_BY1"]
-P7_CVX0, P7_CVX1 = _P["P7_CVX0"], _P["P7_CVX1"]
-P7_CVY0, P7_CVY1 = _P["P7_CVY0"], _P["P7_CVY1"]
-P7_RX0, P7_RX1 = _P["P7_RX0"], _P["P7_RX1"]
-P7_SW0, P7_SW1 = _P["P7_SW0"], _P["P7_SW1"]
 
 # ---- v24：P1 的模态编辑面板（几何全部来自 disp/disp_engine.v 的 PNL_* 等常量）----
 #   为什么要画它：`undo_lab` 每帧往"格行 34 的 46..52 列"写「↩ 回到 ×N」，
@@ -174,11 +172,13 @@ P1_CHIP_DEMO = (0, 0, 0, 0, 1, 2)
 TBTN_X0, TBTN_X1 = _GEOM["TBTN_X0"], _GEOM["TBTN_X1"]
 TBTN_Y0, TBTN_Y1 = _GEOM["TBTN_Y0"], _GEOM["TBTN_Y1"]
 CHK_X0, CHK_Y0, CHK_PX = _P["CHK_X0"], _P["CHK_Y0"], 16
-#   哪几页有这颗按钮：P1「标定」→ P7、P6「闪烁」开关。
+#   哪几页有这颗按钮：P6「闪烁」开关（P6 复选框表示开/关）。
 #   ★ v58：「展开」→ P5 那颗按钮随 P5 一起删了，`tap_title_btn` 只剩 P1 与 P6
 #     两路，所以预览也不该再画 p4 的按钮。
-#   ★ 存活两页共用同一个矩形、同一个命中编号（HIT_TITLE_BTN = 15），按页号分派。
-TBTN_PAGES = ("p1", "p6")
+#   ★ v88：P7 标定页删了，P1 那颗按钮改成"一键标定 ARM"。
+#   ★ v89：用户「把标定按钮删去」⇒ P1 那颗按钮整个删掉（文字 + 白底描边都没了，
+#     RTL 的 tb_page 不再含 page 0），所以 TBTN_PAGES 只剩 p6。
+TBTN_PAGES = ("p6",)
 # ★ v60（T8）：P6 的演示开关（与 disp/disp_engine.v 的 DEMO_BTN_* / DCHK_* 同值）
 DEMO_BTN_X0, DEMO_BTN_X1 = 840, 1000
 DEMO_BTN_Y0, DEMO_BTN_Y1 = 28, 60
@@ -894,25 +894,7 @@ def render(page, lab_items, val_items, panel=False, press=None, prog=None,
     px = img.load()
 
     # 卡片底 / 面板底（与 disp/disp_engine.v 的常量逐条对应）
-    if page == "p7":
-        # P7 不是卡片墙：左框＝误差曲线（底色 C_PLOT），右框＝六参数（C_CARD）
-        for x0, x1, fill in ((P7_BX0, P7_BX1, C_PLOT), (P7_RX0, P7_RX1, C_CARD)):
-            for y in range(P7_BY0, min(P7_BY1, H)):
-                for x in range(x0, min(x1, W)):
-                    px[x, y] = fill
-        # 描边：两框的边 + 曲线区的上下沿 + 曲线区左右沿（disp_engine.v:1066-1070）
-        for x in (P7_BX0, P7_BX1 - 1, P7_RX0, P7_RX1 - 1, P7_CVX0, P7_CVX1 - 1):
-            for y in range(P7_BY0, P7_BY1):
-                px[x, y] = C_GRID
-        for y in (P7_BY0, P7_BY1 - 1, P7_CVY0, P7_CVY1 - 1):
-            for x in range(P7_BX0, P7_RX1):
-                px[x, y] = C_GRID
-        # 图例色块 16x16：紧挨 lab(8,30)"前" 与 lab(8,34)"后" 的左边
-        for x0, col in ((P7_SW0, C_EPRE), (P7_SW1, C_EPOST)):
-            for y in range(128, 144):
-                for x in range(x0, x0 + 16):
-                    px[x, y] = col
-    elif page == "p1":
+    if page == "p1":
         # 卡片墙**只在 P1** —— 与 disp/disp_engine.v:802
         # `in_card = (page == 3'd0) & ((col0|col1|col2) & (row0|row1));` 一致。
         # 几何照 RTL 抄（同文件 :143-148）：列 96/416/736、宽 288、行 64/336、高 256。
@@ -1159,6 +1141,15 @@ def render(page, lab_items, val_items, panel=False, press=None, prog=None,
                    lab_rows, C_TEXT, c0=TBTN_X0 // LAB_PX, r0=2, r1=3)
         draw_p6_planes(px, lab_mem, val_mem, bad_cells=bad_cells)
     else:
+        # ★ v87（上板复查，m00436）：P2 底栏「AUTO/固定 + 窗宽」是 C_ACC 反白块
+        #   （disp_engine.v 的 p2w_chip：格行 36、格列 6..15）。出图管线原本**不画**
+        #   这块底色，于是预览图上这排字直接压在坐标网格上、还贴着屏幕右沿 —— 正是
+        #   用户看到的样子。这里先铺底色，再让 draw_plane 把 C_TEXT 字形叠上去
+        #   （与 RTL 的 with_txt 优先级一致：p2w_chip 走深色字）。
+        if page == "p2":
+            for yy in range(36 * LAB_PX, 37 * LAB_PX):
+                for xx in range(6 * LAB_PX, 16 * LAB_PX):
+                    px[xx, yy] = C_ACC
         draw_plane(img, px, lab_mem, G.LAB_COLS, G.LAB_ROWS, LAB_PX, LAB_PX, lab_rows, C_TEXT)
     if page != "p6":
         if page == "p1":

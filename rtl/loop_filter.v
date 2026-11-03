@@ -4,7 +4,7 @@
 // 功能
 //   对 CORDIC 输出的周期内角度做 PI 环路滤波，输出扩展位置 pos_out（每圈
 //   = REV = 2^(AW+FRAC)），并给出"超前/滞后 > 45°"的 lag_limit 标志
-//   （对应 TW28 STAT_VAL.laglim）。
+//   （对应 状态字 laglim）。
 //
 // Latency（in_valid -> out_valid）= 3 clk （内部环路状态 1 拍 + 输出流水 2 拍）
 //   系统时钟 50 MHz（单时钟域，无 MMCM）-> 60 ns。
@@ -17,7 +17,7 @@
 //   err    = wrap_signed(ang_ext - pos)   // 模 REV 的有符号差，自动折到 ±REV/2
 //   I[n+1] = clamp(I[n] + (err >>> KI_SHIFT[ki]), ±REV/4)      // 积分（抗饱和限幅）
 //   pos[n+1] = pos[n] + (err >>> KP_SHIFT[kp]) + I[n+1]        // P + I
-//   lag_limit = (|err| > REV/8)      // 45°，与 TW28 STAT_VAL.laglim 同义
+//   lag_limit = (|err| > REV/8)      // 45°，与 状态字 laglim 同义
 //
 //   KP_SHIFT = {2,3,4,5,6,7,8,9}（kp=0..7，kp 越大 P 增益越小、滤波越重）
 //   KI_SHIFT = {7,6,5,4}        （ki=0..3，与 SPEC §1.6 一致）
@@ -36,7 +36,7 @@
 //
 //   DC 增益 P/A(1) = 1  => 阶跃输入稳态误差 0
 //   E/A 在 z=1 处是**二阶零点** => 恒速输入的稳态滞后为 0（I 项的意义，
-//     与 TW28 数据手册 "non-zero ki gives zero lag at constant velocity" 一致）
+//     与 公开数据手册 "non-zero ki gives zero lag at constant velocity" 一致）
 //
 //   闭环带宽（把 z-1 近似成 sT，T = 1/fs）：
 //       特征方程 -> s^2 + ((Kp+Ki)/T) s + Ki/T^2 = 0
@@ -51,11 +51,11 @@
 //       kp=0 ki=1 : Kp=1/4,   Ki=1/128, ζ=3.5 , ωn= 4.4 Mrad/s, f_3dB≈0.68 MHz
 //     ★ ωn 只由 ki 决定、kp 只改阻尼：kp 越大阻尼越小（SPEC 也把 kp 描述成
 //       "越大滤波越强"——它抑制的是单拍抖动，即高频噪声，代价是相位滞后）。
-//       输入信号带宽（TW28 规格 ≤700 kHz 的 sin/cos 输入，50 MHz 采样下
+//       输入信号带宽（同类专用方案规格 ≤700 kHz 的 sin/cos 输入，50 MHz 采样下
 //       一个输入周期至少 71 个采样点，即 ≤0.088 rad/sample）远低于上述 ωn，
 //       环路对信号本身几乎不衰减，只对抖动起作用。
 //
-//   ki=0：关掉 I 通路（I 恒为 0），退化成纯 P 环路（与 TW28 "ki=0 时 kp 必须
+//   ki=0：关掉 I 通路（I 恒为 0），退化成纯 P 环路（与 专用细分 ASIC "ki=0 时 kp 必须
 //         也为 0" 的约束一致）；kp=0 且 ki=0：整个滤波器直通（pos = ang_ext），
 //         用于标定/旁路。
 //
@@ -84,11 +84,11 @@ module loop_filter #(
     input  wire                rst_n,
     input  wire        [AW-1:0] ang_in,     // 输入角度（每周期 2^AW）
     input  wire                in_valid,
-    input  wire        [3:0]    kp,         // 0…7（越大滤波越强，与 TW28 FILT_K.kp 同义）
+    input  wire        [3:0]    kp,         // 0…7（越大滤波越强，与 kp 同义）
     input  wire        [1:0]    ki,         // 0…3
     input  wire                freeze,      // 1=保持当前输出（用于标定/停机抱死）
     output reg  signed [AW+FRAC-1:0] pos_out, // 扩展位置，每周期 = 2^(AW+FRAC)
-    output reg                  lag_limit,  // 超前/滞后超过 45°（对应 TW28 STAT_VAL.laglim）
+    output reg                  lag_limit,  // 超前/滞后超过 45°（对应 状态字 laglim）
     output reg                  out_valid,
     // ★ v9（S2）：速度观测输出 = 积分器状态（每抽样点的位置增量，单位 2^(AW+FRAC)/圈），
     //   与 pos_out 同拍对齐（同样延迟 3 拍）。锁定后它收敛到 ω·T_sample，是延迟前馈

@@ -179,7 +179,7 @@ module tb_enc_top;
 
     // ========================================================================
     //  SPI 主机（模式 0：CPOL=0 / CPHA=0 / MSB 先），与 tb_spi_slave.v 的
-    //  pkt_b/spi_bit_b 同一手法。enc_top 的 spi_slave 用默认 USE_TW28_PACKET=1
+    //  pkt_b/spi_bit_b 同一手法。enc_top 的 spi_slave 用默认 USE_PKT_MODE=1
     //  包模式，包格式见 rtl/spi_slave.v:25-32：
     //      bit31     st = 1（必须为 1，否则整个包被忽略）
     //      bit30:29  rm（读模式；写时置 2'b00）
@@ -220,7 +220,7 @@ module tb_enc_top;
     endtask
 
     // ========================================================================
-    //  寄存器读（TW28 重叠式响应：命令帧 N 组包，响应在帧 N+1 期间移出）
+    //  寄存器读（应答滞后一帧的重叠式响应：命令帧 N 组包，响应在帧 N+1 期间移出）
     //    rtl/spi_slave.v:224 的读判据是 wm==2'b00（或 2'b11）⇒ 读命令帧的
     //    {rm,wm} 取 {2'b00,2'b00}；slave 在 ss_rise 后 4 拍组包，spi_slave.v:242
     //      resp <= {rdata[0x03A], cmd_addr[7:0], rdata[addr+1], rdata[addr]}

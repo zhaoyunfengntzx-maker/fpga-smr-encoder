@@ -1,4 +1,4 @@
-# 报名系统逐项填写文本（可直接复制）
+﻿# 报名系统逐项填写文本（可直接复制）
 
 > 作品名称统一为 **基于FPGA的细分编码器**。本文不含学校、学院、指导教师、团队、学号、邮箱等身份信息。
 
@@ -10,15 +10,15 @@
 
 ## 2. 作品简介
 
-（同 `intro_and_keywords.md` 第 1 节正文，直接整段粘贴）
+（同 `intro_and_keywords.md` 的正文段落，按字段字数限制整段粘贴；关键词取该文“关键词”一节）
 
 ## 3. 三个创新关键词
 
 | # | 关键词 | 一句话解释 |
 |---|---|---|
 | 1 | 闭式自校准 | 六参数一阶/二阶矩一次解算（1 个窗口 ≈64 个电周期、约 1 µs），椭圆→单位圆，免迭代、免查找表、免上位机试凑；20 轮一键标定 20/20 一致、参数幂等 |
-| 2 | 多协议高速输出适配 | ABZ+Z（边沿率 ≤12.5 MHz、f_AB ≤3.125 MHz、最小边沿 80 ns）、UVW（1…32 极对，293 换相/s）、SPI 从站（≤12.5 MHz，TW28 32 位包）、UART 2 Mbaud、1 GbE UDP（10 min 连续流 3,750 万包、99.89% 不丢）并行输出；细分比 2…256、分频 1…8、迟滞、限频、极对数、相序、极性、使能全部运行期可配 |
-| 3 | FPGA 正余弦高精度细分 | 面向 SMR/TMR/AMR/光电/旋变等正交信号源的通用细分引擎；17 级全流水 CORDIC（max 0.9375 LSB / RMS 0.3229 LSB，[仿真]）＋六参数闭式校正（复合畸变 20.9839°→0.0165°，[仿真]）；16 bit/电周期（2048 周期/转下机械 LSB 0.0097″），真机 2048 电周期无丢拍、分箱残差 ±0.13°（[实测]） |
+| 2 | 多协议高速输出适配 | ABZ+Z（边沿率 ≤12.5 MHz、f_AB ≤3.125 MHz、最小边沿 80 ns）、UVW（1…32 极对）、SPI 从站（≤12.5 MHz，32 位数据包）、UART 2 Mbaud（60 s 长跑 597,886 帧 / 9,964.8 fps 不丢帧）、1 GbE UDP（28,672 点抓窗）并行输出；细分比 2…256、分频 1…8、迟滞、限频、极对数、相序、极性、使能全部运行期可配 |
+| 3 | FPGA 正余弦高精度细分 | 面向 SMR/TMR/AMR/光电/旋变等正交信号源的通用细分引擎；17 级全流水 CORDIC（max 0.9375 LSB / RMS 0.3229 LSB，[仿真]）＋六参数闭式校正（复合畸变 20.9839°→0.0165°，[仿真]）；16 bit/电周期（2048 周期/转下机械 LSB 0.0097″）；真机 2048 电周期无丢拍、每转严格 1 个 Z（457–459 rpm），板级 `angle_vs_sc` 内部一致性 RMS 0.71° / max 2.88°（[实测]，无外部角度基准） |
 
 ## 4. 是否参加其他赛事或往届赛事并获奖
 
@@ -40,25 +40,23 @@
 
 ## 6. GitHub 链接
 
-当前本地仓库无 remote，需先创建公开仓库再推送（命令见 `submission_checklist.md` 第四节）：
+已按 `submission_checklist.md` §4 发布（MIT，`main` 默认分支，tag `v1.0.0`）：
 
-```bat
-git remote add origin https://github.com/<账号>/<仓库名>.git
-git branch -M main
-git push -u origin main
+```text
+https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder
 ```
 
-推送后在此填写 `https://github.com/<账号>/<仓库名>`。
+若报名系统要求直链，粘贴上面这一行即可；本地 remote 的配置命令见 `submission_checklist.md` 第四节。
 
 ## 7. 附件对照
 
 | 表单项 | 上传文件 | 大小 |
 |---|---|---|
-| 演示视频 | 待录制（脚本 `../video_script.md`，MP4/AVC/≤3 min/≤300 MB） | — |
-| 技术文档 | `design_report.pdf`（20 页，按《报告模版》） | 1,055,017 B |
-| 技术文档（备选） | `technical_doc.pdf`（16 页，同骨架精简版） | 967,555 B |
-| 全部代码 | `source_code.zip` → 在装有 WinRAR 的机器上执行 `make_rar.bat` 转 `source_FPGA_encoder.rar`（574 文件、解压 33.34 MB、zip 26.73 MB，远低于 200 MB） | 26.73 MB |
+| 演示视频 | 待录制（现行脚本 `../video_script_v3.md`，MP4/AVC/≤3 min/≤300 MB） | — |
+| 技术文档 | `design_report.pdf`（24 页，按《报告模版》） | 1,677,773 B |
+| 技术文档（备选） | `technical_doc.pdf`（15 页，同骨架精简版） | 952,521 B |
+| 全部代码 | `source_code.zip` → 在装有 WinRAR 的机器上执行 `make_rar.bat` 转 `source_FPGA_encoder.rar`（701 文件条目 = 700 个内容文件 + `MANIFEST.sha256`，zip 55.70 MB = 55,699,991 B，远低于 200 MB） | 55.70 MB |
 | 承诺及使用授权书 | `authorization_letter.pdf`（1 页，2026-11-03 全体队员签名扫描） | 662,110 B |
 | 作品海报（选填） | `poster_a4.pdf`（A4 竖版）/ `poster_amd_a4.pdf`（A4 横版）/ `poster_amd_official.pdf`（AMD 官方模板） | 0.10 / 0.34 / 0.31 MB |
-| 作品全貌图 | 待拍摄（JPG/PNG ≤10 MB ×1） | — |
-| 开发板照片 | 待拍摄（≤4 张） | — |
+| 作品全貌图 | `photos/01_overview_full.jpg`（8064×6048，2026-11-03 实拍） | 6.89 MB |
+| 开发板照片 | `photos/02_board_adc_frontend.jpg` / `03_board_front.jpg` / `04_board_screen.jpg`（3 张，2026-11-03 实拍） | 均 ≤10 MB |

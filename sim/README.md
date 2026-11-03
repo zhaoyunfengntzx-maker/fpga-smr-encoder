@@ -109,7 +109,7 @@ foreach ($p in $pairs) {
 | `tb_abz_gen.v` | 边沿数 = 4×inter、A/B 正交与 50% 占空、每周期恰好 1 个 Z、Z 宽度、后分频、限频、迟滞抗抖动 |
 | `tb_uvw_gen.v` | 6 状态序列、等宽驻留、方向反转、相位偏移 |
 | `tb_biss_c_slave.v` | **行为级 BiSS 主机模型**：产生 MA、按位采样 SLO、独立计算 CRC6，200+ 帧全通过 |
-| `tb_spi_slave.v` | SPI 模式 0、地址+数据读写、TW28 风格 32bit 包 |
+| `tb_spi_slave.v` | SPI 模式 0、地址+数据读写、32 位包 32bit 包 |
 | `tb_reg_file.v` | 寄存器读写、`DEVICE_ID`=0x0C、配置位正确映射到扁平输出、`0x0405[0]` (W1C) OTR 软清位（TEST D2） |
 | `tb_calib_min.v` | `rtl/calib_ctrl.v` **自包含最小自检**（激励全部内部算出，不依赖向量文件）：理想正交输入下 `ofs_s/ofs_c/phase_k` 应为 0、`gain_s == gain_c`；用来把"测试台有问题"与"RTL 有问题"分开（起因见 `tb_calib_ctrl.v` 的二维数组三维索引静默返回 0） |
 | `tb_enc_top.v` | **顶层端到端**（编译全部 `rtl/*.v` + `sim/xilinx_prims_stub.v`）：262140 点扫一圈、角度线性残差、`pos_full` 阶梯、ABZ/Z/UVW 时序、SPI 读写、UART 帧、`0x0405` OTR 软清；**81 checks** |

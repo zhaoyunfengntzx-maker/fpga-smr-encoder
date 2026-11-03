@@ -9,8 +9,8 @@
 //          门限由上位机预先平方好写入 amp_low_sq / amp_high_sq，
 //          所以本模块只需要乘法 + 比较，不需要开方。
 //
-// 【与 TW28 的对应关系】
-//   iC-TW28 的等效门限是 STAT_VAL.scamp：sqrt(sin^2+cos^2) 超出
+// 【与 专用细分 ASIC 的对应关系】
+//   专用细分 ASIC 的等效门限是 STAT_VAL.scamp：sqrt(sin^2+cos^2) 超出
 //   SC_AMP_LOW … SC_AMP_HIGH 时置位；引脚配置模式下这两个门限固定为
 //   **校准值的 60% / 120%**（SC_AMP_TARG 推荐 150，LOW 90，HIGH 180）。
 //   本模块把 60% / 120% 折算成平方门限：

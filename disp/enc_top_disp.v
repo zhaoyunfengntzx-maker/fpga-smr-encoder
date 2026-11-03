@@ -140,6 +140,10 @@ module enc_top_disp (
     //   把它排在最前，代价是"用户按下恢复默认的那 8.8 ms 里上位机发不了命令"，
     //   与 docs/15 已有的说明同一类。
     wire rst_tx_line, rst_busy;
+    // ---- ★ v89：第四条写通道（P1「标定」按钮发的 0x0502 = 0x0001）已删 ----
+    //   用户：「把标定按钮删去」。标定功能本身仍有三条路，全在 rtl/enc_top 里，
+    //   与显示层无关：KEY0 长按（key_n）、串口写 0x0502 = 0x0001、上位机 host/calib。
+    //   于是 UART 所有权回到 v88 之前的三方仲裁：rst > w1c > ui。
     wire enc_uart_rx = (rst_busy | ui_busy | w1c_busy)
                        ? (rst_busy ? rst_tx_line
                                    : (w1c_busy ? w1c_tx_line : ui_tx_line)) : uart_rx;
@@ -648,15 +652,16 @@ module enc_top_disp (
                    (hit_x >= P2W_HIT_X0) && (hit_x < P2W_HIT_X1) &&
                    (hit_y >= P2W_HIT_Y0) && (hit_y < P2W_HIT_Y1);
 
-    reg [1:0] p2_gear = 2'd1;          // 0 = 2.4 ms / 1 = 300 µs / 2 = 38 µs
+    //   ★ v87（任务 A2）：默认改成 **AUTO**，点击按 AUTO -> 2.4ms -> 300us -> 38us
+    //     循环。AUTO 的选档在 disp/disp_engine.v 的 u_p2_auto 里做（那里有频率计），
+    //     本层只记"用户选了哪个模式"，不参与选档。
+    reg [1:0] p2_mode = 2'd0;          // 0 = AUTO / 1 = 2.4 ms / 2 = 300 µs / 3 = 38 µs
 
     always @(posedge sys_clk or negedge key_n) begin
         if (!key_n)
-            p2_gear <= 2'd1;
+            p2_mode <= 2'd0;
         else if (p2w_hit)
-            // 循环 1 -> 2 -> 0 -> 1：把默认档排在中间，点一下先换到更快的窗口，
-            // 再点一下到最慢，避免"第一下就跳到 2.4 ms 看不出变化"。
-            p2_gear <= (p2_gear == 2'd2) ? 2'd0 : (p2_gear + 2'd1);
+            p2_mode <= p2_mode + 2'd1;   // 0->1->2->3->0（2 bit 自然回绕）
     end
 
     //   ★ P6 危险区「清除锁存故障」**不看 hit_id，只看坐标 + 页号**：
@@ -754,14 +759,14 @@ module enc_top_disp (
             if (btn_lock != 20'd0)
                 btn_lock <= btn_lock - 20'd1;
             if (btn_d && !btn_sy[1] && (btn_lock == 20'd0)) begin
-                // 只循环**还存在的页**：P1(0) -> P2(1) -> P4(3) -> P6(5)
-                //   -> P7(6) -> P1。
+                // 只循环**还存在的页**：P1(0) -> P2(1) -> P4(3) -> P6(5) -> P1。
                 // ★ v58：P3(2)/P5(4)/P8(7) 已删，页号保留空洞（不重编号），
                 //   所以这条链要跳过 2/4/7 —— 以后再加页也同步这一行。
+                // ★ v88：P7(6) 标定页删掉（用户：「标定页直接去掉吧」），
+                //   标定功能改到 P1 标题带那颗按钮上一键触发。
                 page     <= (page == 3'd0) ? 3'd1 :
                             (page == 3'd1) ? 3'd3 :
-                            (page == 3'd3) ? 3'd5 :
-                            (page == 3'd5) ? 3'd6 : 3'd0;
+                            (page == 3'd3) ? 3'd5 : 3'd0;
                 btn_lock <= 20'd1_000_000;     // 20 ms @ 50 MHz
             end
 
@@ -797,27 +802,27 @@ module enc_top_disp (
                 //     矩形与页号守卫都在上面的 tap_tab_* 里（引用 page 才能定）。
                 //   ★ v58：P2/P3 的页内 Tab 两条入口随 P3 一起删除。
                 //   ★ v58：P4 的「展开」按钮删掉（它只通向已删的 P5）。
-                //     于是标题带按钮只剩两种作用：P1 -> P7 标定、P6 -> 切换闪烁。
+                //   ★ v89：P1 那颗「标定」按钮整个删掉（用户：「把标定按钮删去」）。
+                //     标定功能仍在三条路上：KEY0 长按、串口写 0x0502 = 0x0001、
+                //     上位机 host/calib —— 全在 rtl/enc_top 里，与显示层无关。
+                //     所以 tap_title_btn 现在只对 P6 有动作（切换 2 Hz 闪烁偏好）。
                 if (tap_title_btn) begin
-                    if (page == 3'd0)
-                        page <= 3'd6;
                     //   ★ v32（㉙）：P6 上这颗按钮不是"去某一页"，而是**切换一个显示偏好**
                     //     —— spec §5.2 第四重冗余「可关闭的 2 Hz 闪烁」。
                     //     不翻页、不写字节，所以它不需要 dlg/pnl 之外的任何握手。
-                    else if (page == 3'd5)
+                    if (page == 3'd5)
                         scr_blink <= ~scr_blink;
                 end
                 //   ★ v58：状态条 ⚙（→ P8 系统信息）随 P8 一起删除。
                 //   ★ v53（㊿）C1+C2：spec §4.6 的两条卡片下钻。
-                //     卡片 3（列2行0 = 「转速」）-> P7 标定；卡片 6（列2行1 =
-                //     「ABZ/UVW」）-> P4 逻辑时序。
+                //     卡片 6（列2行1 = 「ABZ/UVW」）-> P4 逻辑时序。
+                //     ★ v88：卡片 3（转速）-> P7 标定的下钻路径随 P7 一并删掉；
+                //       标定入口现在只剩标题带那颗按钮（见上面的 tap_title_btn）。
                 //     ★ 为什么不和 tap_card_md 写在同一个 always 块：那一个写的是
                 //       pnl_open_req（开面板），这里写的是 page；两块各管各的状态，
                 //       同一拍点中两张卡不可能（矩形互斥），拆开更好推理。
                 //     ★ 守卫 `page == 3'd0` 与 tap_card_md 相同：hit_id 8..13 只
                 //       描述 P1 的卡片网格，别的页上同一坐标是别的控件。
-                if (tap_card_cal && (page == 3'd0))
-                    page <= 3'd6;
                 if (tap_card_abz && (page == 3'd0))
                     page <= 3'd3;
                 //   ★ v60（T8）：演示开关。只在 P6 上生效（与弹出面板互斥），
@@ -1140,6 +1145,15 @@ module enc_top_disp (
     );
 
     //=========================================================================
+    // 4.11a2 ★ v89：一键标定通道已删
+    //   v88 把 P1 标题带那颗「标定」按钮从"进 P7"改成"写 0x0502 = 0x0001"，
+    //   当时开了第四个 ui_edit 实例 u_ui_cal。v89 用户要把按钮本身删掉，
+    //   于是这条写通道也跟着下台（没人发它了，留着只白占一个 UART
+    //   发送器和几百 LUT）。标定功能本身全在 rtl/enc_top 里，三条路都不受影响：
+    //     1) KEY0 长按（key_n）；2) 串口写 0x0502 = 0x0001；3) 上位机 host/calib。
+    //   显示层不再参与标定，屏上也不再回显。
+    //=========================================================================
+    //=========================================================================
     // 4.11b v42（㊴）：恢复默认的命令序列（disp/ui_restore.v）
     //   13 条 4 字节写命令 = 16 个寄存器 = P6 可见的 15 项 + 标定偏置 OFS_S/OFS_C。
     //   全部发完再等 2 ms、然后拿下面这 17 个抽头字段逐项比对复位默认值。
@@ -1184,7 +1198,7 @@ module enc_top_disp (
         .clk            (sys_clk),
         .rst_n          (rst_sync),
         .page           (page),
-        .p2_gear        (p2_gear),
+        .p2_mode        (p2_mode),
         .pix_x          (pix_x),
         .pix_y          (pix_y),
         .de             (de),
@@ -1215,7 +1229,6 @@ module enc_top_disp (
         .tap_amp_high_sq(tap_amp_high_sq),
         .tap_abzen      (tap_abzen),
         .tap_uwven      (tap_uwven),
-        .tap_calib_busy (tap_calib_busy),
         // v45（㊷）/v46（㊸）空态：两个原链路判据源在 v74 后恒 0，
         //   空态实际只剩"无载波"一个源（amp 抽头在 disp_engine 里比值比出来）
         .tap_link_crc_err (tap_link_crc_err),

@@ -149,7 +149,7 @@ module tb_disp_v58;
     reg  [2:0]  pnl_undo_div_tb   = 3'd0;     // v44（㊶）：「上一次值」的分频码（0 = ÷1）
     // v30：[11] 段驱动的遥测与使能（必须在例化前面声明，理由见 [11] 的注释）
     reg  [7:0]  t_io_flags = 8'h00;  // telemetry {amp_bad,cor_sat,uwven,abzen,uvw_warn,z_win,lag_fat,lag_warn}
-    reg  [7:0]  t_stat     = 8'h00;  // TW28 兼容状态字 {res,adapt,scamp,lagfatl,inclim,laglim,falarm,oflow}
+    reg  [7:0]  t_stat     = 8'h00;  // 状态字 {res,adapt,scamp,lagfatl,inclim,laglim,falarm,oflow}
     reg         t_abzen    = 1'b1;
     reg         t_uwven    = 1'b0;
     // v45（㊷）空态：抽头 [126]（原链路帧 CRC 错，sticky）。v74 起该源恒 0。
@@ -187,6 +187,10 @@ module tb_disp_v58;
         .clk            (clk),
         .rst_n          (rst_n),
         .page           (t_page),        // [6] 逐页推进，验导航高亮跟随页号
+        // ★ v89：这两个输入从来没接过（v60 的 demo_on、v87 的 p2_mode），
+        //   悬空 = 1'bz，X 会从 P2 档位/P6 演示通路渗进像素层。显式钉死。
+        .p2_mode        (2'd0),          // 0 = AUTO（P2 时基自动档）
+        .demo_on        (1'b0),          // P6 演示开关关
         .pix_x          (pix_x),
         .pix_y          (pix_y),
         .de             (de),
@@ -224,7 +228,8 @@ module tb_disp_v58;
         .tap_amp_high_sq(32'h5C28_F5C3),
         .tap_abzen      (t_abzen),
         .tap_uwven      (t_uwven),
-        .tap_calib_busy (1'b0),
+        // ★ v89：tap_calib_busy / tap_calib_done 两个输入随 P1「标定」按钮一起删了
+        //   （标定中 / 标定通过回显没了），这里不再需要钉 0。
         .tap_link_crc_err(t_crc),  // v45（㊷）：原链路 CRC 判据源（v74 起恒 0）
         .tap_link_lost(t_link_lost),  // v54（C3）：原链路静默判据源（v74 起恒 0）
         .tch_diag       (t_diag),  // 触摸诊断：P8 结论的 [14] 段要驱动它（其余段恒 0）
@@ -359,7 +364,11 @@ module tb_disp_v58;
                 errs = errs + 1;
             end
 
-            if ((pgx == 0 || pgx == 1 || pgx == 3 || pgx == 5 || pgx == 6) &&
+            //   ★ v89：P1「标定」按钮删掉后，P1 的标题带**不再有按钮文字**，
+            //     但状态栏左上角仍有「P1 总览」⇒ 墨迹照旧要求 >0。
+            //   ★ v88：P7(6) 标定页已删（txt_page 不再含 page 6），这一档再也
+            //     不是"活页"，所以不再要求它有墨迹（原来 v87 及以前有）。
+            if ((pgx == 0 || pgx == 1 || pgx == 3 || pgx == 5) &&
                 (tink <= 0)) begin
                 $display("[FAIL] P%0d title band has no ink", pgx);
                 errs = errs + 1;

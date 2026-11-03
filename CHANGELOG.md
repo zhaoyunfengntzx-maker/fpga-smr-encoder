@@ -9,11 +9,48 @@
 
 ## [Unreleased]
 
+### 交付基线升到 v90（2026-11-04）
+
+- **全部文档统一到 v90 位流口径**：生产 `enc_top_v90.bit` **1,504,220 B** /
+  SHA256 `A89512A5…F827125` / WNS **+0.199** / LUT **10,978（52.78%）** / BRAM 32-50；
+  显示 `enc_top_disp_v90.bit` **1,688,245 B** / `69FE313C…F81BAD4` / WNS **+0.221** /
+  LUT **17,090（82.16%）** / BRAM 45.5-50，已写 Flash 并通过冷启动。
+- **仿真回归扩到 57 台**：`sim/` **37/37 PASS**（2026-11-04 00:49:22）、
+  `disp/` **20/20 PASS**（00:03:16）；README / COMPLIANCE / REPRODUCE / BASELINES /
+  docs 索引 / 设计报告全部同步。
+- **构建链消除派生差异**：仓库 `rtl/` 直接就是 v90 源（`RTL_BUILD_ID = 16'h0019`），
+  `tools/make_v90_rtl.py` 只复制 + 校验、不再复制后改一行；新增
+  `tools/impl_check_v90.tcl` / `impl_check_disp_v90.tcl`，产出 `_synth_work_v90/`
+  下的两个位流与完整报告。
+- **验收判据单点化**：新增 [`docs/39_acceptance_criteria_v90.md`](docs/39_acceptance_criteria_v90.md)
+  （A 复用 / B 静态 / C 关键 / D 动态 / E 交互五类，逐条带命令与证据）；转速权威判据改为
+  `z_rate.py` 的 Z 频率（**7.62–7.65 Hz ⇒ 457–459 rpm**），并说明 `check_v70.py`
+  的 621 rpm 是低转速混叠伪值。
+- **v90 RTL 改动只有两处**：`rtl/abz_gen.v` 新增 `z_index_gen`（出 Z 撤防、离开
+  ≥1/8 圈重新布防）治停位 Z 喘振；`rtl/uvw_gen.v` 保持 v74。屏上删除 P7 标定页
+  （标定走 KEY0 长按或串口写 `0x0502 = 0x0001`），P2 加预触发环形缓冲 + 中线 +
+  AUTO 时基，可导航页固定为 **4 页**（P1/P2/P4/P6）。
+- **术语与材料清理**：全仓不再出现具体厂商芯片型号，统一表述为「同类专用细分 ASIC」；
+  删除 `docs/` 下厂商手册的逐页数值摘录（原 `*_digest.md/.pdf`，已整篇移除）；`NOTICE`、
+  设计报告、技术文档与 README 的参考资料、历史清理命令同步改写；`rtl/spi_slave.v`
+  的包模式参数改名为 `USE_PKT_MODE`（纯标识符，行为不变）。
+- **报告与文档重写**：`deliverables/design_report.md`（1732 行 / 60 页 full PDF）、
+  `tools/build_report_doc.py`（docx 23 页）、`build_tech_doc.py`、`build_intro_doc.py`、
+  `docs/01_technical_solution.md`、`docs/05_vivado_sim_impl_report.md`、
+  `docs/REPRODUCE.md`、`docs/COMPLIANCE.md`、`docs/README.md`、`docs/BASELINES.md`
+  全部改成 v90 口径；v62/v66/v70/v74/v85/v89 一律标为历史基线，只在演进/对照章节出现。
+
 技能包从"7 篇描述性长文"补齐为"长文 + 可直接复用的可执行资产"，对应指南 §3.3.5.2
 的四类形态。全部资产自带夹具，`python skill/scripts/skill_selftest.py` 一条命令自证。
 
 ### Added
 
+- **实物照片入包与报告实拍图（2026-11-03 20:02 拍摄）**：新增 `deliverables/submission/photos/`
+  四张实拍（全貌 1 张 + 开发板角度 3 张，均 ≤10 MB、已按 EXIF 转正并清除元数据），
+  `tools/make_source_package.py` 增收 `deliverables/figures/*.jpg` 与 `deliverables/submission/photos/*`；
+  `design_report.docx/pdf` 末尾新增附录 D「实物照片」（图 D-1–D-3），详细版 `design_report.md`
+  增图 2-2 与附录 J。同时删除「磁环气隙特写」这一待拍项——第 7 项改按正面 / ADC 模拟前端 /
+  屏与触摸三张交付，视频脚本镜头 16 改为中景（不再要求气隙微距）。
 - **第三轮改进（A1–A3 + B4 + B5）**：技能包进 CI、技术文档补 §3.3.5、提交事实快照、
   一页速查表。动机是三条自查结论：`.github/workflows/ci.yml` 从来没跑过技能包门禁；
   `technical_doc.pdf` 里 `skill/` 出现 0 次；`skill/README.md` 把 18 个用例写成 13 个

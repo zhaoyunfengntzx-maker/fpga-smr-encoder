@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "如果本仓库对你的研究或工程有帮助，请按以下信息引用。"
 title: "基于 SMR 磁阻传感器与 FPGA 的高精度细分磁编码器"
 abstract: >-
-  用 Xilinx Artix-7 FPGA 软件化实现 iC-Haus iC-TW28 正余弦细分器的全部功能：
+  用 Xilinx Artix-7 FPGA 软件化实现 传统专用细分 ASIC 正余弦细分器的全部功能：
   12-bit 双通道同步 ADC、六参数闭式标定、16-bit 全流水 CORDIC、PI 跟踪环，
   输出 16-bit 绝对角度与 ABZ/UVW/SPI/UART 接口，并集成 7 英寸触摸 UI 与
   千兆以太网。仓库包含 RTL、定点黄金模型、上位机、仿真回归、构建/签核脚本

@@ -88,7 +88,7 @@ build(v85): 归档显示位流与时序报告
 - 提交物必须保持竞赛匿名：不含学校、院系、校徽、指导教师、团队名、姓名、学号、
   邮箱。`tools/check_names.py` 会扫描常见泄露词。
 - 不要提交第三方手册 PDF、厂商工程模板、许可不明的图片/字体。需要引用时写摘要
-  （见 `docs/ATK_board_digest.md`、`docs/TW28_digest.md`）。
+  （见 `docs/ATK_board_digest.md`、`docs/AD9238_module_digest.md`）。
 - 发现仓库里误入了敏感信息，请按 [SECURITY.md](SECURITY.md) 私下报告，不要开公开 issue。
 
 ## 7. 评审与合并

@@ -69,7 +69,10 @@ module disp_engine #(
     // ★ v75（A）：P2 波形时基档位（0 = 2.4 ms / 1 = 300 µs / 2 = 38 µs）。
     //   档位是**显示侧偏好**、不进寄存器、不过 SPI，所以和 pnl_on/page 一样
     //   由策略层（disp/enc_top_disp.v 的触摸判定）送进来，引擎不持有它。
-    input  wire [1:0]  p2_gear,
+    // ★ v87（任务 A2）：入口改成 4 态**模式**（0 = AUTO，1/2/3 = 固定 2.4ms /
+    //   300us / 38us）。AUTO 档要按电气频率自动选档，而频率计（fm_f_q10）在
+    //   本模块内部，所以"模式 → 实际档位"的决策放在这里做（见 u_p2_auto）。
+    input  wire [1:0]  p2_mode,
 
     // ---- 时序发生器接口（复用 lcd_test2/rtl/lcd_timing_gen.v，已实测通过）----
     input  wire [11:0] pix_x,         // 0..1023
@@ -115,7 +118,6 @@ module disp_engine #(
 
     input  wire        tap_abzen,
     input  wire        tap_uwven,
-    input  wire        tap_calib_busy,
     // v45（㊷）：抽头 [126] —— 原为链路帧 CRC 错的粘滞位（`crc_err_seen`）。
     //   这是"链路给出的数据本身就坏了"的直接证据，v44 之前显示侧没消费它。
     //   v74 起该源恒 0（端口保留、位图不重排），空态判据只剩"无载波"。
@@ -555,27 +557,16 @@ module disp_engine #(
     localparam [5:0]  P6_LAB_R0 = 6'd4;       // 标题 RAM 行起点（4..8；从 4 起的理由见上）
     localparam [3:0]  P6_VAL_R0 = 4'd1;       // 数值 RAM 行起点（1..5）
 
-    // ---- P7 标定与误差可视化版面（v16）----
-    //   左框：标定前/后两条误差曲线；右框：六个标定参数的当前值。
-    //   曲线区 512 px = 128 个电角度箱 x 4 px —— 箱宽取 4 px 是为了让箱号
-    //   只有一次右移（pix_x[8:2]），像素通路里不出现除法。
-    localparam [11:0] P7_BX0  = 12'd96;    // 左框（曲线框）
-    localparam [11:0] P7_BX1  = 12'd640;
-    localparam [11:0] P7_BY0  = 12'd112;   // lab 格行 7
-    localparam [11:0] P7_BY1  = 12'd480;   // v60（T6）：304 -> 368 px，左框下延
-    localparam [11:0] P7_CVX0 = 12'd112;   // 曲线区左沿（lab 格列 7）
-    localparam [11:0] P7_CVX1 = 12'd624;   // 112 + 512
-    localparam [11:0] P7_CVY0 = 12'd160;   // 曲线区上沿（lab 格行 10）
-    localparam [11:0] P7_CVY1 = 12'd400;   // v64：160+240，与 p7_view 写入的 0..239 对齐
-                                            //   （原来 464 = 304 高，下半 64 px 永远画不到，
-                                            //     再叠上 p7_ry[7:0] 截断就出现框底幽灵曲线）
-    localparam [11:0] P7_RX0  = 12'd656;   // 右框（参数框）
-    localparam [11:0] P7_RX1  = 12'd1008;
-    //   图例色块：紧挨着 lab(8,30) 的"前"与 lab(8,34) 的"后"
-    localparam [11:0] P7_SW0  = 12'd462;
-    localparam [11:0] P7_SW1  = 12'd526;
-    localparam [23:0] C_EPRE  = 24'hC2185B; // "标定前"曲线（品红）
-    localparam [23:0] C_EPOST = 24'h2E7D32; // "标定后"曲线（绿）
+    // ---- ★ v88：P7「标定」页整页删除 ----
+    //   用户在原话里说得很直接：「标定页直接去掉吧」。删掉的是**页面**，不是
+    //   标定功能：标定改成在 P1 标题带那颗「标定」按钮上点一下就直接 ARM
+    //   （写 0x0502 = 0x0001，和串口/KEY0 等价，见 disp/enc_top_disp.v），
+    //   状态回显走 P1 状态条。这里一并删掉：
+    //     · P7 的版面常量（左右框、曲线区、图例色块、两个曲线颜色）
+    //     · p7_view / p7_ram x3 / p7_lab_ram 四个实例（省 3 块 RAMB18 + 1 块
+    //       RAMB36，见 v88 的资源报告）
+    //     · 曲线像素通路（p7_ry/p7_rail/p7_ris/p7_clip/p7_ref...整段）
+    //   P7_LAB 的静态文字在 tools/gen_text_ram.py 里同步删除。
 
     // =========================================================================
     // 2. 编码器数据抽头寄存（规则 3：只进寄存器，不复用其组合逻辑）
@@ -793,9 +784,17 @@ module disp_engine #(
     wire        [7:0]  vfs_io     = demo_on ? dm_io     : q_io_state;
     wire        [5:0]  vfs_bad    = demo_on ? 6'd0      : bad_mask;
 
+    // ★ v86（任务C）：Z 计数的 5 位 BCD —— 由 u_z_cnt_lab.dig_o 驱动，
+    //   同时喂给 val_format 的 REV 字段，让「累计转数」与「Z 计数」在定义上
+    //   就是同一个数（本编码器 1 Z / 转）。声明必须在本行之前用它的地方之前。
+    wire [16:0] zc_bin;
+
     val_format #(.CPR(CPR)) u_val_format (
         .clk(clk), .rst_n(rst_n), .start(vf_start),
         .f_q10(vfs_f_q10), .pos_acc(vfs_pos), .angle(vfs_angle),
+        // ★ v86（任务C）：REV 字段直接取 Z 计数（zc_bin，5 位 BCD），
+        //   不再走 pos_acc / cpr。见 z_cnt_lab.v 的端口注释。
+        .rev_bin(zc_bin),
         .io_state(vfs_io), .cfg_inter(q_inter), .cfg_div(q_div),
         .cfg_pairs(tap_cfg_pairs),
         // v22：面板开着时字段 1 显示"待应用值"（spec 6.2 的"待应用"态）
@@ -845,66 +844,10 @@ module disp_engine #(
     wire [7:0] p5_bar_t0 = 8'd0, p5_bar_t1 = 8'd0, p5_bar_t2 = 8'd0;
     wire [7:0] p5_bar_t3 = 8'd0, p5_bar_t4 = 8'd0, p5_bar_t5 = 8'd0;
 
-    // ---- P7 标定与误差可视化（v16 新增）----
-    //   三块 128 箱小 RAM：
-    //     acc_ram   每箱 32 bit = {hi[15:0], lo[15:0]}，记 amp_sq[30:15] 的 min/max
-    //     bef/aft   每箱 16 bit = {hi_y[7:0], lo_y[7:0]}，已换算成**屏上行号**
-    //   ★ 显示侧存行号而不是原始幅值：像素通路里只允许两次区间比较
-    //     （spec §7.2 禁实时栅格化），换算在 p7_view 的消隐期做完。
-    //   ★ 两块显示 RAM 用**同一个箱号**读，两拍数据在同一拍返回，所以像素通路
-    //     只需要再补**一级**寄存器就与 px2 对齐（与 P2/P3 的同一条规则，见 U-16）。
-    //   ★ 读地址用未延迟的 pix_x，和文字平面完全一样 —— 声明必须在这里，
-    //     Verilog-2001 按文本顺序解析标识符（本项目已踩过三次 VRFC 10-3380）。
-    wire [11:0] p7_dx        = pix_x - P7_CVX0;
-    wire [6:0]  p7_bin       = p7_dx[8:2];   // 512 px / 4 px = 128 箱
-    wire [6:0]  p7_bef_raddr = p7_bin;
-    wire [6:0]  p7_aft_raddr = p7_bin;
-
-    wire        p7v_we;
-    wire [11:0] p7v_waddr;
-    wire [7:0]  p7v_wdata;
-    wire        p7v_busy, p7v_done;
-    // ★ v85：p7_gate_lab（0%/100% 闸线标签）随"绝对幅值口径"一起删掉 ——
-    //   新标尺是固定的 ±2%（零线居中），刻度标签是静态的（tools/gen_text_ram.py
-    //   的 P7_LAB：+2% / 0 / -2%），不再需要每帧重写的坐标。
-    //   因此 p7_view 的 hold 恒接 0，文字层只由 p7_view 一个写者驱动。
-    wire        p7_acc_we, p7_bef_we, p7_aft_we;
-    wire [6:0]  p7_acc_waddr, p7_bef_waddr, p7_aft_waddr;
-    wire [31:0] p7_acc_wdata;
-    wire [15:0] p7_bef_wdata, p7_aft_wdata;
-    wire [6:0]  p7_acc_raddr;
-    wire [31:0] p7_acc_rdata;
-    wire [15:0] p7_bef_rdata, p7_aft_rdata;
-
-    p7_view u_p7_view (
-        .clk(clk), .rst_n(rst_n), .start(vf_start), .hold(1'b0),
-        .angle(q_angle), .amp_sq(tap_amp_sq), .calib_busy(tap_calib_busy),
-        .amp_low_sq(tap_amp_low_sq), .amp_high_sq(tap_amp_high_sq),
-        .ofs_s(tap_ofs_s), .ofs_c(tap_ofs_c),
-        .gain_s(tap_gain_s), .gain_c(tap_gain_c),
-        .phase_k(tap_phase_k), .shift(tap_shift),
-        .acc_we(p7_acc_we), .acc_waddr(p7_acc_waddr), .acc_wdata(p7_acc_wdata),
-        .acc_raddr(p7_acc_raddr), .acc_rdata(p7_acc_rdata),
-        .bef_we(p7_bef_we), .bef_waddr(p7_bef_waddr), .bef_wdata(p7_bef_wdata),
-        .aft_we(p7_aft_we), .aft_waddr(p7_aft_waddr), .aft_wdata(p7_aft_wdata),
-        .we(p7v_we), .waddr(p7v_waddr), .wdata(p7v_wdata),
-        .busy(p7v_busy), .done(p7v_done)
-    );
-
-    // ★ v85：p7_gate_lab 实例删除（标签改成 P7_LAB 里的静态 +2% / 0 / -2%）
-
-    p7_ram #(.DW(32), .INIT({16'd0, 16'hFFFF})) u_p7_acc_ram (
-        .clk(clk), .we(p7_acc_we), .waddr(p7_acc_waddr), .wdata(p7_acc_wdata),
-        .raddr(p7_acc_raddr), .rdata(p7_acc_rdata)
-    );
-    p7_ram #(.DW(16), .INIT({8'd120, 8'd120})) u_p7_bef_ram (
-        .clk(clk), .we(p7_bef_we), .waddr(p7_bef_waddr), .wdata(p7_bef_wdata),
-        .raddr(p7_bef_raddr), .rdata(p7_bef_rdata)
-    );
-    p7_ram #(.DW(16), .INIT({8'd120, 8'd120})) u_p7_aft_ram (
-        .clk(clk), .we(p7_aft_we), .waddr(p7_aft_waddr), .wdata(p7_aft_wdata),
-        .raddr(p7_aft_raddr), .rdata(p7_aft_rdata)
-    );
+    // ---- ★ v88：P7 页删除 ⇒ p7_view / p7_ram x3 / p7_lab_ram 全部不再例化 ----
+    //   连带删除的读地址/写口声明（p7_dx、p7_bin、p7_bef_raddr、p7_acc_we ...）
+    //   一并去掉：留着不接只会让综合器多报几条"unused"警告，代码和日志说的
+    //   就不是同一句话了。
 
     // =========================================================================
     // 3. 两层字符格 + 字符 RAM
@@ -1017,7 +960,7 @@ module disp_engine #(
     //     线、lab_ch_raw 以及下面四块 lab RAM 的 wdata 常量全部变宽一位。
     //     这是"两处共同契约"里 RTL 那一处，另一处是 tools/gen_font_rom.py 的
     //     PLANES[lab].idx_w 与 tools/gen_text_ram.py 的 LAB_CODE_W。
-    wire [7:0] lab_ch_p1, lab_ch_p2, lab_ch_p4, lab_ch_p6, lab_ch_p7;
+    wire [7:0] lab_ch_p1, lab_ch_p2, lab_ch_p4, lab_ch_p6;
     wire [5:0] val_ch_p1, val_ch_p6;
     // ★ v58：P3/P5/P8 三页删除 ⇒ 它们的文字层/数值层输入直接引常量 0。
     //   页号保留空洞（0/1/3/5/6），mux 里那几档仍在，只是喂 0。
@@ -1035,9 +978,7 @@ module disp_engine #(
     //   教训（U-17 记录 28）：mux 少接一档不会报错，只会让那一页的字形通路
     //   变成 z -> X，整页像素采样全成 XXXXXX；"跑满帧/查帧率"这类检查一条都不红。
     wire [5:0] val_ch_p5 = 6'd0;
-    // ★ P7 与 P5 同类：六个参数与幅值都写在 16 px 小格上，val 平面没有内容，
-    //   照 P5 的写法接常量 0（不例化空 RAM，理由同上）。
-    wire [5:0] val_ch_p7 = 6'd0;
+    // ★ v88：P7 页删除 ⇒ val 平面那一档（val_ch_p7）随之消失。
     // ★ v17：P2/P3/P4 也各补了一块 lab 平面（标题 / 通道名 / 轴标）。
     //   它们的 val 平面是空的（数字不走 32 px 大格），同样接常量 0。
     //   ⚠ 这一档**必须显式写出来**：val 的 default 分支是 val_ch_p1，漏掉就会把
@@ -1048,14 +989,12 @@ module disp_engine #(
     wire [5:0] val_ch_p4 = 6'd0;
     wire [7:0] lab_ch_raw = (page == 3'd5) ? lab_ch_p6 :
                             (page == 3'd7) ? lab_ch_p8 :
-                            (page == 3'd6) ? lab_ch_p7 :
                             (page == 3'd4) ? lab_ch_p5 :
                             (page == 3'd1) ? lab_ch_p2 :
                             (page == 3'd2) ? lab_ch_p3 :
                             (page == 3'd3) ? lab_ch_p4 : lab_ch_p1;
     wire [5:0] val_ch_raw = (page == 3'd5) ? val_ch_p6 :
                             (page == 3'd7) ? val_ch_p8 :
-                            (page == 3'd6) ? val_ch_p7 :
                             (page == 3'd4) ? val_ch_p5 :
                             (page == 3'd1) ? val_ch_p2 :
                             (page == 3'd2) ? val_ch_p3 :
@@ -1113,6 +1052,11 @@ module disp_engine #(
     wire        sc_busy;      // 写序列进行中（探针）
     wire        sc_done;      // 写序列结束单拍（探针）
     wire [11:0] sc_chip_st;   // 六卡状态 {2bit x6}（探针/测试用）
+
+    // ★ v89：P1 标题带那颗「标定」按钮已删（用户：「把标定按钮删去」），
+    //   所以 p1_cal_lab（标定中 / 标定通过回显）连同实例一并删掉：按钮都没了，
+    //   那 5 格字只会白占 LUT。标定功能本身三条路全保留：KEY0 长按、
+    //   串口写 0x0502 = 0x0001、上位机 host/calib（都在 enc_top 里，与显示层无关）。
 
     stat_chip u_stat_chip (
         .clk(clk), .rst_n(rst_n), .start(vf_start),
@@ -1194,6 +1138,7 @@ module disp_engine #(
     wire [11:0] zc_waddr;
     wire [7:0]  zc_wdata;
     wire        zc_busy, zc_done;
+    // ★ v86（任务C）：zc_bin 在文件上部（val_format 例化之前）已声明。
 
     z_cnt_lab u_z_cnt_lab (
         .clk(clk), .rst_n(rst_n), .start(vf_start),
@@ -1201,7 +1146,8 @@ module disp_engine #(
         // ★ v83：uv_state 已改到数值层，不再占标签层写口 ⇒ hold 里去掉 uv_we。
         .hold(ul_we | sc_we | ph_we | pc_we),
         .we(zc_we), .waddr(zc_waddr), .wdata(zc_wdata),
-        .busy(zc_busy), .done(zc_done)
+        .busy(zc_busy), .done(zc_done),
+        .rev_bin(zc_bin)
     );
 
     // ★ v82（任务B）：四个单位（kHz/RPM/DEG/REV）跟着数值长度走 —— 见
@@ -1271,8 +1217,22 @@ module disp_engine #(
     wire [7:0]  p2b_wdata;
     wire        p2b_busy, p2b_done;
 
+    // ★ v87（任务 A2）：模式 → 实际档位。AUTO 时按电气频率选档（带 15% 迟滞
+    //   与 0.5 s 停留），固定档直接跟随。频率不可信（未锁定/幅值不足）时保持
+    //   当前档 —— 见 disp/p2_auto.v 的头注释。
+    wire [1:0]  p2_gear;
+    p2_auto u_p2_auto (
+        .clk(clk), .rst_n(rst_n),
+        .mode(p2_mode),
+        .f_q10(fm_f_q10),
+        .f_valid(fm_valid),
+        .f_ok(~amp_gone),
+        .gear(p2_gear)
+    );
+
     p2_win_lab u_p2_win_lab (
-        .clk(clk), .rst_n(rst_n), .start(vf_start), .gear(p2_gear),
+        .clk(clk), .rst_n(rst_n), .start(vf_start),
+        .mode(p2_mode), .gear(p2_gear),
         .we(p2b_we), .waddr(p2b_waddr), .wdata(p2b_wdata),
         .busy(p2b_busy), .done(p2b_done)
     );
@@ -1301,16 +1261,7 @@ module disp_engine #(
     );
     // ★ v58：P8 删页 ⇒ lab/val 两块 RAM 都不再例化（省 2 块 RAMB36）。
     // ★ v58：P5 删页 ⇒ 这块 text RAM 不再例化（省 1 块 RAMB36）。
-    p7_lab_ram u_p7_lab_ram (
-        // v16：标题/两个框标题/图例/六个参数名来自 initial 静态预置，
-        // 六个参数值与幅值由 p7_view 每帧覆写（字段表见 disp/p7_view.v，
-        // 列位置与 tools/gen_text_ram.py 的 P7_LAB 是两处共同契约）。
-        // ★ v85：唯一写者就是 p7_view（闸线标签模块已删）。
-        .clk(clk), .we(p7v_we),
-        .waddr(p7v_waddr),
-        .wdata(p7v_wdata),
-        .raddr(lab_raddr), .rdata(lab_ch_p7)
-    );
+    // ★ v88：P7 删页 ⇒ p7_lab_ram 不再例化（省一块 RAMB36）。
     p1_val_ram u_p1_val_ram (
         // val_format 的字段坐标是按 P1 卡片排布定死的（数值层格行 2/6/10/11、
         // 格列 3/18），所以它只在 P1 页有效：写口用页号门控。
@@ -1342,6 +1293,8 @@ module disp_engine #(
     wire [31:0] wt_wdata;
     wire [10:0] wt_wr_ptr;
     wire        wt_wr_buf, wt_disp_buf;
+    // ★ v87（任务 A）：窗口起点。读侧要用它把"环内地址"旋转回"列号"。
+    wire [9:0]  wt_win_start;
     wire [31:0] wave_q;
 
     wave_trace u_wave_trace (
@@ -1353,7 +1306,8 @@ module disp_engine #(
         // ★ v75（A）：时基三档由策略层的触摸判定给出（见 wave_trace.v 的注释）。
         .gear(p2_gear),
         .we(wt_we), .waddr(wt_waddr), .wdata(wt_wdata),
-        .wr_ptr(wt_wr_ptr), .wr_buf(wt_wr_buf), .disp_buf(wt_disp_buf)
+        .wr_ptr(wt_wr_ptr), .wr_buf(wt_wr_buf), .disp_buf(wt_disp_buf),
+        .win_start(wt_win_start), .cap_stb()
     );
 
     //   读地址用 pix_x（S0 组合）给出，与文字平面的读法一致。
@@ -1364,8 +1318,15 @@ module disp_engine #(
     //   ★ 这条只能用**移动光栅**验证（disp/tb_pipe_align.v）：把坐标停在一点上采样时
     //     数据通路无论几级都会收敛到同一个值，级数根本测不出来（v15 的两张页面
     //     测试台就是这么漏掉它的）。
+    //   ★ v87（任务 A）：**读侧反旋转**。
+    //     写侧是自由跑的环形缓冲（wcol 0..1023），封帧时把窗口起点 win_start
+    //     记下来；显示列 col 对应的环内地址是 (win_start + col) & 0x3FF。
+    //     于是列 i 显示 t0-472+i，列 472 正好是触发点，左半屏是触发**之前**的
+    //     历史、右半屏是触发之后，中线处时间轴连续 —— v86 的断裂就是这么来的：
+    //     写序被旋转过（472→943→0→471）、读序却是 0→943。
     wire [9:0]  wave_col   = pix_x[9:0] - 10'd80;
-    wire [10:0] wave_raddr = {wt_disp_buf, wave_col};
+    wire [9:0]  wave_ofs   = wt_win_start + wave_col;    // 10 bit ⇒ 自动模 1024
+    wire [10:0] wave_raddr = {wt_disp_buf, wave_ofs};
 
     wave_ram u_wave_ram (
         .clk(clk), .we(wt_we), .waddr(wt_waddr), .wdata(wt_wdata),
@@ -1636,15 +1597,16 @@ module disp_engine #(
         end
     end
 
-    //   文字层只在"已经有自己文字平面的页"上显示。★ v17 起**八页全有**：
+    //   文字层只在"已经有自己文字平面的页"上显示。★ v17 起八页全有：
     //   P2/P3/P4 也各补了一块静态 lab 平面（标题 / 通道名 / 信号名 / 轴标），
-    //   所以这个页号门控现在只是"八页都在册"的显式清单，不是功能开关。
+    //   所以这个页号门控现在只是"在册页"的显式清单，不是功能开关。
     //   它仍然必须存在：lab_ch_raw/val_ch_raw 的默认分支是 P1 平面，任何一页
     //   漏在这张清单外，就不会画字（漏画是静默的），而它的 val 档若也漏写，
     //   会**叠着 P1 的六个大数字**。
+    //   ★ v88：P7(6) 已删页 ⇒ 从清单里去掉；P8(7) 早在 v58 就删了，但它不在
+    //     任何翻页/导航路径上（page 永远不会是 7），留着只当"页号空洞"的注记。
     wire txt_page  = (page == 3'd0) || (page == 3'd1) || (page == 3'd2) ||
-                     (page == 3'd3) || (page == 3'd4) || (page == 3'd5) ||
-                     (page == 3'd6) || (page == 3'd7);
+                     (page == 3'd3) || (page == 3'd4) || (page == 3'd5);
     wire glyph_bit = txt_page & (lab_bit | val_bit);
 
     // =========================================================================
@@ -2028,66 +1990,9 @@ module disp_engine #(
                     ((cx == 12'd836) || (cx == 12'd881) || (cx == 12'd927) ||
                      (cx == 12'd973) || (cx == 12'd1019));
 
-    // ---- P7 标定与误差可视化（v16）----
-    //   左框两条曲线（标定前品红 / 标定后绿），右框是 p7_view 写的六个参数值。
-    //   两块曲线 RAM 用同一个箱号同时读出，这里只补**一级**寄存器 —— 与文字通路
-    //   的级数一致（U-16 的规则：与 px2 对齐的实时通路只能有两级存储）。
-    reg [31:0] p7_pair;
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) p7_pair <= 32'd0;
-        else        p7_pair <= {p7_aft_rdata, p7_bef_rdata};
-    end
+    // ---- v88: P7 page removed (calibration stays, triggered from P1) ----
+    //   Deleted: curve pixel path, reference lines, legend swatches, boxes.
 
-    wire        p7_lg     = (page == 3'd6);
-    wire        in_p7_cv  = p7_lg && (cx >= P7_CVX0) && (cx < P7_CVX1) &&
-                            (cy >= P7_CVY0) && (cy < P7_CVY1);
-    wire [11:0] p7_ry     = cy - P7_CVY0;
-    // ★ 2026-10-28 修（审计）：P7 纵轴只写 0..239（p7_view 里 clamp 到 239），
-    //   而原式用 p7_ry[7:0] 比较 ⇒ cy 落在 256..463 时 8 位截断回绕到 0..207，
-    //   在框底复现出一条"幽灵曲线"。这里先按 8 位有效范围开窗，再比上下界。
-    wire        p7_vis    = (p7_ry < 12'd256);
-    wire [7:0]  p7_lo_bef = p7_pair[7:0];
-    wire [7:0]  p7_hi_bef = p7_pair[15:8];
-    wire [7:0]  p7_lo_aft = p7_pair[23:16];
-    wire [7:0]  p7_hi_aft = p7_pair[31:24];
-    wire        p7_in_bef = in_p7_cv && p7_vis && (p7_ry[7:0] >= p7_lo_bef) && (p7_ry[7:0] <= p7_hi_bef);
-    wire        p7_in_aft = in_p7_cv && p7_vis && (p7_ry[7:0] >= p7_lo_aft) && (p7_ry[7:0] <= p7_hi_aft);
-
-    wire        p7_in_lbox = p7_lg && (cx >= P7_BX0) && (cx < P7_BX1) &&
-                             (cy >= P7_BY0) && (cy < P7_BY1);
-    wire        p7_in_rbox = p7_lg && (cx >= P7_RX0) && (cx < P7_RX1) &&
-                             (cy >= P7_BY0) && (cy < P7_BY1);
-    wire        p7_box_any = p7_in_lbox || p7_in_rbox;
-    wire        p7_gedge   = (cx == P7_BX0) || (cx == P7_BX1 - 12'd1) ||
-                             (cx == P7_RX0) || (cx == P7_RX1 - 12'd1) ||
-                             (cy == P7_BY0) || (cy == P7_BY1 - 12'd1) ||
-                             (cy == P7_CVY0) || (cy == P7_CVY1 - 12'd1) ||
-                             (cx == P7_CVX0) || (cx == P7_CVX1 - 12'd1);
-    wire        p7_grid    = (p7_in_lbox || p7_in_rbox) && p7_gedge;
-    //   图例色块：紧挨 lab(8,30)"前" 与 lab(8,34)"后" 的左侧
-    wire        p7_swatch  = p7_lg && (cy >= 12'd128) && (cy < 12'd144) &&
-                             (((cx >= P7_SW0) && (cx < P7_SW0 + 12'd16)) ||
-                              ((cx >= P7_SW1) && (cx < P7_SW1 + 12'd16)));
-    wire [23:0] p7_sw_col  = (cx >= P7_SW1) ? C_EPOST : C_EPRE;
-
-    // ★ v75（D）：误差曲线的零线 / 参考线。
-    //   原来曲线区一根坐标线都没有，读图时无法判断"这条平带是不是落在标称
-    //   位置上"（也无法判断平带有没有整体漂移）。这里按**几何常量**画一条
-    //   标称线 + 两条四分之一线：
-    //     标称行   = 120  -> y = P7_CVY0 + 120 = 280
-    //     四分线   = 60 / 180（虚线，每 4 px 取 2 px，与曲线区分开）
-    //   120 这个数不是随手取的：它是 disp_engine 里 p7_ram 的 INIT
-    //   {8'd120, 8'd120}（标定正确时的平带行号），p7_view 的 clamp 上限 239
-    //   也以它为半幅。所以"参考线 / 初值 / 映射中点"三者同源，不会互相矛盾。
-    localparam [11:0] P7_REF_Y = 12'd120;
-    wire        p7_ref     = in_p7_cv && (p7_ry == P7_REF_Y);
-    wire        p7_ref_q   = in_p7_cv && (p7_dx[1:0] != 2'b11) &&
-                             ((p7_ry == 12'd60) || (p7_ry == 12'd180));
-
-    //   ★ v85：两条"幅值 0%/100% 闸线"随绝对幅值口径一起删除。
-    //   新纵轴是固定的 ±2% 满量程、零线居中（disp/p7_view.v 的 y = 120 - 0.6·dev），
-    //   刻度行号与门限寄存器无关，所以不需要实时算行号，也不需要闸线。
-    //   参考线保留：零线 p7_ref（行 120）+ ±1% 两条虚线 p7_ref_q（行 60/180）。
 
     // =========================================================================
     // 5.8 v19：状态条右端两个指示器（spec 4.2 的 [信号 ●][告警 ▲]）
@@ -2258,12 +2163,14 @@ module disp_engine #(
     wire        glyph_dlg  = lab_bit & dlg_cell & dlg_cur & dlg_on;
 
     // =========================================================================
-    // 5.11 v20：标题带主操作按钮（P1「标定」→ P7、P4「展开」→ P5、P6「闪烁」）
-    //   按钮文字不在这里画：它来自各页 lab 平面（P1 格列 45、P4 格列 45（★ v43/㊵
-    //   起，与 P1 同格列；v20..v42 是 6 格的 `EXPAND` 占 43..48）、
-    //   P6 格列 44，都在格行 2 = y 32..47），由文字层叠在底色上。
+    // 5.11 v20：标题带主操作按钮（P4「展开」→ P5、P6「闪烁」）
+    //   按钮文字不在这里画：它来自各页 lab 平面（P4 格列 45（★ v43/㊵ 起，与
+    //   已删的 P1「标定」同格列）、P6 格列 44，都在格行 2 = y 32..47），
+    //   由文字层叠在底色上。
     //   本层只画"白底 + 强调色描边"。
-    //   点它的判定在策略层（hit_test 只给 HIT_TITLE_BTN，由页号决定去 P7 / P5 / 切换闪烁）。
+    //   点它的判定在策略层（hit_test 只给 HIT_TITLE_BTN，由页号决定去 P5 / 切换闪烁）。
+    //   ★ v89：P1「标定」按钮已删，于是 P1 上既没有按钮底、也没有文字、
+    //     策略层对 P1 的 tap_title_btn 不再有任何动作（命中矩形仍在，无害）。
     //   ★ v32（㉙）：P6 上这颗按钮是 spec §5.2 第四重冗余「可关闭的 2 Hz 闪烁」的开关。
     //     它的开/关**不写字、也不靠颜色**，而是按钮左侧一个 16x16 复选框：
     //       实心（C_TEXT 填满） = 闪烁开；空心（1 px C_TEXT 描边）= 闪烁关。
@@ -2272,7 +2179,10 @@ module disp_engine #(
     //     ★ 复选框矩形与文字层的「闪烁」（格列 44/45 = x 704..735）**不许重叠**：
     //       复选框取 x 668..683（格列 41..42），文字在它右边。
     // =========================================================================
-    wire        tb_page = (page == 3'd0) || (page == 3'd3) || (page == 3'd5);
+    //   ★ v89：P1 那颗「标定」按钮整个删掉（用户：「把标定按钮删去」）——
+    //     文字从 P1_LAB 里去掉，这里也不再给 P1 画"白底 + 强调色描边"。
+    //     标题带按钮现在只有 P4「展开」与 P6「闪烁」两页。
+    wire        tb_page = (page == 3'd3) || (page == 3'd5);
     wire        tb_any  = tb_page && (cx >= TBTN_X0) && (cx < TBTN_X1) &&
                           (cy >= TBTN_Y0) && (cy < TBTN_Y1);
     wire        tb_edge = tb_any && ((cx == TBTN_X0) || (cx == TBTN_X1 - 12'd1) ||
@@ -2669,12 +2579,10 @@ module disp_engine #(
                           in_p2_box ? C_PLOT :
                           in_xy_box ? C_PLOT :
                           in_lg_box ? C_PLOT :
-                          p7_in_rbox ? C_CARD :
-                          p7_in_lbox ? C_PLOT :
                           p5_bzone  ? C_TRACK :
                           in_title  ? C_BG   : C_BG;
     wire [23:0] bg_c6   = bg_sel;   // v60（T1）：电平条已删，这级退化为直通
-    wire [23:0] bg_grid = (p2_border || p3_border || p4_grid || p7_grid || p5_grid ||
+    wire [23:0] bg_grid = (p2_border || p3_border || p4_grid || p5_grid ||
                            card_edge || card_div)
                           ? C_GRID : bg_c6;
     //   ★ v24（㉕）起条形图槽只在"表格区"里铺：表的行带/列带由 p5_bzone 判定，
@@ -2695,14 +2603,8 @@ module disp_engine #(
     wire [23:0] with_dot  = xy_dot ? C_ACC : with_wave;
     wire [23:0] with_lg   = (lg_trace_px || lg_swatch) ? lg_ch_col(lg_row) : with_dot;
     wire [23:0] with_bar  = p5_fill ? C_ACC : with_lg;
-    //   曲线画在文字下面：右框本来没有曲线命中，左框的标题文字压在曲线区之外。
-    //   ★ v75（D）：先铺**参考线**再画曲线 —— 曲线是 min/max 包络、会盖住参考线，
-    //     这与"数据优先"的读图顺序一致（参考线是背景标尺，不是数据）。
-    //     参考行 = P7_CVY0 + 120：120 是 p7_ram 的 INIT 值 {8'd120,8'd120}
-    //     （标定正确时的平带行号），也是 p7_view 的 clamp 中点，所以三者同源。
-    wire [23:0] with_cv   = p7_in_aft ? C_EPOST : (p7_in_bef ? C_EPRE :
-                            (p7_ref ? C_GRID : (p7_ref_q ? C_SEC : with_bar)));
-    wire [23:0] with_sw   = p7_swatch ? p7_sw_col : with_cv;
+    //   ★ v88：P7 删页 ⇒ 曲线/参考线/图例那一级（with_cv / with_sw）整级去掉，
+    //     合成链在这里直接接上底图，少一级 24 bit mux（LUT 也少一点）。
     wire [23:0] txt_col = in_sbar   ? C_CARD : C_TEXT;
     //   ★ v42（㊴）：恢复默认失败的 ✖ —— 只有"那一格的字形墨迹"（lab_bit &
     //     bad_mark2）才涂红；同格其余像素仍走原来的底色/压暗逻辑，于是它是
@@ -2777,20 +2679,23 @@ module disp_engine #(
     wire        scbar_blk = scbar_inv && (ui_blink_en ? blk_ph : 1'b1);
     // v19 层级：页面底/卡片/波形 → P6 危险区 → 文字 → 状态条图形 → 活性灯/准星
     //           → 模态（遮罩 + 对话框 + 对话框文字，压过一切）
-    wire [23:0] with_dz   = dz_px ? dz_col : with_sw;
+    wire [23:0] with_dz   = dz_px ? dz_col : with_bar;
     //   ★ v77（上板：P2 底栏 宽度标签 字号偏小、贴左下有压线感）：字库只有
     //   11x14 与 30x48 两档，中间那档不存在（字号由 disp/font_rom.v 定死），
-    //   所以"放大一档"做不到。改成**加深色底 + 白字反色**：同一档字号下，
+    //   所以"放大一档"做不到。改成**加深色底 + 反白字**：同一档字号下，
     //   白字压强调色底的可读性明显高过深灰字压浅蓝页底，视觉上也就不"糊"。
-    //   位置同时右移到格列 55..62（x 880..1007），右沿像原来贴左沿那样内缩 16 px，
-    //   色底块（格列 54..63）贴到波形框右沿 1024 —— 从"贴在左下角"变成
-    //   "坐标轴右端的刻度注"。
+    //   ★ v87（上板复查）：v77 曾把这一条右移到格列 54..63（x 864..1023），
+    //   想当"坐标轴右端的刻度注"。用户看下来不行：它压在波形框的网格上、
+    //   还贴屏幕右沿，既不像底栏也不像刻度。现在挪回**左下角**的触摸条区域
+    //   （enc_top_disp.v 的 P2W_HIT：x 88..360、y 566..600 ⇒ 格行 36、
+    //   格列 6..15），左对齐固定起点、不再向右挤压；底仍是 C_ACC 反白块，
+    //   字取 C_TEXT（深色）—— 用户明确要"反白底 + 深色字"。
     wire        p2w_chip = (page == 3'd1) && (lrow2 == 6'd36) &&
-                           (lcol2 >= 6'd54) && (lcol2 <= 6'd63);
+                           (lcol2 >= 6'd6) && (lcol2 <= 6'd15);
     wire [23:0] chip_bg  = p2w_chip ? C_ACC : scbar_bg;
-    wire [23:0] with_txt  = (scbar_blk || p2w_chip)
-                            ? (glyph_page ? C_CARD : chip_bg)
-                            : (glyph_page ? txt_col_dyn : with_dz);
+    wire [23:0] with_txt  = p2w_chip ? (glyph_page ? C_TEXT : chip_bg)
+                            : (scbar_blk ? (glyph_page ? C_CARD : chip_bg)
+                            : (glyph_page ? txt_col_dyn : with_dz));
     wire [23:0] with_icon = sig_dot ? sig_col : alm_tri ? alert_col : with_txt;
     wire [23:0] no_dlg    = tch_cross      ? C_ACC   :
                             tch_zone       ? tch_lamp_col :

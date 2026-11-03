@@ -21,7 +21,7 @@ uart_scope.py —— 上位机遥测接收/解析/可视化工具
                                bit6 cor_sat, bit7 (amp_low|amp_high)
     11    1   0x00            保留（恒 0）
     12    4   pos_full[31:0]   多周期计数<<16 | 角度
-    16    1   stat[7:0]        TW28 兼容状态位
+    16    1   stat[7:0]        统一状态位
     17    1   XOR 校验 = 0xAA ^ 0x55 ^ (off 2..16 逐字节异或)
 
 ★ 为什么 amp_sq 不在帧里了（帧布局 v2）

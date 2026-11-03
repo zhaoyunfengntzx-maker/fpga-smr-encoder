@@ -9,7 +9,7 @@ loop_filter_model.py —— rtl/loop_filter.v 的**逐位一致**定点模型与
       err     = wrap_signed(ang_ext - pos)          （模 REV 减法，折到 ±REV/2）
       I[n+1]  = clamp(I[n] + (err >>> KI_SHIFT[ki]), ±REV/4)   ← 抗饱和限幅
       pos[n+1]= pos[n] + (err >>> KP_SHIFT[kp]) + I[n+1]
-      lag_limit = |err| > REV/8                     （45°，TW28 STAT_VAL.laglim）
+      lag_limit = |err| > REV/8                     （45°，状态字 laglim）
     KP_SHIFT = {2,3,4,5,6,7,8,9}（kp=0..7），KI_SHIFT = {7,6,5,4}（ki=0..3）
     ki=0 关断 I 通路；kp=0 且 ki=0 时整条滤波器直通；freeze=1 时 pos/integ 都保持。
     RTL Latency = 3（环路状态 1 拍 + 输出流水 2 拍），模型里 pos_out 也延迟 2 拍。
@@ -21,7 +21,7 @@ loop_filter_model.py —— rtl/loop_filter.v 的**逐位一致**定点模型与
                        Jury 判据给出 **Ki < Kp 才稳定**
         用 integ[n+1]： E/A = (z-1)^2 / (z^2 + (Kp+Ki-2)z + (1-Kp))
                        Jury 判据给出 0 < Kp < 2、Ki > 0、Ki < 4-2Kp，全部满足
-    也就是说：按原文实现时，TW28 推荐的 heavy 档（kp=6, ki=3 -> Kp=1/256,
+    也就是说：按原文实现时，公开手册推荐的 heavy 档（kp=6, ki=3 -> Kp=1/256,
     Ki=1/16, Ki > Kp）会**发散**；本实现的等价 P 增益是 Kp+Ki，所以恒稳定。
     这是"把 PI 环路做成数学上自洽"的关键修改。
 
@@ -210,7 +210,7 @@ def main():
     ok = True
 
     # ---- (a) 恒速斜坡：I 项的作用 ------------------------------------------
-    section("(a) 恒速斜坡跟踪 —— 验证 I 项带来的零稳态滞后（TW28 数据手册结论）")
+    section("(a) 恒速斜坡跟踪 —— 验证 I 项带来的零稳态滞后（公开数据手册结论）")
     print("  斜坡斜率 = 64 LSB16/clk（= 0.3516 deg/clk = 17.6 Mdeg/s @50MHz），跑 20000 拍")
     print("   kp ki   Kp      Ki      ζ     f3dB[MHz] | 稳态环路误差max avg | 全程max | pos_out对齐max")
     for kp in range(0, 7):

@@ -4,7 +4,7 @@
 //  工具：Vivado / Vitis 2026.1（本机实跑；早期注释写的 2020.2+ 是上机前的假设）
 //-----------------------------------------------------------------------------
 //  系统概述
-//    用一片通用 FPGA 实现 iC-Haus iC-TW28（10bit 正余弦细分器）的全部功能，
+//    用一片通用 FPGA 实现 传统专用细分 ASIC（10bit 正余弦细分器）的全部功能，
 //    并扩展多协议输出接口：
 //      AD9238 双通道 12bit 同步采样 -> 抽取 -> 六参数误差校正(含数字 AGC)
 //      -> 16bit 全流水 CORDIC atan2 -> PI 环路滤波 -> 粗精融合/多周期计数
@@ -19,7 +19,7 @@
 //
 //  延迟预算（@50MHz）：140(ADC内部7拍) + 60(捕获3) + 70(抽取) + 60(校正3)
 //                     + 380(CORDIC 19 拍, NITER=17) + 60(PI 3) + 60(ABZ 3) ≈ 830 ns
-//    对比 iC-TW28 手册给出的 1.5 µs（轻滤波）/ 1.9 µs（重滤波），快约 1.8 倍。
+//    对比 专用细分 ASIC 手册给出的 1.5 µs（轻滤波）/ 1.9 µs（重滤波），快约 1.8 倍。
 //    若接受 1.19 LSB 的 CORDIC 误差，可把 NITER 降到 16 -> 总延迟约 810 ns。
 //
 //  系统概述
@@ -142,7 +142,7 @@ module enc_top #(
     //      [79:48]  pos_full  全周期位置（32 bit）
     //      [87:80]  io_state  {limiter_active,dir,w,v,u,z,b,a}
     //      [95:88]  io_flags  {amp_bad,cor_sat,uwven,abzen,uvw_warn,z_win,lag_fat,lag_warn}
-    //      [103:96] stat_byte  TW28 兼容状态字
+    //      [103:96] stat_byte  状态字
     //      [113:104] cfg_inter 倍频率
     //      [116:114] cfg_div   分频率
     //      [121:117] cfg_pairs 极对数
@@ -224,7 +224,7 @@ module enc_top #(
     //   ③ 另含 v7 位流不含的两项：lag 阈值按 (b) 重标定为 45°/180°（§3 item 18）、
     //      ABZ 过速双向钳位 + r_ovl 过速计数（§3 item 16）。
     //   v9（2026-10-11）内容：
-    //   ① Z 脉宽按 TW28 手册改为 (z_width + 1) 个原始边沿步（rtl/abz_gen.v：新增
+    //   ① Z 脉宽按 公开手册改为 (z_width + 1) 个原始边沿步（rtl/abz_gen.v：新增
     //      Z_PULSE_W=5、r_z_left/z_pulse_n 加宽、z_pulse_n = z_width + 1）——
     //      v8 及以前是 z_width 步（默认短 20%，z_width=0 时无 Z 而手册 1 步），
     //      由仿真 C5（2042 拍 ≈ 4×512）与板上二值实验（0x0108=0x4000 ⇒ 无脉冲）双证，
@@ -236,7 +236,11 @@ module enc_top #(
     //      高位组同拍翻转（256 格点）时发生"（§1.56 ⑦ / §1.57）⇒ 用本版判别
     //      "根因在 ADC→FPGA 捕获接口" 还是 "根因在 ADC 内部"。
     //   ② 除相位外不改任何逻辑/参数 ⇒ 本版与 v9 的行为差异只可能来自采样相位。
-    localparam [15:0] RTL_BUILD_ID = 16'h0015;   // v70：位置累加修复 + 2048 PPR
+    //   ① v70 = 0x0015（位置累加修复 + 2048 PPR）、v74 = 0x0018（Z 计数探针），
+    //      v90 = 0x0019（Z 索引布防/撤防 + 停位喘振修复，见 rtl/abz_gen.v 的 z_index_gen）。
+    //   ② 仓库 rtl/ 自 v90 起直接给出 0x0019：交付位流与仓库源码逐字节一致，
+    //      不再需要"复制后改一行 BUILD_ID"的派生步骤（tools/make_v90_rtl.py 仅做校验与拷贝）。
+    localparam [15:0] RTL_BUILD_ID = 16'h0019;   // v90：Z 索引布防/撤防 + 2048 PPR
 
     //=========================================================================
     // 1. 时钟与复位（单时钟域，不使用 MMCM / 不使用任何 IP）
@@ -309,7 +313,7 @@ module enc_top #(
     );
 
     //-------------------------------------------------------------------------
-    // 按键去抖 + 一键标定触发（对标 iC-TW28 的 xCALIB 引脚）
+    // 按键去抖 + 一键标定触发（对标 专用细分 ASIC 的 xCALIB 引脚）
     //-------------------------------------------------------------------------
     wire key_sync;
     cdc_sync2 #(.WIDTH(1)) u_key_sync (
@@ -461,8 +465,10 @@ module enc_top #(
     //       · 额—?—好处：主机若写入了错—??系数，一—?标定仍然收敛到—?—确的绝对参数，
     //         而不—?"相—?—于错—??系数"收敛—?
     // ★ v9（S4）偏置慢跟踪：bias_track 观测的是**校正后**的 s_cor/c_cor，
-    //   输出的是"残余偏置"，所以叠加在寄存器偏置上（cfg_ofs + bias）构成闭环：
-    //   偏置漂移 → 残余非零 → EMA 学到 → 抵消。16 位饱和防溢出。
+    //   输出的是"残余偏置"，叠加在寄存器偏置上（cfg_ofs + bias）。★ 注意：这不是反馈环——
+    //   bias 在每个块窗口内保持恒定（块率 2.62 ms），窗末一次性 bias += 均值，
+    //   属"分块积分/开环阶跃"，刻意不用 EMA（v66 实测：EMA 会与跟踪环咬合成反馈环，
+    //   稳态只能补一半且 max_dev 恶化到 1763 LSB16）。默认关闭（0x0122 bit1=0）。16 位饱和防溢出。
     wire signed [15:0] bias_s, bias_c;
     wire               cfg_bias_en;      // ★ v9.1：0x0122 bit1，默认 0（偏置跟踪关闭）
     wire               bias_valid, bias_big;
@@ -774,37 +780,30 @@ module enc_top #(
     //   <1/8 圈（或反向）的那一拍，恰好就是 z_phase=0 的跨零点；再用一个自由运行的
     //   rev_cnt 数电周期，低 POLE_BITS 位为 0 时为圈边界。事件式判断不受 clr_on_z 影响，
     //   天然保证"每圈恰好一次"，且与 ABZ/K 的 Z 相位对齐。
-    localparam integer Z_WIN_CLKS = 6;                       // 窗宽（clk），> 2 拍读数延迟
-    localparam [AW-1:0] ZW_TOP = (1 << AW) - (1 << (AW-3));  // 7/8 圈（如 57344）
-    localparam [AW-1:0] ZW_LOW = (1 << (AW-3));              // 1/8 圈（如 8192）
-
-    reg [AW-1:0] z_ang_prev;
-    always @(posedge clk_i or negedge rst_n) begin
-        if (!rst_n)              z_ang_prev <= {AW{1'b0}};
-        else if (filt_valid)     z_ang_prev <= angle;
-    end
-
-    wire ang_wrap_f = filt_valid & (z_ang_prev >= ZW_TOP) & (angle <= ZW_LOW);
-    wire ang_wrap_b = filt_valid & (z_ang_prev <= ZW_LOW) & (angle >= ZW_TOP);
-
-    // 自由运行的"电周期"计数（不在 Z 处清零，避免自我重触发）
-    reg signed [CYCLE_BITS-1:0] rev_cnt;
-    always @(posedge clk_i or negedge rst_n) begin
-        if (!rst_n)          rev_cnt <= {CYCLE_BITS{1'b0}};
-        else if (ang_wrap_f) rev_cnt <= rev_cnt + 1'b1;
-        else if (ang_wrap_b) rev_cnt <= rev_cnt - 1'b1;
-    end
-
-    wire z_idx_evt = (ang_wrap_f | ang_wrap_b) &&
-                     (rev_cnt[POLE_BITS-1:0] == {POLE_BITS{1'b0}});
-
-    reg [3:0] z_win_left;
-    always @(posedge clk_i or negedge rst_n) begin
-        if (!rst_n)                    z_win_left <= 4'd0;
-        else if (z_idx_evt)            z_win_left <= Z_WIN_CLKS[3:0];
-        else if (z_win_left != 4'd0)   z_win_left <= z_win_left - 4'd1;
-    end
-    assign z_window = z_idx_evt | (z_win_left != 4'd0);
+    //
+    //  ★ v75（2026-11-03）：圈事件 + 窗展宽整体抽到 rtl/abz_gen.v 的 z_index_gen，
+    //    并加上 arm 机制修复"停位抖动时 Z 连续喘振"（详见该模块头注释）：
+    //      · 旧实现 z_idx_evt = (ang_wrap_f|ang_wrap_b) & (rev_cnt 低 POLE_BITS 位==0)，
+    //        停位时 ang_wrap_f/b 交替 ⇒ rev_cnt 在 0/1 间翻 ⇒ 每翻回 0 再出一次 Z；
+    //        实测 0x054A 的 Z 计数 12,128,530 vs 实际约 4001 转，差额全是这种抖动
+    //        （转动时 z_rate.py 实测严格 1 Z/转）。
+    //      · 现在出过 Z 后撤防，角度相对上一 Z 位置离开 ≥ 1/8 圈（8192 LSB，
+    //        模 2π 最短弧）才重新布防 ⇒ 同一圈最多一个 Z，转动行为不变。
+    //    抽成模块是为了让 sim/tb_z_chatter.v 能单独例化这段逻辑做 5 s 级抖动回归
+    //    （tb_enc_top 走 DDS 输入端，无法直接摆角度）。
+    z_index_gen #(
+        .AW        (AW),
+        .POLE_BITS (POLE_BITS),
+        .CW        (CYCLE_BITS)
+    ) u_zidx (
+        .clk       (clk_i),
+        .rst_n     (rst_n),
+        .angle     (angle),
+        .in_valid  (filt_valid),
+        .z_window  (z_window),
+        .z_idx_evt (),
+        .z_armed_o ()
+    );
 
     //-------------------------------------------------------------------------
     // ★ 2026-10-28 修复：UVW 的输入必须是「机械角」，不是「正弦周期内角度」。
@@ -1092,7 +1091,7 @@ module enc_top #(
     //     uart_scope 帧共用，重排会连带改显示与遥测格式，收益不抵风险。
 
     //=========================================================================
-    // 10. 状态字（TW28 兼容 bit 定义）
+    // 10. 状态字（统一 bit 定义）
     //     bit0 oflow / bit1 falarm / bit2 laglim / bit3 inclim
     //     bit4 lagfatl / bit5 scamp / bit6 adapt / bit7 res
     //=========================================================================
@@ -1114,7 +1113,7 @@ module enc_top #(
     //       （calib 系数、amp_sq、cycle_cnt、pos_full、DEVICE_ID）都超出 8bit 地址，
     //       若写成 .AW(8) 会整段不可访问。
     //
-    // ★ 协议模式必须选包模式（USE_TW28_PACKET=1）：
+    // ★ 协议模式必须选包模式（USE_PKT_MODE=1）：
     //   简单 2 字节模式的地址只有 7 位（见 rtl/spi_slave.v:208
     //   `addr <= {9'd0, sr_next[6:0]}`），只能访问 0x00..0x7F。而
     //   docs/01_technical_solution.md 第 7 节定义的整张寄存器映射表
@@ -1124,7 +1123,7 @@ module enc_top #(
     //   用简单模式时这些寄存器在顶层**一个都写不进去**，输出侧配置恒为复位默认值
     //   （abzen=1、uwven=0、zwidth=0、div=1），ABZ 的 Z 永不产生、UVW 恒为 000。
     //   顶层集成测试台 tb_enc_top 实测过这个症状（illegal_codes=245760、
-    //   Z_pulses=0）。因此顶层固定用 TW28 风格 32 位包模式；简单模式仍保留在
+    //   Z_pulses=0）。因此顶层固定用 32 位包模式；简单模式仍保留在
     //   rtl/spi_slave.v 里供单独测试（sim/tb_spi_slave.v 两种模式都覆盖）。
     wire [15:0] spi_addr;
     wire [7:0]  spi_wdata, spi_rdata;
@@ -1232,7 +1231,7 @@ module enc_top #(
     spi_slave #(
         .AW              (16),
         .DW              (8),
-        .USE_TW28_PACKET (1)
+        .USE_PKT_MODE (1)
     ) u_spi (
         .clk   (clk_i),
         .rst_n (rst_n),

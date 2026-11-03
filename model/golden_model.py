@@ -243,7 +243,7 @@ def calibrate(s_n, c_n, ref_q15=None):
         c2 = A_c*cos(dphi)*cos(theta)
         S  = s1*gain_s,  C = c2*gain_c,  gain_s = ref/A_s, gain_c = ref/(A_c*cos(dphi))
 
-    相比 TW28 的 (max+min)/2 + 幅值失衡 + 固定步长相位补偿：
+    相比 专用细分 ASIC 的 (max+min)/2 + 幅值失衡 + 固定步长相位补偿：
       - 用一阶矩/二阶矩而不是极值，抗噪、抗谐波、抗非整数周期；
       - 一次求解即精确，无需迭代、无需搜索。
     """

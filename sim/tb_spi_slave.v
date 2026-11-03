@@ -7,10 +7,10 @@
 //    · 从机在 sck 上升沿采样 MOSI；主机在 sck 上升沿后 5 ns 采样 MISO(sso)。
 //
 //  两套 DUT 并行（各自带一个 reg_file）：
-//    A) spi_slave #(USE_TW28_PACKET=0)：简单 2 字节模式
+//    A) spi_slave #(USE_PKT_MODE=0)：简单 2 字节模式
 //       byte0 = {rw, addr[6:0]}，byte1 = data；byte0 期间返回上一帧读数据，
 //       byte1 期间返回本帧地址的数据。
-//    B) spi_slave #(USE_TW28_PACKET=1)：TW28 风格 32 位包
+//    B) spi_slave #(USE_PKT_MODE=1)：32 位包
 //       命令 bit31 st=1, [30:29]rm, [28:27]wm, [26:24]page, [23:16]addr, [15:0]data
 //       写: 低字节写 addr，高字节写 addr+1；读: 响应在下一帧移出，
 //       格式 {状态字节(读 {page,0x3A}), addr 回显, reg[addr+1], reg[addr]}
@@ -38,7 +38,7 @@ module tb_spi_slave;
 
     wire calib_start_a;
 
-    spi_slave #(.AW(16), .DW(8), .USE_TW28_PACKET(0)) spi_a (
+    spi_slave #(.AW(16), .DW(8), .USE_PKT_MODE(0)) spi_a (
         .clk(clk), .rst_n(rst_n),
         .sck(sck_a), .ssi(ssi_a), .ss_n(ssn_a), .sso(sso_a),
         .addr(addr_a), .wdata(wdata_a), .we(we_a), .rdata(rdata_a)
@@ -91,7 +91,7 @@ module tb_spi_slave;
     reg  [31:0] b_stat_pos_full;
     reg         b_laglim, b_amplo, b_amphi, b_otr;
 
-    spi_slave #(.AW(16), .DW(8), .USE_TW28_PACKET(1)) spi_b (
+    spi_slave #(.AW(16), .DW(8), .USE_PKT_MODE(1)) spi_b (
         .clk(clk), .rst_n(rst_n),
         .sck(sck_b), .ssi(ssi_b), .ss_n(ssn_b), .sso(sso_b),
         .addr(addr_b), .wdata(wdata_b), .we(we_b), .rdata(rdata_b)
@@ -300,7 +300,7 @@ module tb_spi_slave;
         // ============================================================
         // B) 32 位包模式
         // ============================================================
-        $display("---- B) 32 位 TW28 风格包模式 ----");
+        $display("---- B) 32 位 32 位包包模式 ----");
         // ---- 写一个 16 位寄存器（0x0514 GAIN_S = 0x4000，低字节 0x00 高字节 0x40）
         pkt_b(mkpkt(2'b00, 2'b11, 3'd5, 8'h14, 16'h4000), dummy32);
         chk16("B:cfg_gain_s(写 0x4000)", cfg_gain_s_b, 16'h4000);

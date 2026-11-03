@@ -219,3 +219,18 @@ v68 之所以"看起来有 Z"，是因为 `cycle_cnt` 卡 0 ⇒ `z_window≡1`�
   2. `rtl/enc_top.v` 的 `translate_off` 方向自检哪怕对齐 3 拍，在 50 Hz 合成信号启动瞬态仍刷假
      ERROR（`(20 / -405)`）=> 改为"两侧幅值都 >1024 LSB 且连续 64 拍才报"。该段不进位流，
      v73 位流不受影响；`final_verify.ps1` 比对源码时已剔除 `translate_off..translate_on` 段。
+
+## 14. v90 验收判据收敛（2026-11-04）
+
+- **判据唯一来源**：[`docs/39_acceptance_criteria_v90.md`](../docs/39_acceptance_criteria_v90.md)。凡与 `docs/30`、`docs/32/34/36/38`、`board_day_checklist.md` 冲突，以 docs/39 为准。
+- **当前基线**：生产 `_impl_v90/enc_top_v90.bit`（1,504,220 B / SHA `A89512A5...` / WNS +0.199 / LUT 52.78%）；
+  显示 `_impl_disp_v90/enc_top_disp_v90.bit`（1,688,245 B / SHA `69FE313C...` / WNS +0.221 / LUT 82.16% / BRAM 45.5）；
+  两者 `RTL_BUILD_ID = 0x0019`。**Flash 里固化的是显示位流**，冷启动已过。
+- **转速唯一权威判据**：`_boardtest/z_rate.py`（Z 频率 × 60，每转 1 个 Z）。`check_v70` 的「机械转速」用 16 位 `cycle_cnt` 中位步进，
+  >8 kHz 电频率必然混叠（621 rpm 是伪值，真值 457 rpm）。
+- **免判项**：BiSS 全部（已整体移除，`0x0500/0x0501/0x053B/0x053C` 恒 0）、ARP MAC 常量（实测 `00-00-02-00-00-01`）、
+  `0x0405` bit3 `inclim`（= `uvw_freq_warn`，偶发不判故障）、`0x0405` bit0 OTR（已知假告警，W1C 可清）。
+- **已回退、不要重新合入**：`rtl/uvw_gen.v` 的 `e_uw` + `K=4` 扇区去抖（仿真过、板上 UVW 冻结：`hyst=0` 时门限仅 1 LSB，
+  判据逐拍翻转永远凑不满连续 4 拍）。真要重做，先把 H 下限设 ≥32 LSB 并重做板级验证。
+- 保留的 RTL 改动只有两处：`rtl/abz_gen.v` 新增 `z_index_gen`（Z 撤防/重布防 1/8 圈）+ `rtl/enc_top.v` 改为例化它。
+- 板上四项日常检查：`check_v70.py`（身份/寄存器/锁定/幅值）、`z_rate.py`（转速）、`uvw_phase.py`（六态）、`angle_vs_sc.py`（角度误差）。

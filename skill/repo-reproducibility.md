@@ -73,7 +73,7 @@ git ls-files | grep -P '[^\x00-\x7F]'
 # ② 厂商/第三方材料不在版本库里（三条都必须为空输出）
 git ls-files _refs
 git ls-files '*.pdf' '*.xls' '*.xlsx' | grep '^_refs/'
-git rev-list --objects main | grep -iE 'TW28_datasheet|HSTAD9238|AD9238V11|Davinci_Lite|_refs/vendor|引脚映射表|IO引脚分配表'
+git rev-list --objects main | grep -iE '专用细分 ASIC_datasheet|HSTAD9238|AD9238V11|Davinci_Lite|_refs/vendor|引脚映射表|IO引脚分配表'
 # ③ 许可证与声明在根目录
 ls -l LICENSE NOTICE
 # ④ 敏感/超大产物没混进来（>20 MB 应逐个确认过）
@@ -93,8 +93,8 @@ git status --porcelain
   `git rev-list --objects main | grep -iE '<厂商路径特征串>'`。实测两条反例：
   ① 用 `--all` 会把**本机的链接工作树 HEAD**（`git worktree` 的 detached HEAD）也算作
      可达根 ⇒ 明明 `main` 已经干净，`--all` 仍会打出旧提交，于是判据永远"不通过"；
-  ② 特征串写得太宽（例如只写 `TW28`）会命中仓库里**自建的**摘录文档
-     （`docs/TW28_digest.md`）⇒ 判据同样永远不可能为空。
+  ② 特征串写得太宽（例如只写 `datasheet`）会命中仓库里**自建的**其它摘录文档
+     （如 `docs/AD9238_module_digest.md`）⇒ 判据同样永远不可能为空。
   ⇒ 判据要"**对着正确的作用域 + 够精确的特征串**"写，并在写完的当天跑一遍：
   本工程这两条错都是**跑判据时才暴露**的。
 - **备份不能放在被重写的仓库里。** 重写前若用 `git branch backup-before-filter` 备份，

@@ -186,7 +186,7 @@ module amp_monitor #(
 ```
 - **Latency = 2**（乘法 1 拍 + 移位/比较 1 拍）。Xilinx DSP48 内乘法 + 后级比较允许 2 拍。
 - `amp_sq` 必须饱和到 32 位无符号，不得回绕。
-- 注释中说明：TW28 的等效门限是"校准值的 60% / 120%"。
+- 注释中说明：专用细分 ASIC 的等效门限是"校准值的 60% / 120%"。
 
 ### 1.5 `cordic_atan2.v` —— 全流水向量模式 CORDIC（核心创新点 2）
 
@@ -276,11 +276,11 @@ module loop_filter #(
     input  wire                rst_n,
     input  wire        [AW-1:0] ang_in,     // 输入角度（每周期 2^AW）
     input  wire                in_valid,
-    input  wire        [3:0]    kp,         // 0…7（越大滤波越强，与 TW28 FILT_K.kp 同义）
+    input  wire        [3:0]    kp,         // 0…7（越大滤波越强，与 kp 同义）
     input  wire        [1:0]    ki,         // 0…3
     input  wire                freeze,      // 1=保持当前输出（用于标定/停机抱死）
     output reg  signed [AW+FRAC-1:0] pos_out, // 扩展位置，每周期 = 2^(AW+FRAC)
-    output reg                  lag_limit,  // 超前/滞后超过 45°（对应 TW28 STAT_VAL.laglim）
+    output reg                  lag_limit,  // 超前/滞后超过 45°（对应 状态字 laglim）
     output reg                  out_valid
 );
 ```
@@ -295,14 +295,14 @@ lag_limit = (|err| > REV/8)                    // 45°
 - 必须对 `integ` 做**抗积分饱和**（限幅到 ±REV/4）。
 - **Latency = 3**。
 - `freeze=1` 时 `pos_out` 保持，`integ` 不清零。
-- 端口 `lag_limit` 用于顶层产生 TW28 兼容的 `STAT_VAL.laglim`。
+- 端口 `lag_limit` 用于顶层产生 统一的 `STAT_VAL.laglim`。
 
 ### 1.7 `pole_counter.v` —— 粗精融合 / 多周期（极）计数与辨向
 
 ```verilog
 module pole_counter #(
     parameter integer AW = 16,      // 角度位宽
-    parameter integer CW = 16       // 多周期计数器位宽（TW28 = 14，这里给 16 便于扩展）
+    parameter integer CW = 16       // 多周期计数器位宽（传统方案 = 14，这里给 16 便于扩展）
 )(
     input  wire                clk,
     input  wire                rst_n,
@@ -320,7 +320,7 @@ module pole_counter #(
     output reg                  out_valid
 );
 ```
-- 跨零判据：上一拍角度在 `[2^AW - 2^(AW-3), 2^AW)` 且本拍在 `[0, 2^(AW-3))` → `wrap_pos`；反向为 `wrap_neg`。门限 `2^(AW-3)` = 45°，与 TW28 的半周期扇区思想一致。
+- 跨零判据：上一拍角度在 `[2^AW - 2^(AW-3), 2^AW)` 且本拍在 `[0, 2^(AW-3))` → `wrap_pos`；反向为 `wrap_neg`。门限 `2^(AW-3)` = 45°，与 专用细分 ASIC 的半周期扇区思想一致。
 - **必须**用"跨零方向"而不是简单差分来计数，否则在角度抖动时会误计数。这一点写进注释。
 - `pos_full` 与 `cycle_cnt` 同拍更新。
 - **Latency = 2**。
@@ -345,8 +345,8 @@ module abz_gen #(
     input  wire                abzen,
     // ---- Z 通道 ----
     input  wire                z_window,    // 来自顶层 Z 门控窗口
-    input  wire        [11:0]   z_phase,    // Z 相位，单位 360°/4096（TW28 ZPH 10 位，这里 12 位）
-    input  wire        [3:0]    z_width,    // Z 宽度参数（TW28 ZERO1.zwidth，0…15）；★ v9 起实际脉冲宽 = z_width+1 个 AB 边沿步（1…16）
+    input  wire        [11:0]   z_phase,    // Z 相位，单位 360°/4096（专用细分 ASIC ZPH 10 位，这里 12 位）
+    input  wire        [3:0]    z_width,    // Z 宽度参数（z_width，0…15）；★ v9 起实际脉冲宽 = z_width+1 个 AB 边沿步（1…16）
     output reg                 a_out, b_out, z_out,
     output reg  signed [31:0]  edge_cnt,    // 内部 AB 边沿计数（有符号，用于调试/测速）
     output reg                 limiter_active,
@@ -372,7 +372,7 @@ module abz_gen #(
    > `edge_idx[0]` 每步翻转、`edge_idx[1]` 每两步翻转，二者并不同步翻转。
    > 已用脚本实测更正（证据：`_tools/check_ab_map.py` 输出，A/B 占空均为 50.00%，边沿数各 32/64 步）。
 2. **迟滞**：迟滞量为 `hyst * 2^(AW-11)` 个角度 LSB（因为 360°/2048 对应 `2^AW/2048 = 2^(AW-11)`）。仅在"当前边沿索引 + 迟滞"之外才切换，防止静止抖动。实现时用角度比较，不要对边沿索引做模运算比较。
-3. **后分频**：`div=1` 时不启用；`div=2…8` 时对边沿索引做 `mod div` 抽取（保留一个 3 位模计数器），得到有效分辨率 `inter/div`。Z 通道**旁路**后分频（与 TW28 一致）。
+3. **后分频**：`div=1` 时不启用；`div=2…8` 时对边沿索引做 `mod div` 抽取（保留一个 3 位模计数器），得到有效分辨率 `inter/div`。Z 通道**旁路**后分频（与 专用细分 ASIC 一致）。
 4. **AB 限频**：内部维护一个以 `clk` 计数的保持计数器 `hold`，当 `hold != 0` 时禁止边沿变化并置 `limiter_active=1`。最小间隔 = `20ns * (ablimit+1) * div`，换算成 `clk_sys` 周期数 = `(20 * (ablimit+1) * div) / 周期ns`。用 `localparam` 参数化时钟周期。
    ★ `limiter_active` **只表示"限频保持/补发"**，不表示"过速跟不上"。过速（`inter*f_in/div > filt_valid`，
    即每拍需要的步数超过"每拍最多点火一次"这条硬上限）走 `lag_warn/lag_fatal`，
@@ -390,10 +390,10 @@ module abz_gen #(
    另注：`lag_mag` 的两个来源都是"每拍最多 +1"，故它是**下界** —— 角度跑得越快，
    同一阈值对应的真实滞后越大（探针实测：64 LSB/拍 → warn 45.0°；256 → 91.1°；
    1024 → 365.3°）；该信号只适合当"严重跟不上"的粗警报，不是精确角度指示。
-5. **Z 输出**：当 `z_window=1` 且角度进入 `[z_phase, z_phase + 1)`（单位 360/4096）时，输出 **`z_width + 1`** 个 AB 边沿宽度的 Z 脉冲（★ v9 起按 TW28 手册口径实现；v8 及以前是 `z_width` 个，`z_width = 0` 时无 Z 输出）；Z 由 `zpol` 反相；`abzen=0` 时 A/B/Z 全部输出 0（高阻由顶层 IOBUF 处理）。
+5. **Z 输出**：当 `z_window=1` 且角度进入 `[z_phase, z_phase + 1)`（单位 360/4096）时，输出 **`z_width + 1`** 个 AB 边沿宽度的 Z 脉冲（★ v9 起按 公开手册口径实现；v8 及以前是 `z_width` 个，`z_width = 0` 时无 Z 输出）；Z 由 `zpol` 反相；`abzen=0` 时 A/B/Z 全部输出 0（高阻由顶层 IOBUF 处理）。
    - ★ **门控边界（v8 明确并修复，见 `docs/DEV_STATUS.md` §1.44）**：`z_window` 只决定**哪一次相位跨零装载 Z**（每 `2^POLE_BITS` 个输入周期一次，顶层 `rtl/enc_top.v` 的 `z_window = (cycle_cnt[...] == 0)`）；**脉冲装载之后的推进、以及 `Z_TIMEOUT` 兜底，不受 `z_window` 关闭影响**。v7 及以前把推进也放在 `z_window` 内，而顶层的窗在装载后 ~2 clk 就关闭（`pole_counter` wrap 延迟）⇒ **集成路径的 Z 脉宽被截成 2 clk = 40 ns**，`z_width` 失效。`abzen=0` 时进行中的脉冲立即中止。
    - 因此**单元级测试台若把 `z_window` 常开，就无法覆盖这条边界**（`sim/tb_abz_gen.v`、`sim/tb_abz_jitter.v`、`sim/tb_loop_abz_chain.v` 都是常开）；集成覆盖在 `sim/tb_enc_top.v` 的 **C5**（TEST C 反向段）。
-6. **方向**：`abzdir=1` 时交换 A/B；`apol`/`bpol` 分别反相 A/B。**注意 TW28 行为：只翻转 apol 或 bpol 之一会反转计数方向**，请把该规则写进注释并在 `abzdir` 补偿。
+6. **方向**：`abzdir=1` 时交换 A/B；`apol`/`bpol` 分别反相 A/B。**注意 专用细分 ASIC 行为：只翻转 apol 或 bpol 之一会反转计数方向**，请把该规则写进注释并在 `abzdir` 补偿。
 7. **静止时**：不允许 A/B 抖动。
 
 - **Latency ≤ 3**。所有输出寄存器化。
@@ -402,7 +402,7 @@ module abz_gen #(
   - A 与 B 严格 90° 相位差（各占 50%）
   - 一周期内恰好 1 个 Z 脉冲，宽度 = `z_width + 1` 个边沿（★ v9；`z_width = 0` ⇒ 1 步）
 
-> ✅ **规格偏差已修复（2026-10-11，v9）**：TW28 手册对 Z 宽度写的是 **`(zwidth + 1) / div`** 个边沿（`docs/TW28_digest.md:365`、`:786`、`docs/01_technical_solution.md:332`、`:596`），而 v8 及以前实现是 **`z_width`** 个 —— 差 1 个原始边沿步（默认短 20%），且 `z_width = 0` 在 v8 是"无 Z"而手册语义是 1 个边沿步。两条独立实证：① `sim/logs/tb_enc_top.log` C5 段 Z 高电平 **2042 拍** ≈ 4×512（而非 5×512）；② **板上二值实验**（2026-10-11，AFG 1 kHz、`div = 1`、探头在 `J5-7`）：`z_width = 0`（`0x0108 = 0x4000`）时 **Z 上一个脉冲都没有**、写回 `0x4004` 时 15.625 Hz / 3.906 µs 脉冲立即回来。
+> ✅ **规格偏差已修复（2026-10-11，v9）**：通用口径对 Z 宽度写的是 **`(zwidth + 1) / div`** 个边沿（公开数据手册、本设计 §3.5），而 v8 及以前实现是 **`z_width`** 个 —— 差 1 个原始边沿步（默认短 20%），且 `z_width = 0` 在 v8 是"无 Z"而规范语义是 1 个边沿步。两条独立实证：① `sim/logs/tb_enc_top.log` C5 段 Z 高电平 **2042 拍** ≈ 4×512（而非 5×512）；② **板上二值实验**（2026-10-11，AFG 1 kHz、`div = 1`、探头在 `J5-7`）：`z_width = 0`（`0x0108 = 0x4000`）时 **Z 上一个脉冲都没有**、写回 `0x4004` 时 15.625 Hz / 3.906 µs 脉冲立即回来。
 > 用户 2026-10-11 选定**按手册修**：`rtl/abz_gen.v` 的 `z_pulse_n = {1'b0, z_width} + 5'd1`、`r_z_left` 由 4 位加宽到 `Z_PULSE_W = 5`、装载拍直接置 `r_z_out <= 1'b1`（`RTL_BUILD_ID` = **v9 = 0x0009**）；`sim/tb_abz_gen.v`（TEST C 扩到 `z_width = 0…8`）、`sim/tb_enc_top.v`（B5 判据收紧为 2304…2816 拍）、`model/abz_uvw_model.py`（跨零拍不计入步数）已同步。详见 `docs/DEV_STATUS.md` §1.47/§1.49 与 §3 item 21。
 > ⚠ **极低频截断（v9 起的新约束）**：`Z_TIMEOUT = 4096 clk = 81.9 µs` 是兜底，脉冲长于它会**被截短** ⇒ 需 `(z_width+1)/(1024 × f_in) ≤ 81.9 µs`，即 **`f_in ≥ 11.92 × (z_width + 1) Hz`**（默认 `z_width = 4` ⇒ ≥ 59.6 Hz；`z_width = 15` ⇒ ≥ 190.7 Hz）。超出时读到的脉宽小于名义值，不是缺陷。
   - `div=3` 时 AB 周期数为 `4*inter/3`（允许因除不尽产生的 ±1 误差，测试里说明）
@@ -417,7 +417,7 @@ module uvw_gen #(
     input  wire                rst_n,
     input  wire        [AW-1:0] angle,
     input  wire                in_valid,
-    input  wire        [4:0]    pairs,     // 1…32 极对数；0 表示 32（TW28 语义）
+    input  wire        [4:0]    pairs,     // 1…32 极对数；0 表示 32（通用语义）
     input  wire                uvwpol, uvwdir,
     input  wire                uwven,
     input  wire signed [15:0]   uvwph,     // UVW 相位偏移，单位 360/1024
@@ -432,7 +432,7 @@ module uvw_gen #(
 - **Latency ≤ 3**。
 - 提供 `sim/tb_uvw_gen.v`：`pairs=4` 时，一个输入周期内 UVW 应出现 4 个完整电周期，且 6 个状态的驻留时间相等（±1 个 `clk` 采样误差）。
 
-### 1.10 `biss_c_slave.v` —— BiSS-C 从站（核心创新点 4，TW28 没有、TW29 才有）
+### 1.10 `biss_c_slave.v` —— BiSS-C 从站（核心创新点 4，低阶方案没有、高阶方案才提供）
 
 ```verilog
 module biss_c_slave #(
@@ -495,7 +495,7 @@ module spi_slave #(parameter integer AW = 16, parameter integer DW = 8)(
 ```
 - **地址位宽必须是 16**（不是 8）：寄存器组里 `0x5xxx` 段的标定结果与状态量都超出 8 位地址，若用 8 位会整段不可访问。这是一个已经踩过的坑。
 - 模式 0（CPOL=0, CPHA=0），MSB 先，单次传输 = 1 字节地址 + 1 字节数据（读时 `sso` 在地址字节期间返回上一拍读数据）。
-- 为了便于上位机调试，**同时**实现一个更简单的 **32 位命令包**格式（见 `docs/01_technical_solution.md` 第 7 节），两者用参数 `USE_TW28_PACKET` 选择。
+- 为了便于上位机调试，**同时**实现一个更简单的 **32 位命令包**格式（见 `docs/01_technical_solution.md` 第 7 节），两者用参数 `USE_PKT_MODE` 选择。
 
 ```verilog
 module reg_file (
@@ -512,9 +512,9 @@ module reg_file (
     input  wire [31:0] stat_amp_sq, ...
 );
 ```
-- 地址表必须**优先复用 TW28 的地址**（`0x00 MAIN_CFG`、`0x01 LED_CFG`、`0x10 LED_PWM`、`0x100 UVW_CFG`、`0x101 INTER0`、`0x102 INTER1`、`0x103 AB`、`0x104 UVW`、`0x105 FALARM`、`0x106 ABLIMIT`、`0x107 ZERO0`、`0x108 ZERO1`、`0x109 OUTPUT`、`0x10A ZPHASE`、`0x10B UVWPH`、`0x10C PHASE_LSB`、`0x300 FILT_CFG`、`0x301 FILT_LAG`、`0x302 FILT_K`、`0x404 STAT_VAL`、`0x405 STAT_LATCH`、`0xE000 DEVICE_ID`），扩展寄存器用 `0x5xxx` 段，避免与 TW28 冲突。
-- `DEVICE_ID` 必须返回 `8'h0C`（与 iC-TW28 一致，便于上位机复用）。
-- `0x0405 STAT_LATCH` 必须是 **W1C（写 1 清对应位）**，与 TW28 的"写 0 清位"**相反**：整字节写入时写 0 清位会一次抹掉全部锁存。**写 bit0（otr 位）时还必须同拍输出 1 拍 `clr_otr` 脉冲**，清 `ad9238_capture` 内部的 sticky OTR —— 该 sticky 与寄存器里的锁存位是两个独立锁存器（前者只有 `clr_otr` / `rst_n` / `en` 下降沿能清），只清锁存位不会让 `led[0]` 与 `irq_n` 恢复。2026-10-10 上板实测：`clr_otr` 原在顶层被硬接 `1'b0`，OTR 一旦锁存即永久保持（led[0] 常亮、irq_n 常低），只能重配置器件。若清位时 OTR 引脚仍为高，数拍后会重新锁存（这是期望语义，用于区分瞬时过载与真过载）。
+- 地址表必须**优先复用 专用细分 ASIC 的地址**（`0x00 MAIN_CFG`、`0x01 LED_CFG`、`0x10 LED_PWM`、`0x100 UVW_CFG`、`0x101 INTER0`、`0x102 INTER1`、`0x103 AB`、`0x104 UVW`、`0x105 FALARM`、`0x106 ABLIMIT`、`0x107 ZERO0`、`0x108 ZERO1`、`0x109 OUTPUT`、`0x10A ZPHASE`、`0x10B UVWPH`、`0x10C PHASE_LSB`、`0x300 FILT_CFG`、`0x301 FILT_LAG`、`0x302 FILT_K`、`0x404 STAT_VAL`、`0x405 STAT_LATCH`、`0xE000 DEVICE_ID`），扩展寄存器用 `0x5xxx` 段，避免与 专用细分 ASIC 冲突。
+- `DEVICE_ID` 必须返回 `8'h0C`（与 专用细分 ASIC 一致，便于上位机复用）。
+- `0x0405 STAT_LATCH` 必须是 **W1C（写 1 清对应位）**，与 专用细分 ASIC 的"写 0 清位"**相反**：整字节写入时写 0 清位会一次抹掉全部锁存。**写 bit0（otr 位）时还必须同拍输出 1 拍 `clr_otr` 脉冲**，清 `ad9238_capture` 内部的 sticky OTR —— 该 sticky 与寄存器里的锁存位是两个独立锁存器（前者只有 `clr_otr` / `rst_n` / `en` 下降沿能清），只清锁存位不会让 `led[0]` 与 `irq_n` 恢复。2026-10-10 上板实测：`clr_otr` 原在顶层被硬接 `1'b0`，OTR 一旦锁存即永久保持（led[0] 常亮、irq_n 常低），只能重配置器件。若清位时 OTR 引脚仍为高，数拍后会重新锁存（这是期望语义，用于区分瞬时过载与真过载）。
 - **（v1.1 新增）同一次 `0x0405 bit0` 写入还必须输出 `clr_biss_crc`**（口径与 `clr_otr` 逐字相同：1 拍脉冲、同拍置位优先），接到 `biss_c_slave.crc_err_clr`。理由同上一条：`crc_err_seen` 是两个独立粘滞器之一 —— 寄存器里 `0x053A[6]` 只读镜像它，而这个"seen"位本身在 `biss_c_slave` 内部，只有复位能清。显示侧把它算进空态判据（`docs/13_display_ui_requirements.md` §7），所以屏上的"清除锁存故障"按钮必须能把它清掉，否则清完屏上仍判空态、读数永远不回来。
 
 ### 1.12 `uart_rx.v` + `uart_spi_bridge.v` —— UART→SPI 桥（没有外部 SPI 主机也能改寄存器）
@@ -558,7 +558,7 @@ module uart_spi_bridge #(
   `0x5A | resp[31:24] | resp[23:16] | resp[15:8] | resp[7:0] | chk`，`chk = 0x5A ^ 前 4 字节`。
   例：`read 0x05F0` -> `85 F0 00 00`；`write 0x0109 0x00C0` -> `89 09 00 C0`；
   `write 0x0405 0x0001` -> `8C 05 00 01`；`write 0x0502 0x0001` -> `8D 02 00 01`。
-- **读命令连发两帧**（TW28 重叠：命令 N 的响应在第 N+1 帧才移出），**写命令只发一帧**
+- **读命令连发两帧**（专用细分 ASIC 重叠：命令 N 的响应在第 N+1 帧才移出），**写命令只发一帧**
   （`0x0502 CALIB_CTRL` 的 start 位写两次会触发两次标定）。写命令的应答内容是上一帧的，
   没有语义，只用于确认"链路通、命令已被执行"。
 - **TX 仲裁**：遥测（`uart_scope`）与应答共用 `uart_tx`。桥抢线前先把 `scope_hold` 拉高
@@ -579,7 +579,7 @@ module uart_spi_bridge #(
   子命令；`--file` 可离线从抓包文件里找应答）。读命令的响应里 `[31:24]` 是
   `{page,0x3A}` 的读值（page5 即 `0x053A STAT_FLAGS`），`[23:16]` 是地址回显。
 - **必须**提供 `sim/tb_uart_spi_bridge.v`：真 `uart_scope`（`SAMPLE_DIV=1000`，50 kHz 遥测
-  ≈ 线路几乎满载的最坏仲裁工况）+ 真 `uart_spi_bridge` + 真 `spi_slave(USE_TW28_PACKET=1)`
+  ≈ 线路几乎满载的最坏仲裁工况）+ 真 `uart_spi_bridge` + 真 `spi_slave(USE_PKT_MODE=1)`
   + 64K 寄存器阵列，覆盖：遥测零错帧、写生效、读回新值（两帧逻辑的唯一证据）、
   `CALIB_CTRL` 只写一帧、坏首字节被丢、半包超时后重同步、波特率 ±2%、外部主机短/长占用。
   实测 **44 checks PASS**（`sim/logs/tb_uart_spi_bridge.log`）。
@@ -906,7 +906,7 @@ v14/v15/v21/v22 新增字段一律追加在 `[133]` 以上）：
 | `[79:48]` | `pos_full` | 全周期位置（32 bit） |
 | `[87:80]` | `io_state` | `{limiter_active,dir,w,v,u,z,b,a}` |
 | `[95:88]` | `io_flags` | `{amp_bad,cor_sat,uwven,abzen,uvw_warn,z_win,lag_fat,lag_warn}` |
-| `[103:96]` | `stat_byte` | TW28 兼容状态字 |
+| `[103:96]` | `stat_byte` | 状态字 |
 | `[113:104]` | `cfg_inter` | 倍频率（0 视为 256） |
 | `[116:114]` | `cfg_div` | 分频率（显示值 = 本值 + 1） |
 | `[121:117]` | `cfg_pairs` | 极对数（0 视为 32） |

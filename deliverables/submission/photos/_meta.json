@@ -1,0 +1,34 @@
+[
+ {
+  "file": "01_overview_full.jpg",
+  "src": "63a2e397c4d60e86349b18ef4d6d947b.jpg",
+  "w": 8064,
+  "h": 6048,
+  "bytes": 7222120,
+  "sha": "F6A81D40E63537F802C36E7D8EA9781AE0E28D6D3E759FB11FD3573F5005B7B9"
+ },
+ {
+  "file": "02_board_adc_frontend.jpg",
+  "src": "7a62efb84d49d8fb75b7b32c67bbae55.jpg",
+  "w": 4032,
+  "h": 3024,
+  "bytes": 2346047,
+  "sha": "AC152A91AAE1D8A08DE3BFBF29F463F2F030487DF8F7769E14C130B4BBF6582F"
+ },
+ {
+  "file": "03_board_front.jpg",
+  "src": "a9b78c17daf957f75eb3c287d002ec8f.jpg",
+  "w": 4032,
+  "h": 3024,
+  "bytes": 1974279,
+  "sha": "C673B01C8EED0D9B58C3C8125B8E3833688FA4285391FB1B8CACD225A268D446"
+ },
+ {
+  "file": "04_board_screen.jpg",
+  "src": "8b1ead014bc5939f452f570ffd9d0266.jpg",
+  "w": 6048,
+  "h": 8064,
+  "bytes": 9238822,
+  "sha": "B5C65D8A6B158C1BF400CDA201EDA9C603385E8691513DD0F899C4A209F331EF"
+ }
+]

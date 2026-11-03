@@ -15,7 +15,7 @@
   万一界面卡了，旧批次会被丢掉并计数（丢批/丢帧），不会把内存撑爆。
 * 阻塞调用（读身份证、写寄存器、回读）放到临时线程里，界面不假死；
   同一时刻只允许一个这样的任务（开工时把按钮全禁用）。
-* 读寄存器是“连发两帧”才回一帧（TW28 重叠语义），写只发一次 —— 都封装在 link.py。
+* 读寄存器是“连发两帧”才回一帧（应答滞后一帧的重叠语义），写只发一次 —— 都封装在 link.py。
 """
 
 import os
@@ -30,7 +30,8 @@ if _HERE not in sys.path:
 
 from PySide6.QtCore import QEvent, QObject, Qt, QThread, QTimer, QUrl, Signal         # noqa: E402
 from PySide6.QtGui import QDesktopServices, QGuiApplication, QKeySequence, QShortcut       # noqa: E402
-from PySide6.QtWidgets import (QApplication, QAbstractSpinBox, QCheckBox, QComboBox,  # noqa: E402
+from PySide6.QtWidgets import (
+    QDoubleSpinBox,QApplication, QAbstractSpinBox, QCheckBox, QComboBox,  # noqa: E402
                                QFrame, QHBoxLayout, QLabel, QLineEdit,
                                QMainWindow, QMessageBox, QPlainTextEdit,
                                QPushButton, QScrollArea, QSizePolicy,
@@ -768,6 +769,41 @@ class MainWindow(LogMixin, LiveMixin, CmdsMixin, QMainWindow):
         card, lay = uk.make_card("实时数据预览", "最新一帧的原始读数；波形见下方。")
         card.setMinimumWidth(400)
         self.v_angle = uk.field(lay, "电角度", "—")
+        # 板上角度字比采样时刻晚 τ（实测 0.32 µs），按转速补回来。默认开：
+        #   补偿前 6.3″、补偿后 0.01″（913 rpm，见 docs/42 §22）。
+        row_tau = QHBoxLayout()
+        row_tau.setSpacing(6)
+        self.chk_tau = QCheckBox("延时补偿")
+        self.chk_tau.setChecked(True)
+        self.chk_tau.setProperty("switch", "true")
+        self.chk_tau.setToolTip(
+            "板上角度字比真正的采样时刻晚 τ ≈ 0.32 µs（12.5 MSPS 下 4 个采样周期）。\n"
+            "补偿用 θ + 360·f·τ，只改显示，不改板、不改记录。\n"
+            "关掉就是板上原始角度。")
+        row_tau.addWidget(self.chk_tau)
+        # τ 可调：不同位流/滤波配置下这个值会变，调的时候盯「补偿后电角度」。
+        self.sp_tau = QDoubleSpinBox()
+        self.sp_tau.setRange(0.0, 5.0)
+        self.sp_tau.setDecimals(2)
+        self.sp_tau.setSingleStep(0.02)
+        self.sp_tau.setSuffix(" µs")
+        self.sp_tau.setFixedWidth(88)
+        try:
+            _tau0 = float(up.raw("data", "tau_us", 0.32))
+        except (TypeError, ValueError):
+            _tau0 = 0.32
+        self.sp_tau.setValue(_tau0)
+        self.sp_tau.setToolTip(
+            "板上角度字的流水线延时 τ。\n"
+            "补偿公式 θ_corr = θ_meas + 360·f·τ。\n"
+            "上板实测 0.32 µs（12.5 MSPS 下 4 个采样周期）；"
+            "913 rpm 时残差从 6.3″ 降到 0.01″。")
+        self.sp_tau.valueChanged.connect(self._on_tau)
+        self._tau_us = _tau0
+        row_tau.addWidget(self.sp_tau)
+        row_tau.addStretch(1)
+        lay.addLayout(row_tau)
+        self.v_ang_fix = uk.field(lay, "补偿后电角度", "—")
         self.v_pos = uk.field(lay, "多周期位置", "—")
         self.v_sc = uk.field(lay, "正余弦 s/c", "—")
         self.v_r = uk.field(lay, "幅值 r", "—")

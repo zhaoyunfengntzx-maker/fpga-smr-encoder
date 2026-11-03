@@ -130,7 +130,7 @@ module tb_disp_engine;
     reg  [2:0]  pnl_undo_div_tb   = 3'd0;     // v44（㊶）：「上一次值」的分频码（0 = ÷1）
     // v30：[11] 段驱动的遥测与使能（必须在例化前面声明，理由见 [11] 的注释）
     reg  [7:0]  t_io_flags = 8'h00;  // telemetry {amp_bad,cor_sat,uwven,abzen,uvw_warn,z_win,lag_fat,lag_warn}
-    reg  [7:0]  t_stat     = 8'h00;  // TW28 兼容状态字 {res,adapt,scamp,lagfatl,inclim,laglim,falarm,oflow}
+    reg  [7:0]  t_stat     = 8'h00;  // 状态字 {res,adapt,scamp,lagfatl,inclim,laglim,falarm,oflow}
     reg         t_abzen    = 1'b1;
     reg         t_uwven    = 1'b0;
     // v45（㊷）空态：BiSS 帧 CRC 错（抽头真信号，rtl 里是 crc_err_seen 的 sticky 标志）。

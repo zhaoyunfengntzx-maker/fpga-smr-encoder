@@ -12,11 +12,11 @@
 //    （angle*pairs 是 16×6 位，Vivado 会推断为 LUT 乘法；也可加
 //      (* use_dsp = "yes" *) 让它用 DSP48）
 //
-//  行为细节（严格按 SPEC 1.9 + TW28 datasheet §6.2）：
+//  行为细节（严格按 SPEC 1.9 + 通用 UVW 规范 §6.2）：
 //   1) 电角度 eang = (angle * pairs + uvwph * 2^(AW-10)) mod 2^AW
-//      pairs = 0 → 32（TW28 语义：0 表示 32 个电周期/输入周期）。
+//      pairs = 0 → 32（通用语义：0 表示 32 个电周期/输入周期）。
 //      uvwph 为 signed [15:0]，单位 360/1024（SPEC 1.9 原文
-//      "UVW 相位偏移，单位 360/1024"；TW28 的 UVWPS 就是 10 位相位）。
+//      "UVW 相位偏移，单位 360/1024"；专用细分 ASIC 的 UVWPS 就是 10 位相位）。
 //   2) 六扇区：每 60° 电角度一个状态，换向表（标准 120° 梯形换向）
 //        UVW = 110, 010, 011, 001, 101, 100
 //      每相在一个电周期内导通 3/6 = 50%，三相互差 120°。
@@ -35,7 +35,7 @@
 //          运行期由寄存器 0x0104 `UVW.hyst`（5 位，0…31）经 uvw_hyst 端口给定，
 //          单位 = 角度 LSB（1 LSB = 360/65536 = 0.0054932° 电角度）。
 //          即 `hyst_lsb = uvw_hyst`，0 = 无死区。
-//          5 位上限 31 LSB = 0.170°；TW28 规格 UVW.hyst = ±hyst×360/2048
+//          5 位上限 31 LSB = 0.170°；同类专用方案规格 UVW.hyst = ±hyst×360/2048
 //          （360/2048 = 11.25°，与 LSB 单位不同，见 reji 头注释的换算说明）。
 //          `uvw_hyst == 0` 时回退到编译期默认 `UVW_HYST_SHIFT`，使旧测试台与
 //          未驱动该端口的实例保持原有行为（默认 shift=6 → 1024 LSB = 5.625°）。
@@ -48,7 +48,7 @@
 //   5) uvwpol=1 三相整体反相。uwven=0 时三相输出 0。
 //   6) uvw_freq_warn：一个 60° 扇区（= 电半周期）占用的 clk 少于
 //        UVW_MIN_HALF_CYCLE 拍时置位，即 UVW 基波 > 8.33 MHz
-//        （对应 TW28 STAT_VAL.inclim 中 UVW 频率部分的判据）。
+//        （对应 状态字 inclim 中 UVW 频率部分的判据）。
 //        门限 = round(2 * f_clk / 8.33 MHz)：50 MHz -> 12 拍；100 MHz -> 24 拍。
 //        **判决在扇区切换那一拍进行**（用刚结束扇区的真实驻留时间），
 //        因此复位后不会产生启动瞬态误报。
@@ -70,7 +70,7 @@ module uvw_gen #(
     input  wire                rst_n,
     input  wire [AW-1:0]       angle,
     input  wire                in_valid,
-    input  wire [4:0]          pairs,      // 1…32 极对数；0 表示 32（TW28 语义）
+    input  wire [4:0]          pairs,      // 1…32 极对数；0 表示 32（通用语义）
     input  wire                uvwpol,
     input  wire                uvwdir,
     input  wire                uwven,

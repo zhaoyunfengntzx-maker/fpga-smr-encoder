@@ -560,6 +560,26 @@ def offline_main():
         w.task.run = real_run
     w._set_busy(False)
     w.worker = None
+    # ============================================================ 延时补偿口径
+    hr("⑦.5 延时补偿：θ_corr = θ_meas + 360·f·τ（τ = 0.32 µs）")
+    check("默认开着延时补偿", bool(w.chk_tau.isChecked()))
+    check("转速为 0 时不补偿（避免除零/乱跳）", w._tau_corr(10.0, 0.0) is None)
+    _c = w._tau_corr(10.0, 31250.0)
+    check("31.25 kHz 时补 +3.6°（6.3″ 机械误差就是这么来的）",
+          _c is not None and abs(_c - 13.6) < 0.01,
+          None if _c is None else "%.3f" % _c)
+    w.chk_tau.setChecked(False)
+    check("关掉开关就不补偿", w._tau_corr(10.0, 31250.0) is None)
+    w.chk_tau.setChecked(True)
+    check("τ 输入框在、默认 0.32 µs", abs(w.sp_tau.value() - 0.32) < 1e-9
+          and w.sp_tau.maximum() >= 5.0, "%.2f" % w.sp_tau.value())
+    _old_tau = w._tau_us
+    w._tau_us = 0.64
+    _c2 = w._tau_corr(0.0, 31250.0)
+    check("τ 改成 0.64 µs 时补 7.2°（可调生效）",
+          _c2 is not None and abs(_c2 - 7.2) < 0.02,
+          None if _c2 is None else "%.3f" % _c2)
+    w._tau_us = _old_tau
 
     # ================================================================ 记录卡口径
     hr("⑧ 记录卡片：不吞丢帧数、非法目录不崩")

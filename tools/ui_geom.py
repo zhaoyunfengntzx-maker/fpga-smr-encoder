@@ -226,7 +226,8 @@ _REQUIRED = (
     # P4 逻辑时序框
     "LG_X0", "LG_X1", "LG_Y0", "LG_Y1", "LG_TX0", "LG_TOP", "LG_ROW_H",
     "LG_RAIL_HI", "LG_RAIL_LO", "LG_AXIS",
-    # 标题带主操作按钮
+    # 标题带主操作按钮（★ v89：P1「标定」按钮已删，这块矩形现在只服务
+    #   P6「闪烁」；参数本身两个工具都还要读，所以保留在必需清单里）
     "TBTN_X0", "TBTN_X1", "TBTN_Y0", "TBTN_Y1",
     # P1 模态编辑面板
     "PNL_X0", "PNL_X1", "PNL_Y0", "PNL_Y1",
@@ -383,26 +384,18 @@ PAGES = OrderedDict((
     (1, "p2"),      # P2 输入波形
     (3, "p4"),      # P4 逻辑时序
     (5, "p6"),      # P6 设置
-    (6, "p7"),      # P7 标定（从 P1 标题带的「标定」下钻，不在导航里）
 ))
 PAGE_TAGS = tuple(PAGES.values())
 PAGES_BY_TAG = OrderedDict((tag, num) for num, tag in PAGES.items())
 
-# ---- 交叉校验：上面这张表必须与 RTL 的导航映射、P7 页号一致 ----
-_P7_M = re.search(r"wire\s+p7_lg\s*=\s*\(page == 3'd(\d+)\)", _TEXT)
-if not _P7_M:
-    _die("disp/disp_engine.v 里找不到 `wire p7_lg = (page == 3'dN);` —— "
-         "P7 的页号无从核对")
-_P7_PAGE = int(_P7_M.group(1))
-if _P7_PAGE not in PAGES:
-    _die("RTL 的 P7 页号是 %d，但存活页表里没有它（表：%r）"
-         % (_P7_PAGE, dict(PAGES)))
-_NAV_ONLY = tuple(k for k in PAGES if k != _P7_PAGE)
-if _NAV_ONLY != _NAV_PAGES:
+# ---- 交叉校验：上面这张表必须与 RTL 的导航映射一致 ----
+#   ★ v88：P7 标定页整页删除（用户：「标定页直接去掉吧」），原来这里要拿
+#     `wire p7_lg = (page == 3'dN)` 核对第 6 页，现在页表直接等于导航映射。
+if tuple(PAGES.keys()) != _NAV_PAGES:
     _die(
         "存活页表与 RTL 导航映射不一致：\n"
-        "  页表里除 P7 之外的页号 = %r\n"
-        "  RTL 的 nav_page 映射     = %r\n"
+        "  页表页号 = %r\n"
+        "  RTL 的 nav_page 映射 = %r\n"
         "  导航项 `page` 就是 RTL 的页号，两边必须逐项相同（页号不重编号）。"
-        % (_NAV_ONLY, _NAV_PAGES)
+        % (tuple(PAGES.keys()), _NAV_PAGES)
     )

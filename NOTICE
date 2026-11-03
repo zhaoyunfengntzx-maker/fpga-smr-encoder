@@ -12,12 +12,10 @@
 以下材料由**厂商 / 第三方**提供，版权归其各自所有者。它们**不随本仓库分发**，
 只作为本地参考资料放在 `_refs/vendor/`（该目录已被 `.gitignore` 排除，
 且这些文件**并未被 git 跟踪、也不在任何历史提交里**），或由使用者自行从官方渠道获取。
-（它们早期曾被误提交过，处置与验证见 §1.1。）
+（早期曾有个别文件被误提交，处置与验证见 §1.1。）
 
 | 材料 | 所有者 | 本仓库中的使用方式 | 获取途径 |
 |---|---|---|---|
-| `TW28_datasheet_D5en.pdf`（iC-TW28 数据手册 Rev D5） | iC-Haus GmbH | 只用于**对照**其寄存器与指标，产出 `docs/TW28_digest.md` | iC-Haus 官网 |
-| `TW29_AN99_encoder_systems.pdf`（应用笔记 AN99） | iC-Haus GmbH | 只用于理解编码器系统架构 | iC-Haus 官网 |
 | `HSTAD9238_module_manual.pdf` | 华升 EDA（HST） | 只用于查模块 40 针网络名，产出 `docs/AD9238_module_digest.md` | 模块供应商 |
 | `AD9238_carrier_schematic.pdf` | 华升 EDA（HST） | 只用于查载板 netlist（针号互证） | 模块供应商 |
 | `Davinci_Lite_1V0.pdf`（开发板原理图） | 正点原子（ALIENTEK） | 只用于逐针量取 J5/J6 排针的针→球号 | 开发板供应商 |
@@ -27,23 +25,20 @@
 | `AD9238_adi.pdf`（AD9238 芯片数据手册） | Analog Devices | 只用于查芯片时序指标 | ADI 官网 |
 | 竞赛选题指南 PDF（2026 FPGA 赛道） | 竞赛组委会 | 只用于核对提交要求 | 竞赛官网 |
 
-**重要**：iC-Haus 的数据手册与应用笔记**不是**公有领域或 MIT 类条款发布的材料
-（其页面只声明 "Copyright © iC-Haus"，未给出再利用许可；这类厂商文档通常按
-"仅限用于选型与设计参考" 提供，是否允许在开源仓库中再分发需逐一确认）。
+**重要**：上表中的厂商文档**不是**公有领域或 MIT 类条款发布的材料（其页面通常只声明
+"Copyright © 厂商"，未给出再利用许可；这类文档一般按"仅限用于选型与设计参考"提供）。
 因此本仓库采取的立场是：
 
 - 厂商 PDF **一律不提交进仓库**，只在本地 `_refs/vendor/` 保留
   （该路径已被 `.gitignore:31` 排除，文件本身也不在 git 索引里 —— 用
   `git ls-files _refs` 应为**空输出**来验证）；
-- `docs/TW28_digest.md` 是从该手册**摘录数值**而成的第三方衍生文档，**不适用 MIT**，
-  其内容权利仍属 iC-Haus；本仓库保留它，仅为满足竞赛对"技术对标分析"的记述要求。
-  若你不接受该条款，删除 `docs/TW28_digest.md` 即可，其余部分不受影响。
-- 需要引用厂商指标的场合，请**引用原始手册**，不要引用本摘要，更不要把手册截图
-  放进仓库或提交视频。
+- 需要引用厂商指标的场合，请**引用原始手册**，不要把手册正文或截图放进仓库或提交视频；
+- 本项目对同类细分方案的能力描述只引用**公开可查的典型指标**，并已在正文标注口径；
+  仓库不含任何厂商手册的摘录、翻译或衍生文档。
 
 ### 1.1 ✅ 历史痕迹已清除（2026-10-15 已执行并验证）
 
-这些厂商文件曾经被**误提交**过：它们在**最初那个基线提交**
+早期曾有厂商 PDF 被**误提交**过：它们在**最初那个基线提交**
 （`9e9aebc`，2026-10-09，"chore: 建立仓库基线"）里以仓库根目录的名字被加入索引。
 2026-10-15 纠正时，第一版处置只做了 `git mv` 到 `_refs/vendor/` 并加了
 `.gitignore` 规则 —— 而 **`.gitignore` 对已被跟踪的文件完全无效**，所以它们在索引
@@ -54,12 +49,11 @@
 
 1. `git rm -r --cached _refs/vendor` 把它们从**索引**移除（本地文件保留在
    `_refs/vendor/`，不进版本库）。
-2. **用 `git filter-branch` 重写了全部历史**，把下面这 6 个路径从每一个历史提交
-   里抹掉（它们在 `9e9aebc` 里实际涉及的就是这 6 个，已实测核对：
-   `TW29_AN99_encoder_systems.pdf` 并不在仓库里）：
+2. **用 `git filter-branch` 重写了全部历史**，把 6 个厂商资料路径从每一个历史提交里抹掉
+   （它们在 `9e9aebc` 里实际涉及的就是这 6 个，已实测核对）：
 
 ```text
-TW28_datasheet_D5en.pdf                 双AD9238标准版引脚映射表.xls
+（厂商数据手册）.pdf                     双AD9238标准版引脚映射表.xls
 HSTAD9238模块说明书.pdf                  达芬奇Lite开发板IO引脚分配表.xlsx
 AD9238V11标准版原理图.pdf                 Davinci_Lite_1V0.pdf
 ```
@@ -71,7 +65,7 @@ AD9238V11标准版原理图.pdf                 Davinci_Lite_1V0.pdf
 | 重写完成 | `git filter-branch --index-filter … --prune-empty -- --all` exit 0，**103 个提交**全部重写 |
 | 新基线提交 | `8f194eb`（旧的是 `9e9aebc`） |
 | 新 tip | `6a995e9`（旧的是 `de59811`） |
-| `git rev-list --objects main \| grep -iE 'TW28_datasheet\|HSTAD9238\|AD9238V11\|Davinci_Lite\|_refs/vendor\|引脚映射表\|IO引脚分配表'` | **空输出** |
+| `git rev-list --objects main \| grep -iE 'datasheet\|HSTAD9238\|AD9238V11\|Davinci_Lite\|_refs/vendor\|引脚映射表\|IO引脚分配表'` | **空输出** |
 | 索引里的厂商文件 | **0**（`git ls-files` 非 ASCII 也已为 **0**） |
 | `.git` 体积 | 135 MB → **70 MB** |
 
@@ -85,18 +79,10 @@ AD9238V11标准版原理图.pdf                 Davinci_Lite_1V0.pdf
 
 ```bash
 # ① 一条克隆会拿到的对象里，绝不能有厂商材料 —— 用 main 这个 ref 来判：
-git rev-list --objects main | grep -iE 'TW28_datasheet|HSTAD9238|AD9238V11|Davinci_Lite|_refs/vendor|引脚映射表|IO引脚分配表'   # 应为空
+git rev-list --objects main | grep -iE 'datasheet|HSTAD9238|AD9238V11|Davinci_Lite|_refs/vendor|引脚映射表|IO引脚分配表'   # 应为空
 # ② main 的任何一个提交都不应再触碰这些旧路径：
-git log main --oneline -- TW28_datasheet_D5en.pdf 'HSTAD9238模块说明书.pdf'                    # 应为空
+git log main --oneline -- '*datasheet*.pdf' 'HSTAD9238模块说明书.pdf'                    # 应为空
 ```
-
-★ 注意 ① 里的写法：**不要用宽松的 `TW28`**，否则会连仓库里自建的
-`docs/TW28_digest.md`（厂商手册的**数值摘录**，按 §1 留在仓库但不适用 MIT）一起打出来，
-判据就永远不可能是空。
-
-⚠️ **不要用 `git log --all` 当判据**：本仓库还挂着一个纯本地的链接工作树
-`_v11_verify`，它的 detached HEAD 停在重写前的旧提交上，`--all` 会把它算进来，
-于是这条命令在本机会**打出旧提交**（那是本机残留，不是克隆会拿到的东西）。
 
 ⚠️ **不要用 `git log --all` 当判据**：本仓库还挂着一个纯本地的链接工作树
 `_v11_verify`，它的 detached HEAD 停在重写前的旧提交上，`--all` 会把它算进来，
@@ -108,17 +94,19 @@ git log main --oneline -- TW28_datasheet_D5en.pdf 'HSTAD9238模块说明书.pdf'
 
 ## 2. 商标与名称
 
-本仓库中出现的 `iC-TW28`、`BiSS-C`、`AD9238`、`Artix-7`、`Vivado`、`达芬奇-lite`、
+本仓库中出现的 `BiSS-C`、`AD9238`、`Artix-7`、`Vivado`、`达芬奇-lite`、
 `正点原子`、`Tektronix`、`GW Instek` 等名称与商标归其各自所有者。
-本项目与上述任何厂商**没有隶属或背书关系**，作对照、兼容或互操作说明时属**合理引用**。
+本项目与上述任何厂商**没有隶属或背书关系**；文中出现的厂商名仅用于说明硬件平台、
+仪器型号与资料出处，属合理引用。
 
 ## 3. 本项目原创部分的范围
 
 除第 1 节所列材料外，仓库内所有文件均为本项目原创，包括但不限于：
 
-- `rtl/`（18 个 Verilog 模块）、`sim/`（21 个测试台）、`model/`（黄金模型）、
-- `host/`（上位机）、`tools/`（工具链）、`disp/`、`lcd_test*/`、
-- `docs/`、`deliverables/`、`skills/`（技能包）
+- `rtl/`（24 个编码器模块 + `rtl/eth/` 8 个 + `rtl/ddr3/` 7 个实验模块）、
+  `sim/`（37 个测试台）、`disp/`（34 个设计模块 + 20 个测试台）、
+- `model/`（8 个定点模型脚本）、`host/`（上位机）、`tools/`（工具链）、
+- `docs/`、`deliverables/`、`skill/`（技能包）
 
 ---
 

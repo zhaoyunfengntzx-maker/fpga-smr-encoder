@@ -1,4 +1,4 @@
-# evidence_index（报告引用的唯一数字源）
+﻿# evidence_index（报告引用的唯一数字源）
 
 > **规则**：`design_report.md` 里出现的每一个数字，都必须能在这张表里找到一行；
 > 每行必须给出**仓库内的可复核产物**（文件路径 + 关键字段或命令）。
@@ -6,9 +6,17 @@
 >
 > 标注：`[实测]` 板级读数 / `[仿真]` xsim 或 Python 模型 / `[手册]` 数据手册 / `[设计值]` 预算
 >
-> **版本口径（2026-10-27）**：本表已按**交付位流 v62**（编码器 + 5 页触摸 UI + 千兆网）重写。
-> v62 之前（v9…v61）的数字一律标"历史"，只用于说明演进，不再作为结论依据；
-> v62 的完整签核件在 [`data/v62/`](data/v62/)。
+> **★ 当前基线 = v90（2026-11-04 判据）**：生产位流 `data/v90/enc_top_v90.bit` **1,504,220 B** /
+> SHA256 `A89512A5…827125` / `BUILD 0x0019` / WNS **+0.199** / LUT **10,978 = 52.78%** / BRAM 32/50 / DSP 17；
+> 显示位流 `data/v90/enc_top_disp_v90.bit` **1,688,245 B** / WNS **+0.221** / LUT **17,090 = 82.16%** / BRAM 45.5/50；
+> 板级：Z 频率 **7.62 / 7.65 Hz ⇒ 457–459 rpm**（每转 1 个 Z）、UVW 六态 `{5174,4761,4423,4776,4763,4786}`、`lock 0x0301`、
+> 60 s **597,886 帧 / 9,964.8 fps**、`angle_vs_sc` offset 1.76° / RMS 0.71° / max 2.88°、ping 4/4、UDP 抓窗 28,672 点。
+> 全部数字见 **§1.7** 与 [`data/v90/`](data/v90/)；判据唯一入口 [`../docs/39_acceptance_criteria_v90.md`](../docs/39_acceptance_criteria_v90.md)。
+>
+> **版本口径**：本表历史上按**交付位流 v62**（编码器 + 5 页触摸 UI + 千兆网）重写过一次；
+> v62 之前（v9…v61）的数字一律标"历史"，只用于说明演进，不再作为结论依据。
+> **v90 之前的 v66/v67/v68/v70/v71/v73/v74 各节保留为演进证据**，引用时必须带版本号并标"历史"。
+
 >
 > **v66 增量（2026-10-29）**：新增"转台适配"基线（延迟前馈 / 锁定状态机 / 偏置分块积分 / 全周补偿表），
 > 拆成生产与显示**两个位流**，**均未上板**。其数字见 §1.1 与 [`data/v66/`](data/v66/)，报告对应 **§11**；
@@ -22,18 +30,18 @@
 > 拆成生产与显示**两个位流**，**均未上板**；数字见 §1.3 与 [`data/v68/`](data/v68/)，
 > 对应 `docs/30_v68_400mvpp_display.md`。口径只到 **`[构建签核]` + `[仿真]`**。
 >
-> **v70 增量（2026-11-01，v74 的直接前身）**：转台 **2048 PPR** 的真机基线，修掉 `pole_counter` 相位差符号扩展
-> 与 `uvw_gen` 反向环绕两处死锁。**生产位流已上板验收**（719–731 rpm / Z 12.00 Hz / distinct=2048 / UVW 六态 /
+> **v70 增量（2026-11-01，历史）**：转台 **2048 PPR** 的真机基线，修掉 `pole_counter` 相位差符号扩展
+> 与 `uvw_gen` 反向环绕两处死锁。**生产位流已上板验收**（Z 12.00 Hz、distinct=2048、UVW 六态 /
 > 60 s 598,115 帧），显示位流仅 `[构建签核]`；数字见 §1.4 与 [`data/v70/`](data/v70/)，对应
 > [`docs/33_v70_release_report.md`](../docs/33_v70_release_report.md) 与 [`docs/32_board_test_report_2026-11-01.md`](../docs/32_board_test_report_2026-11-01.md)。
-> **报告现在以 v74 生产位流作为时序/资源签核口径，v62 作为"编码器 + UI + 网"演示口径。**
+> **时序/资源签核一律以 §1.7 的 v90 为准；v62 只作"编码器 + UI + 网"演示口径。**
 
 ---
 
 ## 0. 一键复现全部数字（评委可照抄执行）
 
 ```powershell
-# —— 仿真回归：主回归应输出 PASS 36/36（v74 回归轮，2026-11-02）；v66 轮为 33/33（2026-10-28 11:09:32），另有 disp/ 与 _boardtest/ 定向台
+# —— 仿真回归：主回归应输出 PASS 37/37（v90 回归轮，2026-11-04）+ disp/ 20/20，共 57 台
 powershell -File tools/run_sim.ps1
 
 # —— 静态检查：合计 ERROR 0 / WARNING 0
@@ -67,6 +75,13 @@ python model/calib_shift_judge.py       # → 粗调移位判据对照
 #   deliverables/data/v70/prod_util.rpt           LUT 10,955 = 52.67% / BRAM 32/50
 #   deliverables/data/v70/disp_timing.rpt         WNS +0.027 / WHS +0.057 / 0 失败 / 34,321 端点
 #   deliverables/data/v70/disp_util.rpt           LUT 17,415 = 83.73% / BRAM 48/50
+#   —— ★ 当前基线 v90（生产 + 显示均已上板，见 §1.7）
+#   deliverables/data/v90/prod_timing.rpt         WNS +0.199 / WHS +0.017 / 0 失败 / 24,691 端点
+#   deliverables/data/v90/prod_util.rpt           LUT 10,978 = 52.78% / BRAM 32/50 / DSP 17
+#   deliverables/data/v90/disp_timing.rpt         WNS +0.221 / WHS +0.049 / 0 失败 / 33,365 端点
+#   deliverables/data/v90/disp_util.rpt           LUT 17,090 = 82.16% / BRAM 45.5/50 / DSP 20
+#   deliverables/data/v90/enc_top_v90.bit         1,504,220 B，BUILD 0x0019（SHA256 见 §1.7）
+#   deliverables/data/v90/enc_top_disp_v90.bit    1,688,245 B（SHA256 见 §1.7）
 ```
 
 ### 0.1 校验交付件完整性
@@ -96,7 +111,7 @@ Get-Content SHA256SUMS.txt | ForEach-Object {
 | 构建日志 | [`data/v62/impl.log`](data/v62/impl.log)、[`runner.log`](data/v62/runner.log) | 469,312 B / 4,630 B | 复现构建过程 |
 
 源码版本：`git rev-parse HEAD` = **`6ac757f`**（2026-10-23 11:46:40，"v62 屏 + 以太网合并"）。
-位流与源码的对应关系用**构建号**校验：读 `0x0000` 应得 `0x000D`（`RTL_BUILD_ID`）；`POLE_BITS=6`（2500 线）。
+位流与源码的对应关系用**构建号**校验：读 `0x05F2/0x05F3` 应得 `0x000D`（`RTL_BUILD_ID`）；`POLE_BITS=6`（2500 线）。
 
 ---
 
@@ -118,7 +133,7 @@ Get-Content SHA256SUMS.txt | ForEach-Object {
 | 上板闸门 | [`../tools/final_verify.ps1`](../tools/final_verify.ps1) | 8 类检查；2026-10-28 实跑 **ALL CHECKS PASSED**（退出码 0） | §4.2、§11.11 |
 
 源码版本：tag **`v66-pre-board`**（feat 提交 `eda62da` + docs 提交 `14b70dc`）。
-位流与源码的对应关系用**构建号**校验：读 `0x0000` 应得 **`0x000E`**（`RTL_BUILD_ID`）；`POLE_BITS=11`（2048 周期/转）。
+位流与源码的对应关系用**构建号**校验：读 `0x05F2/0x05F3` 应得 **`0x000E`**（`RTL_BUILD_ID`）；`POLE_BITS=11`（2048 周期/转）。
 
 > ⚠ 归档口径（与 `data/README.md` §2.0a 一致）：**生产位流当初没有跑 `check_timing` / `hold_paths` / `io` 三份报告**，
 > 为不改变位流与哈希**没有重跑实现**，缺件如实登记在 `data/README.md` §2.0a 与 §5.9。
@@ -140,7 +155,7 @@ AD8138 `Rg` 499→120 Ω，4.16×）。与 v66 只差 4 处：`POLE_BITS 11→6`
 | 仿真 | [`data/v67/sim_tb_lowsig.log`](data/v67/sim_tb_lowsig.log) | **35 checks PASS**（200/250/300 mVpp、默认 1.5、标定、1.0 A/B） | `docs/29` §6 |
 | 变体说明 | [`data/v67/VARIANT_INFO.txt`](data/v67/VARIANT_INFO.txt) | 源 git `b7d7f79`、25+8 文件、4 处补丁 | `docs/29` §4 |
 
-校验：读 `0x0000` 应得 **`0x000F`**；`0x0101` 应得 **32**；`0x0514/15` 默认 **49152**。
+校验：读 `0x05F2/0x05F3` 应得 **`0x000F`**；`0x0101` 应得 **32**；`0x0514/15` 默认 **49152**。
 **不得**把 v67 与 v66 的显示位流混用；v67 没有显示版。位流长度算术：saved 5,502,336 bits ⇒
 17,537,696−5,502,336=12,035,360 bit=1,504,420 B+8 B 头=1,504,428 B；偏移 260 处 `AA 99 55 66`。
 
@@ -170,7 +185,7 @@ AD8138 `Rg` 499→120 Ω，4.16×）。与 v66 只差 4 处：`POLE_BITS 11→6`
 | 仿真 | [`data/v68/sim_tb_v68.log`](data/v68/sim_tb_v68.log) | **37 checks PASS**（400/450/350 mVpp、默认 1.0、标定、1.5 A/B） | `docs/30` §5 |
 | 变体说明 | [`data/v68/VARIANT_INFO.txt`](data/v68/VARIANT_INFO.txt) | 源 git `086df12`、25+8 文件、3 处补丁 | `docs/30` §3 |
 
-校验：读 `0x0000` 应得 **`0x0010`**；`0x0101` 应得 **32**；`0x0514/15` 默认 **0x8000**。
+校验：读 `0x05F2/0x05F3` 应得 **`0x0010`**；`0x0101` 应得 **32**；`0x0514/15` 默认 **0x8000**。
 生产版与显示版只差 `ENC_DISP_TAP` + `ENC_V68_CPR64`，**不能混用**。位流长度算术：
 生产 saved 5,446,720 bits ⇒ 17,537,696−5,446,720=12,090,976 bit=1,511,372 B+8 B 头=1,511,380 B，偏移 260 处 `AA 99 55 66`；
 显示 saved 3,922,432 bits ⇒ 17,537,696−3,922,432=13,615,264 bit=1,701,908 B+13 B 头=1,701,921 B（design 名长 5 字符），偏移 265 处同 sync word。
@@ -201,7 +216,7 @@ AD8138 `Rg` 499→120 Ω，4.16×）。与 v66 只差 4 处：`POLE_BITS 11→6`
 | 变体说明 | [`data/v70/VARIANT_INFO.txt`](data/v70/VARIANT_INFO.txt) | 源 git `657836a`；3 条生成器补丁 + 3 个源文件修复 | `docs/33` §10 |
 
 上板实测（生产位流，`V70D PROGRAMMED_OK` @22:41:20，`_boardtest/check_v70.py` / `diag_pos3.py` / `soak_v68.py`）：
-`RTL_BUILD=0x0015`、`INTER0=32`、**Z 12.00 Hz**、`cnt −2047..0 distinct=2048`、**719–731 rpm**、
+`RTL_BUILD=0x0015`、`INTER0=32`、**Z 12.00 Hz**、`cnt −2047..0 distinct=2048`、
 UVW 六态均匀（293 换向/秒）、`0x0500&0xFF=27`、`0x0501&0xFF=5`、标定 `33,776/33,568`、
 ping 5/5 + UDP 28,672 点、60 s 长跑 598,115 帧（r 漂移 <0.02%）。
 
@@ -278,9 +293,50 @@ v68 之所以"看起来有 Z"，是因为那时 `cycle_cnt` 卡 0 ⇒ `z_window�
 | 回归 | 全量 xsim **36/36 PASS**（含 `tb_enc_top`、`tb_lag_ff_sat`、`tb_uvw_gen`）；`tb_enc_top` 106 checks（加计数器后仍 PASS） | `sim/logs/SUMMARY.md` |
 | UVW 相序/间隔 | `_boardtest/uvw_phase.py`：六态均匀、无 `000/111`、占空比 0.501/0.487/0.499、间隔中位 **3210 µs**（理论 3243 µs）、相序 **922 forward / 0 backward** | `docs/36` §8.1 |
 
-**未覆盖**（诚实边界）：Z 停位喘振（B8）、
+**未覆盖**（诚实边界）：Z 停位喘振（B8，**已在 v90 的 `z_index_gen` 修掉，见 §1.7**）、
 2 h 长跑（`_boardtest/soak_v68.py COM7 7200` 进行中，结果回填到 `docs/36` §8）。
 
+---
+
+## 1.7 当前基线 v90（2026-11-04；**生产 + 显示均已上板，显示已固化 Flash**）
+
+**结论口径**：v90 = v74 + `z_index_gen`（Z 索引发生器，治停位 Z 喘振）+ 界面收口（删 P7 标定整页与 P1 标定按钮，
+标定走 KEY0 长按或串口写 `0x0502=0x0001`；P2 加预触发环形缓冲/中线/AUTO 时基）。**这是本表唯一的现行口径。**
+
+| 项 | 生产位流 | 显示位流 |
+|---|---|---|
+| 文件 | [`data/v90/enc_top_v90.bit`](data/v90/enc_top_v90.bit) | [`data/v90/enc_top_disp_v90.bit`](data/v90/enc_top_disp_v90.bit) |
+| 大小 | **1,504,220 B** | **1,688,245 B** |
+| SHA256 | `A89512A506F9DE366863AC0C6BE2F740E453B32C35C6864D0D256D9C8F827125` | `69FE313C45C3F36D39307CE0948C6D0AB191183397E2408E694588FC5F81BAD4` |
+| `RTL_BUILD_ID` | **0x0019** | **0x0019** |
+| WNS / TNS / 失败端点 | **+0.199 ns / 0 / 0**（24,691 端点） | **+0.221 ns / 0 / 0**（33,365 端点） |
+| WHS / WPWS | +0.017 / +0.264 | +0.049 / +0.264 |
+| LUT / FF | **10,978 = 52.78%** / 8,724 = 20.97% | **17,090 = 82.16%** / 11,601 |
+| BRAM / DSP / IOB | **32/50** / **17** / 60 | **45.5/50 = 91%** / 20 / 104 |
+| 构建脚本 | `tools/impl_check_v90.tcl` | `tools/impl_check_disp_v90.tcl` |
+| 报告产物 | `data/v90/prod_{timing,util,drc,io,clkint,check_timing,top_paths,hold_paths,route}.rpt` + `prod_impl.log` | `data/v90/disp_*`（同名 10 份） |
+
+**板级实测（2026-11-04，判据 [`docs/39`](../docs/39_acceptance_criteria_v90.md)）**
+
+| 判据 | 结果 | 产物 |
+|---|---|---|
+| 构建号 / 器件 / 版本 | `0x05F2 = 0x0019`、DEVICE_ID `0x000C`、REV `0x0010` | `_boardtest/check_v70.py`（末行 `PASS`） |
+| 转速（权威） | Z 频率 **7.62 / 7.65 Hz ⇒ 457–459 rpm**（每转 1 个 Z） | `_boardtest/z_rate.py` |
+| ⚠ 混叠伪值 | `check_v70.py` 的"机械转速"栏由 `cycle_cnt` 步进推出，10 kHz 遥测对 >10 kHz 电信号会混叠，**曾显示 621 rpm，不得引用** | `docs/39` §7 |
+| UVW 六态 | `{5174, 4761, 4423, 4776, 4763, 4786}`，无 `000/111` | `_boardtest/uvw_phase.py`、`docs/39` §3 |
+| 锁定 | `0x0130 = 0x0301`（TRACK） | `check_v70.py` |
+| 幅值 | r 峰 **0.845–0.850 FS**、`stat_otr` 偶发不判 FAIL | `docs/39` §3 C1 |
+| 帧率 | 10.6 kfps（短窗）；60 s 长跑 **597,886 帧 / 9,964.8 fps** 不丢 | `_boardtest/soak_v68.py`（60 s 长跑）、`docs/39` §4 |
+| 角度内部一致性 | `angle_vs_sc`：offset **1.76°** / RMS **0.71°** / max **2.88°** / \|err\|>5° **0.03%**（**无外部基准**） | `_boardtest/angle_vs_sc.py`、`docs/39` §5 |
+| 以太网 | ping **4/4**、UDP 抓窗 **28,672 点 @50 MSPS** | `tools/board_eth_check.py`、`host/panel_capture.py` |
+| Flash + 冷启动 | 写的是显示位流，`FLASHPROG FLASH_OK`；断电重上电冷启动通过 | `_flash2_work/prog_flash_v90.log`、`docs/39` §6 |
+| 仿真回归 | `sim/` **37/37 PASS**、`disp/` **20/20 PASS** | `sim/logs/SUMMARY.md`、`disp/logs/SUMMARY.md` |
+| 证据完整性 | `data/SHA256SUMS.txt` **323 条** | §0.1 校验脚本 |
+
+**RTL 相对 v74 的改动**（其余保持一致）：
+1. `rtl/abz_gen.v` 新增 `z_index_gen`：`Z_ARM_DIST = 1<<(AW-3)`（45° 布防窗），出 Z 后撤防、离开 ≥1/8 圈重新布防；
+   `rtl/enc_top.v` 内联 Z 段改为例化它 —— **停位不再吐多个 Z**。
+2. `rtl/uvw_gen.v` **保持 v74 板级验证版**（`e_uw`/K=4 去抖版在板上冻结、已回退，不要再合）。
 
 ---
 
@@ -288,13 +344,16 @@ v68 之所以"看起来有 Z"，是因为那时 `cycle_cnt` 卡 0 ⇒ `z_window�
 
 | 数字 | 值 | 产物 | 类别 |
 |---|---|---|---|
-| 交付时序 | WNS +0.471 / WHS +0.042 / 0 失败 | `data/v62/impl_timing.rpt` | `[实测]` |
-| 交付资源 | LUT 82.01% / BRAM 46/50 / FF 26.91% / DSP 18 / IOB 107 | `data/v62/impl_util.rpt` | `[实测]` |
+| **v90 生产时序** | WNS **+0.199** / WHS +0.017 / TNS 0 / **0 失败**（24,691 端点） | [`data/v90/prod_timing.rpt`](data/v90/prod_timing.rpt) | `[构建签核]` |
+| **v90 生产资源** | LUT **10,978 = 52.78%** / BRAM **32/50** / DSP 17 / FF 8,724 | [`data/v90/prod_util.rpt`](data/v90/prod_util.rpt) | `[构建签核]` |
+| **v90 显示时序/资源** | WNS **+0.221** / 0 失败（33,365 端点）；LUT **17,090 = 82.16%** / BRAM 45.5/50 / DSP 20 | [`data/v90/disp_timing.rpt`](data/v90/disp_timing.rpt)、[`data/v90/disp_util.rpt`](data/v90/disp_util.rpt) | `[构建签核]` |
+| 交付时序（历史 v62） | WNS +0.471 / WHS +0.042 / 0 失败 | `data/v62/impl_timing.rpt` | `[实测]` |
+| 交付资源（历史 v62） | LUT 82.01% / BRAM 46/50 / FF 26.91% / DSP 18 / IOB 107 | `data/v62/impl_util.rpt` | `[实测]` |
 | DRC | 0 Error / 97 Warning | `data/v62/impl_drc.rpt` | `[实测]` |
 | 编码器单机（历史基线 v12） | 6,298 LUT = 30.28% / WNS +0.959 / 位流 1,042,208 B | [`data/timing/impl_timing.rpt`](data/timing/impl_timing.rpt) + [`data/timing/impl_util.rpt`](data/timing/impl_util.rpt) + [`data/bitstreams/enc_top_v12_prod.bit`](data/bitstreams/enc_top_v12_prod.bit) | `[实测]` |
 | 纯屏版（历史 v59） | 14,263 LUT = 68.57% / BRAM 48.5 / WNS +0.586 / 1,732,625 B | `_impl_v58/impl_util.rpt`（工作副本，**未入 data/**） | `[实测]` |
-| 测试台规模 | `sim/` **36 台** + `disp/` **18 台** = **54 台** | `sim/tb_*.v`、`disp/tb_*.v` | `[仿真]` |
-| 回归结果 | **36/36 PASS**（v74 轮，2026-11-02）；disp 18/18。历史：v66 轮 33/33（2026-10-28 11:09:32，`tb_enc_top` 238 s）、v62 轮 29/29（2026-10-23 10:54:33，191 s） | [`sim/logs/`](../sim/logs/)（逐台 `*.log` 与 `SUMMARY.md` 由 `tools/run_sim.ps1` 本地生成，不入库；入库的是 `_run_console*.txt`） | `[仿真]` |
+| 测试台规模 | `sim/` **37 台** + `disp/` **20 台** = **57 台** | `sim/tb_*.v`、`disp/tb_*.v` | `[仿真]` |
+| 回归结果 | **37/37 PASS**（v90 轮，2026-11-04）；disp 20/20。历史：v74 轮 36/36（2026-11-02）、v66 轮 33/33（2026-10-28 11:09:32，`tb_enc_top` 238 s）、v62 轮 29/29（2026-10-23 10:54:33，191 s） | [`sim/logs/`](../sim/logs/)（逐台 `*.log` 与 `SUMMARY.md` 由 `tools/run_sim.ps1` 本地生成，不入库；入库的是 `_run_console*.txt`） | `[仿真]` |
 | 静态检查 | ERROR 0 / WARNING 0 | `tools/lint_all.ps1 -Clean` | `[仿真]` |
 
 ---
@@ -318,7 +377,8 @@ v68 之所以"看起来有 Z"，是因为那时 `cycle_cnt` 卡 0 ⇒ `z_window�
 |---|---|---|---|
 | 一键标定重复性 | **20 轮 20/20**（`retry`/`win_bad` 全 0） | [`data/calib_repeat_summary.csv`](data/calib_repeat_summary.csv) | `[实测]` |
 | AB 边沿膨胀 | 2.7× → 1.0×（已做成复位默认） | `docs/DEV_STATUS.md` U-20 段 | `[实测]` |
-| 板级角度残差 | 0.009° RMS | v7 自由运行窗（历史） | `[实测]` |
+| 板级角度残差（历史 v7） | 0.009° RMS | v7 自由运行窗（旧口径，勿当现行指标） | `[实测]` |
+| **板级角度内部一致性（v90）** | `angle_vs_sc`：offset **1.76°** / RMS **0.71°** / max **2.88°** / \|err\|>5° **0.03%**（**与指令角对比，无外部基准**） | `_boardtest/angle_vs_sc.py`、[`docs/39`](../docs/39_acceptance_criteria_v90.md) §5、[`data/v90/`](data/v90/) | `[实测]` |
 
 ### 5.2 频率扫描（§6.3，2026-10-13，`inter=32`）
 
@@ -367,16 +427,16 @@ v68 之所以"看起来有 Z"，是因为那时 `cycle_cnt` 卡 0 ⇒ `z_window�
 | 风险 | 证据状态 |
 |---|---|
 | R1 ADC 输入约束 | `data/v62/impl_timing.rpt` + `impl_check_timing.rpt`（10 个 input_delay 均带 false_path） |
-| R2 坏样本 | `data/ila/`（v9 逐拍抓包 21 份 + v11 对照 `ila_cmp_v11_clean.csv`）+ `docs/DEV_STATUS.md` §9 |
+| R2 坏样本 | `data/ila/`（v9 逐拍抓包 21 份 + v11 对照 `data/ila/ila_cmp_v11_clean.csv`）+ `docs/DEV_STATUS.md` §9 |
 | R5 Z 脉宽 | ILA 抓包有；示波器游标图**缺**（10-29 补） |
 | R6 延迟 | **无**（见 §5.2 末） |
-| R7 真实传感头 | **无**（全部测试用信号源） |
-| R12 资源见底 | v62：`data/v62/impl_util.rpt`（BRAM 46/50）；**v74：生产 10,926 LUT = 52.53% / 32 BRAM、显示 17,125 = 82.33% / BRAM 48/50 = 96% / WNS +0.189** |
-| R13 屏逐页目视 | **无**（v57 八页照片在 `../_disp_work/photo_p*.jpg`，非 v62；**v66 / v70 / v74-v75 显示位流同样无记录**） |
-| R14 显示位流未目视 | 生产位流已上板复验（v74，`BUILD 0x0018`，2026-11-02）；`_impl_disp_v74/enc_top_disp_v74.bit`（1,713,025 B / WNS +0.189，含 v75 界面改动）；**显示目视记录：无**（板卡 USB 未插、串口未枚举） |
+| R7 真实传感头 | 2048 周期/转磁环已在真机跑闭环（§1.7：457–459 rpm / 1 Z 每转 / 60 s 不丢帧）；**异型号与异极对数通用性无证据** |
+| R12 资源见底 | v62：`data/v62/impl_util.rpt`（BRAM 46/50）；**v90：生产 10,978 LUT = 52.78% / 32 BRAM（余 18 块）、显示 17,090 = 82.16% / BRAM 45.5/50 = 91% / WNS +0.221** |
+| R13 屏逐页目视 | **无逐页记录**（v57 八页照片在 `../_disp_work/photo_p*.jpg`，非 v90；**v66 起的显示位流同样无逐页记录**，v90 只留了 `submission/photos/04_board_screen.jpg`（P1 总览）一张屏照） |
+| R14 显示位流未目视 | **v90 生产与显示位流均已上板**（2026-11-04）：显示位流已写 Flash、冷启动通过；`enc_top_disp_v90.bit`（1,688,245 B / WNS +0.221）；**逐页目视 checklist 未逐条留图** |
 | R15 无 ±0.5″ 基准 | `../host/lut_tool.py` 与 `0x0141..0x0147` 证明"表可写可回读"；**外部基准：无** ⇒ 默认 `0x0145=0` |
-| R16 Z 输入未实现 | 只有内部虚拟 Z；**无真实 Z 引脚**（方案见 `../docs/27` §14.2） |
-| R17 以太网 P0 修复未上板 | `../rtl/eth/eth_top.v:537`、`../rtl/eth/rgmii_if.v:215` 等 4 处（§11.9）；**上板复测：无** |
+| R16 Z 输入未实现 | 只有内部虚拟 Z；**无真实 Z 引脚**（方案见 `../docs/27_turntable_requirements_feasibility.md` §14.2） |
+| R17 以太网 | 4 条 P0 修复已在 RTL（`../rtl/eth/eth_top.v:537`、`../rtl/eth/rgmii_if.v:215` 等）；**v90 上板 ping 4/4 + UDP 抓窗 28,672 点通过**；**30 min 连续流未复验**（v62 期数据见 §5.4） |
 
 ---
 
@@ -384,19 +444,19 @@ v68 之所以"看起来有 Z"，是因为那时 `cycle_cnt` 卡 0 ⇒ `z_window�
 
 | 数字 | 值 | 产物 | 类别 |
 |---|---|---|---|
-| UI 页数 | **5 页**：P1 总览 / P2 输入波形 / P4 逻辑时序 / P6 设置 / P7 标定 | `disp/enc_top_disp.v` 页常量 | `[仿真]` |
-| 分辨率 | 1024×600，零帧缓冲（帧缓冲需 9.83 Mbit，片上 1.8 Mbit） | `disp/` + `docs/13` | `[设计]` |
-| 版面预览 | `_preview/page_p{1,2,4,6,7}.png`（几何读 RTL 常量） | `tools/preview_pages.py` | `[仿真]` |
+| UI 页数 | **4 页**：P1 总览 / P2 输入波形 / P4 逻辑时序 / P6 设置（v58 删 P3/P5/P8，**v88/v90 删 P7 标定整页**，P1 标题带「标定」按钮改为直接写 `0x0502=0x0001`） | `disp/disp_engine.v:61` 页常量、`disp/enc_top_disp.v:762` 翻页链 | `[仿真]` |
+| 分辨率 | 1024×600，零帧缓冲（帧缓冲需 9.83 Mbit，片上 1.8 Mbit） | `disp/` + `../docs/13_display_ui_requirements.md` | `[设计]` |
+| 版面预览 | `_preview/page_p{1,2,4,6}.png`（几何读 RTL 常量） | `tools/preview_pages.py` | `[仿真]` |
 | 触摸命中 | 27 个边界点 PASS | `disp/tb_hit_test_v58.v` | `[仿真]` |
 | 以太网 RTL | 8 模块 + `tb_eth_udp` 58 checks / `tb_icmp_reply` 48 / `tb_stream_tx` 260 | `sim/tb_*.v` | `[仿真]` |
 | 合并 XDC | 107 球 0 冲突 | `tools/gen_merged_xdc.py` + `constr/enc_top_eth.xdc` | `[仿真]` |
 | 上板验收 | ping/UDP/串口/连续流/GUI 浸泡 | `docs/24_board_acceptance_morning.md` §10 | `[实测]` |
 
-### 7.1 报告 §11（转台适配 v63–v74）
+### 7.1 报告 §11（转台适配 v63–v90，v90 为当前）
 
 | 数字 / 结论 | 值 | 产物 | 类别 |
 |---|---|---|---|
-| 需求基线 | 2048 周期/转、每腿 0.5 Vpp、G=8→8 Vpp、1638 码、200 kHz（5859 rpm）、±1″ | [`../docs/27`](../docs/27_turntable_requirements_feasibility.md) §0.5/§12.1 + `../改进需求.docx` | `[需求]` |
+| 需求基线 | 2048 周期/转、每腿 0.5 Vpp、G=8→8 Vpp、1638 码、200 kHz（5859 rpm）、±1″ | [`../docs/27`](../docs/27_turntable_requirements_feasibility.md) §0.5/§12.1 + `../improvement_requirements.docx` | `[需求]` |
 | 1″ 的量化 | 1″ 机械 = 0.568° 电角 = **≈103 LSB**（0.0097″/LSB） | 同上 §0.5 | `[设计值]` |
 | 延迟造成的误差 | 3000 rpm、T=0.72 µs ⇒ **26.5° 电角 ≈ 46″** | `rtl/lag_ff.v` 头注释 + §11.3 | `[设计值]` |
 | 前馈默认值 | `TAU_Q8=2304`（9 抽样点 = 720 ns）、`0x0122` bit0=1 | `rtl/reg_file.v`、`rtl/lag_ff.v` | `[设计值]` |
@@ -407,11 +467,14 @@ v68 之所以"看起来有 Z"，是因为那时 `cycle_cnt` 卡 0 ⇒ `z_window�
 | 四台新 tb | `tb_lag_ff` 7 项 / `tb_lock_sm` 8 组 / `tb_bias_track` 12 项 / `tb_angle_lut` 4,108 checks | `sim/tb_*.v` + `../sim/logs/SUMMARY.md`（33/33） | `[仿真]` |
 | 全链路回归 | `tb_enc_top` 106 checks，max_dev **10 LSB16**，UVW 24 次跳变、`warn_hi=0` | `sim/logs/SUMMARY.md` | `[仿真]` |
 | 两个位流 | 见 §1.1（构建签核） | `data/v66/` | `[构建签核]` |
-| **v74 生产位流** | 1,512,664 B / `BUILD 0x0018` / WNS **+0.409** / LUT **52.53%** / BRAM 32/50 | `_impl_v74/`、报告 §4.2 | `[实测]` |
-| **v74 板级复验** | 719–740 rpm、Z ≈12 Hz、UVW 六态均衡、以太网 ping + UDP 抓窗通过（v70：719–731 rpm / Z 12.00 Hz / 60 s 598,115 帧） | `_boardtest/check_v70.py`、`diag_pos3.py`、`soak_v68.py`；`docs/32` §6 / `docs/33` §5 | `[实测]` |
-| **v74 显示位流** | 1,713,025 B / WNS **+0.189** / LUT **82.33%** / BRAM 48/50（含 v75 界面改动） | `_impl_disp_v74/`、报告 §4.2 | `[构建签核]` |
-| **v70 两个死锁** | `step_s` 符号扩展（−65,403 而非 +133）、`off_bwd` 0→5 环绕；tb_acc2 3,000×133 ⇒ 6 圈、tb_uvw_rev 50 次六态 | `docs/33` §1–§2；`_boardtest/tb_acc2.v`、`tb_uvw_rev.v`；`pole_counter.v`、`uvw_gen.v` | `[仿真]` |
-| **上板** | v62 生产 / 显示均上板（10-23）；v70 生产上板（11-01）；**v74 生产上板（11-02）**；**v66、v67、v68、v70、v74/v75 显示未上板** | `docs/32`、`docs/33` §5 | — |
+| **v74 生产位流（历史）** | 1,512,664 B / LUT **52.5%** / BRAM 32/50 / WNS +0.4 ns 档（构建号见 §8，旧号不再引用） | `_impl_v74/` | `[实测]` |
+| **v74 板级复验（历史）** | 转台 2048 ppr、Z ≈12 Hz 档、UVW 六态均衡、以太网 ping + UDP 抓窗通过（v70 期：Z 12.00 Hz / 60 s 598,115 帧） | `_boardtest/check_v70.py`、`diag_pos3.py`、`soak_v68.py` | `[实测]` |
+| **v74 显示位流（历史）** | 1,700,821 B / WNS **+0.422** / LUT **17,604 = 84.63%** / BRAM 48/50 / DSP 22（已归档 `data/v74/`；未目视验收，后被 v85 取代） | [`data/v74/enc_top_disp_v74.bit`](data/v74/enc_top_disp_v74.bit) | `[构建签核]` |
+| **v90 生产位流（当前）** | **1,504,220 B** / `BUILD 0x0019` / WNS **+0.199** / LUT **10,978 = 52.78%** / BRAM 32/50 / DSP 17 | [`data/v90/`](data/v90/)、§1.7 | `[实测]` |
+| **v90 板级复验（当前）** | Z **7.62 / 7.65 Hz ⇒ 457–459 rpm**（每转 1 个 Z）、UVW 六态 `{5174,4761,4423,4776,4763,4786}`、`lock 0x0301`、60 s **597,886 帧 / 9,964.8 fps**、`angle_vs_sc` 1.76°/0.71°/2.88°、ping 4/4 + UDP 28,672 点 | `_boardtest/{z_rate,angle_vs_sc,check_v70}.py`、[`docs/39`](../docs/39_acceptance_criteria_v90.md) | `[实测]` |
+| **v90 显示位流（当前）** | **1,688,245 B** / WNS **+0.221** / LUT **17,090 = 82.16%** / BRAM 45.5/50 / DSP 20；**已写 Flash、冷启动通过** | [`data/v90/enc_top_disp_v90.bit`](data/v90/enc_top_disp_v90.bit) | `[实测]`（`[构建签核]` + 上板冷启动） |
+| **v70 两个死锁** | `step_s` 符号扩展（−65,403 而非 +133）、`off_bwd` 0→5 环绕；tb_acc2 3,000×133 ⇒ 6 圈、tb_uvw_rev 50 次六态 | `docs/33` §1–§2；`_boardtest/tb_acc2.v`、`_boardtest/tb_uvw_rev.v`；`pole_counter.v`、`uvw_gen.v` | `[仿真]` |
+| **上板** | v62 生产 / 显示均上板（10-23）；v70 生产上板（11-01）；v74 生产上板（11-02）；**v90 生产 + 显示均上板（11-04），显示已固化 Flash**；v66、v67、v68 两版均未上板 | `docs/32`、`docs/33` §5、`docs/39` | — |
 
 ---
 
@@ -435,7 +498,9 @@ v68 之所以"看起来有 Z"，是因为那时 `cycle_cnt` 卡 0 ⇒ `z_window�
 | v68 | 10-30 | 生产 10,928 LUT = 52.54% / WNS +0.144 / `BUILD 0x0010`；显示 17,414 = 83.72% / WNS +0.345 | 400 mVpp 单端 + 显示版；未上板 |
 | v69 | 11-01 | 10 s / 101,718 帧 `cycle_cnt` 恒 0、反向 UVW 全 v=0 | **两处死锁的现场**（`BUILD 0x0011`，未解决） |
 | **v70** | **11-01** | 生产 **10,955 LUT = 52.67% / 32 BRAM / WNS +0.091 / `BUILD 0x0015`**；显示 17,415 = 83.73% / WNS +0.027 | v74 的前身：生产已上板验收，显示未上板 |
-| **v74** | **11-02** | 生产 **10,926 LUT = 52.53% / 32 BRAM / WNS +0.409 / `BUILD 0x0018`**；显示 17,125 = 82.33% / WNS +0.189 | **当前生产基线：生产已上板复验**，显示位流（含 v75 界面）未目视 |
+| **v74**（历史） | **11-02** | 生产 10,926 LUT = 52.5% / 32 BRAM / 余量 +0.4 ns 档；显示 17,125 = 82.3% / WNS +0.189 | v90 的前身：生产已上板复验，显示位流（含 v75 界面）未目视 |
+| **v85 / v89**（历史） | 11-03 | 显示位流中间版：删 P7 标定整页、P2 预触发缓冲与 AUTO 时基；只到 `[构建签核]` | 界面收口的两个中间版，未单独上板记档 |
+| **v90** | **11-04** | 生产 **10,978 LUT = 52.78% / 32 BRAM / 17 DSP / WNS +0.199 / `BUILD 0x0019` / 1,504,220 B**；显示 **17,090 = 82.16% / BRAM 45.5/50 / WNS +0.221 / 1,688,245 B** | **当前交付基线：生产 + 显示均已上板，显示已写 Flash 冷启动通过；Z 索引发生器治停位喘振** |
 
 ---
 
@@ -443,17 +508,20 @@ v68 之所以"看起来有 Z"，是因为那时 `cycle_cnt` 卡 0 ⇒ `z_window�
 
 诚实登记，避免"表里没有 = 没做过"的误读，也避免"报告写了 = 有证据"的误读：
 
-1. **延迟实测**（R6）没有数，只有预算；
-2. **真实传感头/磁环**（R7）没有数据，全部测量用信号源；
+1. **延迟实测**（R6）没有数，只有预算（`≈830 ns` = 41.5 拍 @50 MHz，`[设计值]`）；
+2. **真实传感头**只在一种规格上跑过闭环（2048 周期/转磁环，v90，457–459 rpm）；**异型号、异极对数、异气隙没有数据**，其余测量仍以信号源为主；
 3. **示波器逐点比对**、**Z 脉宽游标图**（R5）没有；
 4. **链路误码率**（PRBS7）没测；**1,000 次抓取连测**没做；
-5. **屏上五页逐页目视**（R13）没有记录；
-6. **拔网线/断电重启**的自动恢复需人工在现场，没做；
+5. **屏上四页逐页目视**（R13）没有 checklist 记录（v90 只留了 `submission/photos/04_board_screen.jpg`（P1 总览）一张屏照截图）；
+6. **拔网线/断电重启**的自动恢复需人工在现场，没做（**但 Flash 冷启动已验**，灯亮即跑）；
 7. v59/v60/v61 的位流与报告未全部入 `data/`（只归档了 v62 与 v12 及更早的实验件）——
    这一条是取舍：归档"交付件 + 关键历史"而不是全部 25 个位流，`data/README.md` 已说明；
-8. **v66 的两个位流都没有上板**：全部数字只到 `[构建签核]` + `[仿真]` 两级，`[实测]` 严禁；
-9. **生产位流缺 `check_timing` / `hold_paths` / `io` 三份报告**（当初构建脚本没跑），
-   为不改变位流与哈希**没有重跑**——缺件如实登记，见 `data/README.md` §2.0a 与 §5.9；
-10. **没有 ±0.5″ 的外部角度基准**：全周补偿表默认旁路，"表能装能读回"不等于"精度已证明"（§7 R15）；
-11. **Z 信号输入未实现**（只有虚拟 Z）；**无 MDIO**（100 Mbps 对端不通）；`ping -l ≥86` 会因 128 B 答复缓冲区被截断；
+8. **v66、v67、v68 三个版本的位流都没上板**：全部数字只到 `[构建签核]` + `[仿真]` 两级，`[实测]` 严禁；
+   上板过的是 v62、v70、v74、**v90** 四版；
+9. **v62 生产位流缺 `check_timing` / `hold_paths` / `io` 三份报告**（当初构建脚本没跑），
+   为不改变位流与哈希**没有重跑**；**v90 两版 10 份报告齐全**，见 `data/v90/` 与 `data/README.md` §2.0a；
+10. **没有 ±0.5″ 的外部角度基准**：`angle_vs_sc` 的 0.71° RMS 是**内部一致性**（与指令角对比），
+    不是绝对精度；全周补偿表默认旁路，"表能装能读回"不等于"精度已证明"（§7 R15）；
+11. **Z 是虚拟 Z**（`z_index_gen` 由机械角在 45° 布防窗内生成，每转 1 个），**外部 Z 输入引脚未实现**；
+    无 MDIO（100 Mbps 对端不通）；`ping -l ≥86` 会因 128 B 答复缓冲区被截断；
 12. **偏置慢跟踪默认关闭**（`0x0122` bit1=0），需上板确认收敛后再开；低速测速带宽、温漂、连续运行 2 h 三项仍为 TBD。

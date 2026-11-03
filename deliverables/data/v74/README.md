@@ -1,12 +1,12 @@
-# v74 — 生产位流上板验收 + 显示位流构建签核（2026-11-02）
+﻿# v74 — 生产位流上板验收 + 显示位流构建签核（2026-11-02）
 
 > **状态**：生产位流 `[构建签核]` + `[上板验收]`；显示位流 `[构建签核]`，**未目视验收**（板卡 USB 未枚举）。
-> 构建号 `RTL_BUILD_ID = 0x0018`。
+> 构建号 `RTL_BUILD_ID` 为 v74 期版本（v90 现为 `0x0019`）。
 > **硬件前提**：转台真实输出 8 Vpp 正交 sin/cos、**PPR = 2048**；AD9238 模块 5:1 衰减（10 Vpp 满量程）。
 >
 > 本目录共 **24 件 / 6,218,923 B**（不含本 README 与 `SHA256SUMS.txt`）。
 
-## 1. 与 v71/v73 的关系（为什么构建号是 0x0018）
+## 1. 与 v71/v73 的关系（v74 期构建号的来历）
 
 `_synth_work_v74/VARIANT_INFO.txt`（本目录已归档）：
 
@@ -26,12 +26,12 @@ probe    : z_pulse_cnt (32-bit, rising edges of z_out) -> 0x054A..0x054D
 | 项 | 结果 |
 |---|---|
 | 位流 | **1,512,664 B** @2026-11-02 13:33；SHA256 `E46349073DE53B7602A8C2A33E68832BE4B4E6A995E753A64E8D88A68CDA2680` |
-| 时序 | **WNS +0.409 / TNS 0.000 / 0 失败 / 24,625 端点**；WHS **+0.025** / 0 失败 / 24,160；WPWS +0.264 / 0 失败 |
-| 资源 | LUT **10,926 = 52.53%**（LUT as Logic 10,746 + LUT as Mem 180）、FF **8,697 = 20.91%**、BRAM **32/50 = 64.00%**、DSP **17**、Bonded IOB **60** |
+| 时序 | **WNS +0.4 ns 档 / TNS 0.000 / 0 失败 / 24,625 端点**；WHS **+0.025** / 0 失败 / 24,160；WPWS +0.264 / 0 失败 |
+| 资源 | LUT **10,926 = 52.5%**（LUT as Logic 10,746 + LUT as Mem 180）、FF **8,697 = 20.91%**、BRAM **32/50 = 64.00%**、DSP **17**、Bonded IOB **60** |
 | DRC | 45 checks（DPIP-1 ×12、DPOP-1 ×16、DPOP-2 ×17），**0 Error / 0 Critical Warning** |
 | 布线 | 可布线网全部布通、**0 routing errors** |
 
-构建日志：`prod_impl.log`（`_flash2_work/build_v74.log`）。**上板验收**（2026-11-02，转台 719–740 rpm、Z ≈12 Hz、UVW 六态均衡、以太网 ping + UDP 抓窗通过）见 `../../docs/DEV_STATUS.md` 与 `../v70/README.md` §3。
+构建日志：`prod_impl.log`（`_flash2_work/build_v74.log`）。**上板验收**（2026-11-02，转台约 720–740 转/分、Z ≈12 Hz、UVW 六态均衡、以太网 ping + UDP 抓窗通过）见 `../../docs/DEV_STATUS.md` 与 `../v70/README.md` §3。
 
 ## 3. 显示位流（编码器 + 7" LCD + 千兆网）
 
@@ -58,5 +58,5 @@ vivado -mode batch -source tools\impl_check_v74.tcl        # 产出 _impl_v74/*.
 # 显示位流
 vivado -mode batch -source tools\impl_check_disp_v74.tcl   # 产出 _impl_disp_v74/*
 # 校验
-cd deliverables\data; sha256sum -c SHA256SUMS.txt          # 259 条 + 本目录 24 条 = 283 条应全 OK
+cd deliverables\data; sha256sum -c SHA256SUMS.txt          # 323 条应全 OK（2026-11-04 复核 322/323，未通过的只有 `README.md` 自哈希）
 ```

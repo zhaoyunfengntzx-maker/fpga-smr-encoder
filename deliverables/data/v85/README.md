@@ -2,7 +2,7 @@
 
 > 本目录归档 **v85 显示位流**（编码器 + 5 页触摸 UI + 千兆网）的位流、实现报告、
 > 构建日志与下载日志。它**不是**时序签核基线；签核基线仍是
-> [`../v74/`](../v74/) 的生产位流（`BUILD 0x0018`，WNS +0.409）。
+> [`../v74/`](../v74/) 的生产位流（v74 期构建号，WNS +0.4 ns 档）。
 >
 > 归档口径：v85 只改显示侧（`disp/`），`rtl/` 未动；生产位流不受影响。
 
@@ -22,7 +22,7 @@ v85 = v74 编码器 RTL + 最新一版屏上 UI（v75–v85 的界面与交互�
 | 生成时间 | 2026-11-03 15:49:59 |
 | SHA-256 | `03F12968BB743F9D5DA58FB5D79E3262D7E0B818743AFA6BF5480EA268B9E42E` |
 | 顶层 / 器件 | `enc_top_disp` / `xc7a35tfgg484-2` |
-| 构建号 | `RTL_BUILD_ID = 0x0018`（读 `0x05F2` 应为 `0x0018`） |
+| 构建号 | v74 期构建号（v90 现为 `0x0019`；读 `0x05F2` 见 `../v90/README.md`） |
 | 宏定义 | `ENC_DISP_TAP`、`ENC_V69_CPR2048`（生产位流不能带 `ENC_DISP_TAP`） |
 | 工具 | Vivado v2026.1 (win64) Build 6511674 |
 
@@ -95,7 +95,7 @@ vivado -mode batch -source _flash2_work/prog_v85.tcl
 | `disp_impl.log` | 完整构建日志（2026-11-03 15:45–15:50） |
 | `prog_v85.log` | JTAG 下载日志（16:50:56，`PROGRAMMED_OK`） |
 | `impl_check_disp_v74.tcl` | 本次构建所用脚本副本 |
-| `VARIANT_INFO.txt` | v74 RTL 变体说明（构建号 0x0018、与 `rtl/` 仅差构建号） |
+| `VARIANT_INFO.txt` | v74 RTL 变体说明（v74 期构建号、与 `rtl/` 仅差构建号） |
 
 ## 7. 状态与边界（如实登记）
 

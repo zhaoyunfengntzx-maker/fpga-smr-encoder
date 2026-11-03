@@ -276,3 +276,5 @@ tools/_*.py
 # 少了它，pynq_selftest 的 bundle 用例在全新克隆上会直接失败。
 !skill/pynq/examples/bundle/design_1.bit
 !skill/pynq/examples/bundle_nohwh/app.bit
+# ---- 2026-11-03 实名件：授权书只提交大赛系统，不得进入公开仓库 ----
+deliverables/submission/authorization_letter.pdf

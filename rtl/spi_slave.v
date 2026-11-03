@@ -5,9 +5,9 @@
 //    · 异步 sck/ssi/ss_n 输入，全部在 clk_sys 域内两级同步 + 边沿检测实现，
 //      不引入新时钟域（与契约 0.3 的异步输入处理方式一致）。
 //    · ssi 在 sck 上升沿采样；sso 在 sck 下降沿更新（CPHA=0 的标准行为）。
-//    · 两种协议由参数 USE_TW28_PACKET 选择：
+//    · 两种协议由参数 USE_PKT_MODE 选择：
 //
-//    (A) USE_TW28_PACKET = 0 —— 简单字节模式（默认，便于上位机调试）
+//    (A) USE_PKT_MODE = 0 —— 简单字节模式（默认，便于上位机调试）
 //        一次传输 = 2 字节：byte0 = {rw, addr[6:0]}，byte1 = data[7:0]
 //            rw = 1 -> 读（不产生写操作）；rw = 0 -> 写
 //        输出 addr = {8'h00, 1'b0, byte0[6:0]}（16 位地址空间的 0x00..0x7F）
@@ -20,17 +20,17 @@
 //        别名，使简单模式也能做器件识别。
 //        写操作时 byte0 期间返回的是"写前值"。
 //
-//    (B) USE_TW28_PACKET = 1 —— TW28 风格 32 位命令/响应包
+//    (B) USE_PKT_MODE = 1 —— 32 位命令/响应包
 //        命令包(MSB 先)：
 //            bit31    st  = 1（必须为 1，否则忽略该包）
 //            bit30:29 rm  读模式（0=位置/状态 1=捕获 2=ADC 3=寄存器；本设计统一
 //                         按"寄存器读"处理；位置请读 0x0536..0x0539）
 //            bit28:27 wm  写模式（0=空写 1/3=寄存器写）
-//            bit26:24 page 地址高 3 位 addr[10:8]（TW28 中为保留位，本设计用作
+//            bit26:24 page 地址高 3 位 addr[10:8]（专用细分 ASIC 中为保留位，本设计用作
 //                         扩展，使 0x5xx/0x6xx 可达）
 //            bit23:16 addr[7:0] 寄存器地址（16 位地址 = {5'b0, page, addr[7:0]}）
 //            bit15:0  data[15:0] 写数据（低字节写 addr，高字节写 addr+1）
-//        响应包在**下一帧**移出（TW28 重叠式：命令 N 的响应在命令 N+1 期间返回）：
+//        响应包在**下一帧**移出（应答滞后一帧的重叠式：命令 N 的响应在命令 N+1 期间返回）：
 //            bit31:24 状态字节 = {page, 8'h3A} 的读值（扩展页 5 -> 0x053A stat_flags）
 //            bit23:16 addr[7:0] 回显
 //            bit15:8  寄存器 addr+1
@@ -41,7 +41,7 @@
 //    sck 真实上升沿 -> we/addr 有效：≤ 3 个 clk_sys（两级同步 + 1 拍寄存器）。
 //    可靠边沿检测要求每个 sck 周期 ≥ 4 个 clk_sys（25 ns @100 MHz），即
 //    sck ≤ 12.5 MHz 为绝对上限；建议 ≤ 10 MHz（10 倍过采样，余量充足）。
-//    TW28 数据手册允许 20 MHz，但本设计按契约 0.3 用 clk_sys 过采样实现，
+//    公开数据手册允许 20 MHz，但本设计按契约 0.3 用 clk_sys 过采样实现，
 //    故把上限明确写为 10 MHz（推荐）/ 12.5 MHz（极限）。
 //
 //  资源估计
@@ -60,7 +60,7 @@
 module spi_slave #(
     parameter integer AW              = 16,  // 地址位宽(契约默认 8，见假设 4)
     parameter integer DW              = 8,   // 数据位宽
-    parameter integer USE_TW28_PACKET = 0    // 0=简单 2 字节模式，1=32 位包模式
+    parameter integer USE_PKT_MODE = 0    // 0=简单 2 字节模式，1=32 位包模式
 )(
     input  wire          clk,               // clk_sys 100 MHz
     input  wire          rst_n,             // 同步复位，低有效
@@ -74,7 +74,7 @@ module spi_slave #(
     input  wire [DW-1:0] rdata              // 读数据（组合）
 );
 
-    localparam integer PKT = (USE_TW28_PACKET != 0) ? 1 : 0;
+    localparam integer PKT = (USE_PKT_MODE != 0) ? 1 : 0;
     localparam [5:0]   NCLK_MAX = (PKT != 0) ? 6'd32 : 6'd16;   // 一帧 sck 上升沿数
 
     // ------------------------------------------------------------------

@@ -2,8 +2,8 @@
 //  reg_file.v  ——  配置/状态寄存器组 (SPI 从站寄存器空间)
 // ----------------------------------------------------------------------------
 //  功能
-//    · 复现 iC-TW28 寄存器地址（低 bank 0x0000..0x0FFF 中"便宜"的那些），
-//      我们的扩展寄存器放在 0x5xxx 段（不与 TW28 冲突）。
+//    · 复现 专用细分 ASIC 寄存器地址（低 bank 0x0000..0x0FFF 中"便宜"的那些），
+//      我们的扩展寄存器放在 0x5xxx 段（不与 专用细分 ASIC 冲突）。
 //    · 输出各功能模块需要的**扁平化配置总线**（cfg_*）。
 //    · 把顶层状态（幅值平方、多周期计数、完整位置、故障标志、链路状态）
 //      映射成可经 SPI 读回的寄存器，供上位机绘图。
@@ -39,8 +39,8 @@
 //    v74 起恒 0，地址与抽头位保留（位图不重排），不再参与任何判据。
 //
 //  DEVICE_ID / REV
-//    DEVICE_ID = 8'h0C（与 iC-TW28 一致，便于上位机复用 GUI）。
-//    REV = 8'h10（本设计自己的版本号 v1.0，故意**不**用 TW28 的 0x11/0x14，
+//    DEVICE_ID = 8'h0C（与 专用细分 ASIC 一致，便于上位机复用 GUI）。
+//    REV = 8'h10（本设计自己的版本号 v1.0，故意**不**用 专用细分 ASIC 的 0x11/0x14，
 //    以免上位机误判为真芯片）。别名：0x05F0/0x05F1、0xE000/0xE002、0x007E/0x007F。
 //
 //  ============================ 地址表 ==================================
@@ -114,7 +114,7 @@
 //  | 0x053B/3C | STAT_FRAME  | 帧内已发位数（保留，恒 0）                   | -     | 只读 |
 //  | 0x05F0    | DEVICE_ID   | = 0x0C                             | 0x0C  | 只读 |
 //  | 0x05F1    | REV         | = 0x10                             | 0x10  | 只读 |
-//  | 0xE000    | DEVICE_ID   | = 0x0C（TW28 原地址）               | 0x0C  | 只读 |
+//  | 0xE000    | DEVICE_ID   | = 0x0C（低 bank 原地址）               | 0x0C  | 只读 |
 //  | 0xE002    | REV0        | = 0x10                             | 0x10  | 只读 |
 //  | 0xE003    | REV1        | = 0x00                             | 0x00  | 只读 |
 //  ======================================================================
@@ -126,8 +126,8 @@
 //  资源估计 / 关键假设
 //    FF ≈ 200（约 30 个 8 位寄存器 + 6 个 16 位 + 2 个 32 位）
 //    LUT ≈ 350（2 个 16 位比较器树的大 case 译码）
-//    假设 1) 无 EEPROM，上电默认值即本文件列出的值（TW28 的 EEPROM 语义不实现）
-//         2) 0x0405 用"写 1 清位"（TW28 为写 0 清位）—— 因为整字节写入时
+//    假设 1) 无 EEPROM，上电默认值即本文件列出的值（专用细分 ASIC 的 EEPROM 语义不实现）
+//         2) 0x0405 用"写 1 清位"（专用细分 ASIC 为写 0 清位）—— 因为整字节写入时
 //            写 0 清位会一次抹掉全部锁存，故改为 W1C 并在此说明。
 //         3) calib_we 与主机 we 同拍时 calib_we 优先（两者不会撞同一地址）。
 //         4) 0x0405[0] 除了清 STAT_LATCH 的 otr 位，还输出 1 拍 clr_otr 脉冲，
@@ -278,7 +278,7 @@ module reg_file #(
     reg        r_calib_done;
     reg        calib_done_d;      // calib_done 边沿检测
 
-    // 状态实时值（TW28 STAT_VAL 位序）
+    // 状态实时值（状态字 位序）
     wire [7:0] stat_val_now = {2'b00, (stat_amp_low | stat_amp_high), 1'b0,
                                stat_inclim, stat_lag_limit, 1'b0, stat_otr};
 
@@ -307,9 +307,9 @@ module reg_file #(
             r_uvw_hyst   <= 8'h00;
             r_falarm     <= 8'h00;
             r_ablimit    <= 8'h00;
-            r_zero0      <= 8'h0A;          // threshold = 10 (TW28 pin 默认)
+            r_zero0      <= 8'h0A;          // threshold = 10 (专用细分 ASIC pin 默认)
             // Z 脉冲宽度默认 4（zwidth=4）⇒ ★ v9 起实际宽度 = z_width + 1 = 5 个边沿步
-            //   （对齐 TW28 手册 `(zwidth+1)/div`，见 docs/DEV_STATUS.md §1.47）。
+            //   （对齐 公开手册 `(zwidth+1)/div`，见 docs/DEV_STATUS.md §1.47）。
             // ⚠ 历史：v8 及以前 abz_gen 里是
             //   `assign z_pulse_n = (z_width == 4'd0) ? 4'd0 : z_width;`
             //   于是 zwidth=0 会把 Z 永久钉死为 0（上板时看不到 Z）。
@@ -523,7 +523,7 @@ module reg_file #(
     always @(*) begin
         rdata = 8'h00;
         case (addr)
-        // ---- TW28 低 bank ----
+        // ---- 低 bank ----
         16'h0000: rdata = r_main_cfg;
         16'h0001: rdata = r_led_cfg;
         16'h0002: rdata = r_led_start;
@@ -531,7 +531,7 @@ module reg_file #(
         16'h0010: rdata = r_led_start;          // LED_PWM 别名
         16'h007E: rdata = DEVICE_ID;            // 简单模式别名
         16'h007F: rdata = REV;
-        // ---- TW28 0x01xx ----
+        // ---- 专用细分 ASIC 0x01xx ----
         16'h0100: rdata = r_uvw_cfg;
         16'h0101: rdata = r_inter0;
         16'h0102: rdata = r_inter1;
@@ -580,11 +580,11 @@ module reg_file #(
         16'h013A: rdata = bias_c[7:0];
         16'h013B: rdata = bias_c[15:8];
         16'h013C: rdata = {6'b0, bias_big, bias_valid};
-        // ---- TW28 0x03xx ----
+        // ---- 专用细分 ASIC 0x03xx ----
         16'h0300: rdata = r_filt_cfg;
         16'h0301: rdata = r_filt_lag;
         16'h0302: rdata = r_filt_k;
-        // ---- TW28 0x04xx ----
+        // ---- 专用细分 ASIC 0x04xx ----
         16'h0400: rdata = r_stat_cfg;
         16'h0401: rdata = r_stat_sel;
         16'h0402: rdata = r_stat_ie;
@@ -666,7 +666,7 @@ module reg_file #(
         16'h05F1: rdata = REV;
         16'h05F2: rdata = rtl_build_id[7:0];    // ★ RTL 版本号（v5 及以前读 0，v6 = 6，v7 = 7，v8 = 8）
         16'h05F3: rdata = rtl_build_id[15:8];
-        // ---- TW28 器件识别地址 ----
+        // ---- 器件识别地址 ----
         16'hE000: rdata = DEVICE_ID;
         16'hE002: rdata = REV;                  // REV0
         16'hE003: rdata = 8'h00;                // REV1

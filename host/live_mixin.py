@@ -24,6 +24,11 @@ import time
 from PySide6.QtCore import Qt, QTimer
 
 import link as lk
+# 板上角度字的流水线延时：12.5 MSPS 下 4 个采样周期 = 0.32 µs。
+# 2026-11-03 上板实测：227 rpm 与 913 rpm 两档反算的 τ 都是 0.32 µs，误差随转速
+# 严格线性（频率比 4.015 / 残差比 4.019）⇒ 是固定延时，不是刻度误差。
+# 补偿用 θ + 360·f·τ：913 rpm 下 6.3″ → 0.01″（jitter 1.3″ 不动）。
+ANG_DELAY_S = 0.32e-6
 import linkctl as lc
 import net_frames as nf
 from tasks import _hms
@@ -362,6 +367,7 @@ class LiveMixin(object):
         self.wave.reset()
 
     def _net_off(self, why=""):
+        self._net_tap_head = -1          # 重开流后抽头 head 会重新计数
         self._src = "serial"
         self._synth = None
         self._net_want = False
@@ -403,7 +409,11 @@ class LiveMixin(object):
         raw = None
         fs = 0.0
         try:
-            raw = r.snapshot(65536)
+            # ★ 真波形限 5 Hz：每 tick 都重绘 62500 点会把界面线程拖住，
+            #   读数的反应看起来就慢好几秒。波形是装饰性的，5 Hz 足够。
+            _wt = time.monotonic()
+            _due = (_wt - float(getattr(self, "_net_wave_t", 0.0))) >= 0.2
+            raw = r.snapshot(65536) if _due else {"s": None, "c": None, "n": 0, "dec": 0}
             if int(raw.get("n") or 0) >= 64:
                 fs = float(r.base_fs) / float(1 << int(raw.get("dec") or 0))
             else:
@@ -416,7 +426,9 @@ class LiveMixin(object):
         if raw is not None:
             if self.wave.isVisible():
                 try:
-                    self.wave.feed_raw(raw["s"], raw["c"], fs)
+                    if raw.get("s") is not None:
+                        self._net_wave_t = _wt
+                        self.wave.feed_raw(raw["s"], raw["c"], fs)
                 except Exception as exc:            # noqa: BLE001
                     if now - getattr(self, "_raw_warn_t", 0.0) > 5.0:
                         self._raw_warn_t = now
@@ -449,6 +461,24 @@ class LiveMixin(object):
 
         snap = r.snapshot_frames(4096)
         n = int(snap.get("n") or 0)
+        # ★ 只造"这一 tick 新到的"那批抽头点。抽头是"最近 N 点"，每 100 ms 都会
+        #   返回同一段的重叠窗口；原样造帧等于把同一段数据重复计 40 次/秒
+        #   （实测状态栏"网口 37100 帧/秒"，记录器/告警/质量卡跟着重复计数）。
+        _head = int(snap.get("head") or 0)
+        _prev = getattr(self, "_net_tap_head", -1)
+        if _prev >= 0:
+            _new = max(0, _head - _prev)
+            if _new <= 0:
+                self._net_ui_tail(now)
+                return
+            if _new < n:
+                _s = snap["s"][-_new:]
+                _c = snap["c"][-_new:]
+                snap = {"s": _s, "c": _c, "n": int(_new),
+                        "step": snap.get("step"), "fs": snap.get("fs"),
+                        "head": _head}
+                n = int(_new)
+        self._net_tap_head = _head
         if n <= 0:
             self._net_ui_tail(now)
             # ★ 上板实测：包停了多半是板端 host_known 掉了（它还在发，但目的 MAC
@@ -702,12 +732,46 @@ class LiveMixin(object):
                     "正在记录" if "记录中" in rec else rec,
                     "ok" if "记录中" in rec else "idle")
 
+    def _on_tau(self, value):
+        """τ 改了：记住它（下次启动还用这个值）。"""
+        try:
+            self._tau_us = float(value)
+        except (TypeError, ValueError):
+            return
+        try:
+            up.put("data", "tau_us", round(self._tau_us, 3))
+            up.save()
+        except Exception:                                    # noqa: BLE001
+            pass
+
+    def _tau_corr(self, ang_deg, f_hz):
+        """按流水线延时把角度补回采样时刻。返回 None 表示不补（关掉 / 没频率）。"""
+        if not getattr(self, "chk_tau", None) or not self.chk_tau.isChecked():
+            return None
+        try:
+            fh = float(f_hz or 0.0)
+        except (TypeError, ValueError):
+            return None
+        if abs(fh) < 1e-6:
+            return None
+        tau = float(getattr(self, "_tau_us", ANG_DELAY_S * 1e6)) * 1e-6
+        return (ang_deg + 360.0 * fh * tau) % 360.0
+
     def _update_live(self, f):
         # ★ 一律 .get(...) 取值（自查发现）：坏帧/缺键的帧以前会在这里抛 KeyError，
         #   而它由 100 ms 的 _tick 调用 ⇒ 变成"每 100 ms 一个模态错误框"。
         #   与项目别处（recorder.py:870 `f.get("angle_deg") or 0.0`）同一口径。
         b = f.get("io_bits") or {}
         self.v_angle.setText("%.3f °" % (f.get("angle_deg") or 0.0))
+        # 板上角度字比采样时刻晚 τ：θ_corr = θ_meas + 360·f·τ（f 用本 tick 的输入频率）
+        #   补偿只改这一行显示；v_angle 仍是板上原值，关掉开关就回到原值对比。
+        _ang = float(f.get("angle_deg") or 0.0)
+        _corr = self._tau_corr(_ang, getattr(self, "_f_in", None))
+        if getattr(self, "v_ang_fix", None) is not None:
+            if _corr is None:
+                self.v_ang_fix.setText("—")
+            else:
+                self.v_ang_fix.setText("%.3f °" % _corr)
         self.v_pos.setText(format(f.get("pos_full") or 0, ","))
         self.v_sc.setText("%d / %d" % (f.get("s") or 0, f.get("c") or 0))
         # R20：幅值 r 稳定显示（悬停看原始值）；电角度/位置/s,c 本身就在变，直接显示

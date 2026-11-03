@@ -399,7 +399,7 @@ module tb_abz_gen;
         $display("  判据：每输入周期恰好 1 个 Z 脉冲。");
         $display("  宽度用脉冲内 A/B 状态变化次数计，受采样相位影响有 +-1~2 个边沿步");
         $display("  的量化误差；★ v9 起 RTL 的设计值是脉冲恰好横跨 (z_width + 1) 个边沿步");
-        $display("  （对齐 TW28 手册 zwidth_edges = (zwidth+1)/div，见 docs/DEV_STATUS.md §1.47），");
+        $display("  （对齐 公开手册 zwidth_edges = (zwidth+1)/div，见 docs/DEV_STATUS.md §1.47），");
         $display("  该量由 model/abz_uvw_model.py 逐拍模型独立核对。");
         $display("  ★ 本循环自 v9 起含 z_width = 0（v9 起 0 ⇒ 1 个边沿步的 Z；v8 及以前为无 Z）。");
         $display("  %-8s %-6s %-8s %-8s %-8s %-6s",

@@ -72,7 +72,13 @@ def wrap180(x):
     return (x + 180.0) % 360.0 - 180.0
 
 
-def analyze(frames, pairs=2048, frame_hz=FRAME_HZ):
+# 板上流水线延时：12.5 MSPS 下 4 个采样周期 = 0.32 µs。
+# 2026-11-03 上板实测两档（227 rpm / 913 rpm）反算出的 τ 都是 0.32 µs，误差随转速
+# 严格线性（频率比 4.015、残差比 4.019）⇒ 就是这段固定延时，不是刻度误差。
+TAU_DEFAULT_S = 0.32e-6
+
+
+def analyze(frames, pairs=2048, frame_hz=FRAME_HZ, tau_s=TAU_DEFAULT_S):
     """从一批帧算出：平均电频率、残差常数项、分箱统计、抖动。
 
     frames 里每帧要有：`angle_deg`（或 `angle`）、`s`、`c`、`pos_full`。
@@ -132,6 +138,27 @@ def analyze(frames, pairs=2048, frame_hz=FRAME_HZ):
     const_sd = float(good.std()) if good.size else float("nan")
 
     k_arc = 3600.0 / max(1, int(pairs))                # 电角度 → 机械角秒
+
+    # ---- 抖动来源：前端噪声能解释多少 ----
+    amp = np.hypot(ss, cc)
+    A = float(np.median(amp)) if amp.size else 0.0
+    _den = np.column_stack([np.sin(np.radians(deg)), np.cos(np.radians(deg)),
+                            np.ones_like(deg)])
+    _res = []
+    for _x in (ss, cc):
+        _coef, *_ = np.linalg.lstsq(_den, _x, rcond=None)
+        _res.append(_x - _den @ _coef)
+    sigma_res = float(np.sqrt(np.mean(np.concatenate(_res) ** 2))) if A else 0.0
+    noise_deg = float(np.degrees(sigma_res / A)) if A > 1e-9 else 0.0
+    noise_arcsec = noise_deg * k_arc if "k_arc" in dir() else noise_deg * 3600.0 / max(1, pairs)
+
+    # ---- 按固定延时 τ 补偿后应该只剩抖动 ----
+    #   板上角度 = 采样时刻再往后 τ 的相位 ⇒ θ_corr = θ_meas + 360·f·τ
+    err_c = wrap180(err + 360.0 * f_hz * tau_s)
+    mean_c = float(np.mean(err_c))
+    err_c = wrap180(err_c - mean_c)
+    rms_c = float(np.sqrt(np.mean(err_c * err_c)))
+
     return {
         "ok": True,
         "n": n,
@@ -148,6 +175,14 @@ def analyze(frames, pairs=2048, frame_hz=FRAME_HZ):
         "jitter_arcsec": rms * k_arc,
         # 若残差全是延时：τ = err / (360 f)
         "tau_us": (abs(mean) / (360.0 * abs(f_hz)) * 1e6) if f_hz else float("nan"),
+        "err_corr_mean_deg": mean_c,
+        "err_corr_mean_arcsec": mean_c * k_arc,
+        "err_corr_rms_deg": rms_c,
+        "err_corr_rms_arcsec": rms_c * k_arc,
+        "amp": A,
+        "noise_lsb": sigma_res,
+        "noise_arcsec": noise_arcsec,
+        "tau_s": float(tau_s),
         "pairs": int(pairs),
         "bins_used": int(good.size),
         "bins": [None if not np.isfinite(v) else round(float(v), 4) for v in bins],
@@ -175,7 +210,10 @@ def compare(rows):
     ss_res_b = float(np.sum((e - eb) ** 2))
     r2_b = 1.0 - ss_res_b / ss_tot if ss_tot > 1e-12 else 0.0
 
-    span = float(f.max() / f.min()) if f.min() > 0 else float("inf")
+    # 反转时 f 全是负数，必须按 |f| 判跨度；否则 f.min()<0 直接走 inf 分支，
+    # 绕过下面 span<1.6 的"判不了"保护（实测打印出"转速跨度 inf×"还给结论）。
+    _af = np.abs(f)
+    span = float(_af.max() / _af.min()) if _af.min() > 0 else float("inf")
     # ★ 判定不能用 R²：几次测得几乎一样时 ss_tot ≈ 0，R² 会变成 −∞/0 之外的怪数。
     #   用"每点残差散布"直接判 —— 它天然有物理量纲（度）。
     rms_tot = math.sqrt(ss_tot / len(e)) if len(e) else 0.0
@@ -226,27 +264,22 @@ def capture(port, seconds, pairs=2048):
     import serial
 
     try:
-        ser = serial.Serial(port, 2000000, timeout=0.2)
+        ser = serial.Serial(port, 2000000, timeout=0.05)
     except Exception as exc:                    # noqa: BLE001
         raise SystemExit(_port_help(port, exc))
-    buf = bytearray()
+    buf = b""
     frames = []
     t0 = time.monotonic()
     try:
         while time.monotonic() - t0 < seconds:
-            chunk = ser.read(max(1, ser.in_waiting or 1))
-            if not chunk:
-                continue
-            buf.extend(chunk)
-            need = us.FRAME_LEN if hasattr(us, "FRAME_LEN") else 18
-            if len(buf) < need * 64:
-                continue
-            got, _stats = us.parse_stream(bytes(buf))
+            buf += ser.read(16384)
+            got, _stats = us.parse_stream(buf)
             if got:
                 frames.extend(got)
-            # 只留尾巴，防止 buf 无限涨（16 字节余量给半帧）
-            if len(buf) > 64 * 1024:
-                del buf[: len(buf) - 256]
+                # ★ 只留尾巴：parse_stream 每次把整个 buf 都解析一遍，
+                #   不截断就会把同一批帧反复追加（实测 8 s 采出 152 万帧）。
+                #   18 字节一帧，留 64 字节足够护住跨读的半帧，剩下靠重同步。
+                buf = buf[-64:]
     finally:
         ser.close()
     return frames
@@ -378,7 +411,9 @@ def main(argv):
     tag = args[2] if len(args) > 2 else time.strftime("run%H%M%S")
     print("采 %s ｜ %.0f s ｜ 标签 %s" % (port, seconds, tag))
     frames = capture(port, seconds)
-    print("收到 %d 帧" % len(frames))
+    print("收到 %d 帧（%.0f 帧/秒）" % (len(frames), len(frames) / max(1e-9, seconds)))
+    if not (0.5 < len(frames) / max(1e-9, seconds) / FRAME_HZ < 1.5):
+        print("⚠ 帧率不对（应该 ≈10000 帧/秒）—— 串口被别的程序抢了？还是板子没在发 10 kHz？")
     r = analyze(frames)
     if not r.get("ok"):
         print("FAIL %s" % r.get("why"))
@@ -392,6 +427,14 @@ def main(argv):
           % (BINS, r["const_lo"], r["const_hi"], r["const_sd"],
              "确实是常数" if r["const_sd"] < 0.1 else "随角度变了，另找原因"))
     print("若全是延时：τ ≈ %.2f µs" % r["tau_us"])
+    print("抖动拆解  前端噪声 %.0f LSB（幅值 %.0f）⇒ 角度抖动 %.2f″ ｜ 实测补偿后 rms %.2f″  ⇒ %s"
+          % (r["noise_lsb"], r["amp"], r["noise_arcsec"],
+             r["err_corr_rms_arcsec"],
+             "就是前端噪声" if abs(r["err_corr_rms_arcsec"] - r["noise_arcsec"])
+             < 0.4 * max(0.3, r["noise_arcsec"]) else "噪声之外还有别的"))
+    print("按 τ=%.2f µs 补偿后：均值 %+.3f°（%.2f″）｜ rms %.3f°（%.2f″）"
+          % (r["tau_s"] * 1e6, r["err_corr_mean_deg"], r["err_corr_mean_arcsec"],
+             r["err_corr_rms_deg"], r["err_corr_rms_arcsec"]))
     out = os.path.join(OUT_DIR, "rvs_%s.json" % tag)
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(r, fh, ensure_ascii=False, indent=1)

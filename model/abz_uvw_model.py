@@ -298,7 +298,7 @@ class AbzGen:
         #   (a) 相位穿越检测：z_ph_cur/z_ph_prev 的 1->0 边沿 = 刚越过 z_phase
         #   (b) 边沿步计数：直接用 edge 信号（本拍是否执行了一个边沿步）累计
         # 脉冲横跨恰好 (z_width + 1) 个边沿步（第 1 步就是触发那一拍）。
-        # ★ v9（2026-10-11）：由 z_width 改为 z_width + 1，对齐 TW28 手册
+        # ★ v9（2026-10-11）：由 z_width 改为 z_width + 1，对齐 公开手册
         #   `zwidth_edges = (zwidth + 1) / div`（docs/DEV_STATUS.md §1.47）。
         #   由此 width_n ∈ [1,16] 恒非零 ⇒ 原来"z_width = 0 ⇒ 无 Z"的分支成为死代码，已删。
         ph_off = (angle - (self.z_phase & 0xFFFF)) & 0xFFFF
@@ -630,7 +630,7 @@ def measure_ab(inter, div, hyst=0, nsamp=AW_ANG, ncyc=3, z_width=4, z_phase=0):
         （精度 1 sample）→ 占空与 A/B 不对称（<=1 sample）
       * z_pulses：窗口内完整的 Z 脉冲数（首尾跨窗口的不计）
       * z_widths：每个完整 Z 脉冲覆盖的边沿步数（★ v9 起应等于 z_width + 1，
-        对齐 TW28 手册 zwidth_edges = (zwidth+1)/div，见 docs/DEV_STATUS.md §1.47）
+        对齐 公开手册 zwidth_edges = (zwidth+1)/div，见 docs/DEV_STATUS.md §1.47）
 
       说明：测量窗口跳过第 1 个输入周期用于建立稳态，随后统计 (ncyc-1) 个周期。
     """

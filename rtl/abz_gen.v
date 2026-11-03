@@ -35,7 +35,7 @@
 //   本模块采用 B 超前 A 的相位序；若你的接收端约定 A 超前 B，
 //   把 abzdir 置 1（或在顶层交换 a_out/b_out 的引脚分配）即可。
 //   本工程默认 abzdir 由寄存器 OUTPUT.abzdir 控制，实测单路反相/双路反相/
-//   abzdir 的行为与 TW28 datasheet §6.1 的规则一致（见文件末尾实测表）。
+//   abzdir 的行为与 通用 ABZ 规范 §6.1 的规则一致（见文件末尾实测表）。
 //
 //  ※ 与契约的其它解释：
 //   1) "div=2…8 时对边沿索引做 mod div 抽取（保留一个 3 位模计数器）" —— 本地
@@ -68,20 +68,19 @@
 //           对限频状态的契约（实测 tb_enc_top TEST B：slc_b=4 残留 ⇒ limiter_hi 满圈
 //           4194304 clk）。故 ② 单独计数、只喂 lag 判据，limiter_active 维持 v7 语义。
 //        ★ r_ovl 计数为**下界**（单拍丢多步只记 1）⇒ 只会报得偏保守、不会漏报。
-//   4) Z 宽度：★ v9（2026-10-11）起改为 **(z_width + 1) 个"边沿索引步"**，对齐 TW28
-//      手册 `zwidth_edges = (zwidth + 1) / div`（docs/TW28_digest.md:365/:786、
-//      docs/01_technical_solution.md:332/:596）。v8 及以前是 `z_width` 个原始边沿步
+//   4) Z 宽度：★ v9（2026-10-11）起改为 **(z_width + 1) 个"边沿索引步"**，对齐通用的
+//      `zwidth_edges = (zwidth + 1) / div` 约定（公开数据手册、本设计 §3.5）。v8 及以前是 `z_width` 个原始边沿步
 //      （默认 4 vs 手册 5 = 短 20%，`z_width = 0` 时 v8 无 Z 而手册 1 步）——
 //      差异已由仿真（tb_enc_top C5 = 2042 拍 ≈ 4×512）与板上二值实验（`0x0108 = 0x4000`
 //      时 Z 完全无脉冲）双重确认，见 docs/DEV_STATUS.md §1.47。
-//      Z 通道旁路 post-AB 分频（与 TW28 一致），所以 div>1 时 Z 的宽度按原始
+//      Z 通道旁路 post-AB 分频（与 专用细分 ASIC 一致），所以 div>1 时 Z 的宽度按原始
 //      分辨率计，折算到"输出 AB 边沿"约为 (z_width+1)/div（实测见报告表 2）。
 //      并有 Z_TIMEOUT 超时保护：若 (z_width+1) 个边沿始终未走满（输入停住），
 //      Z 脉冲在 Z_TIMEOUT 个 clk 后强制结束，避免卡死 —— 代价是极低频时宽度会被
 //      截短（`f_in ≥ 11.92·(z_width+1) Hz`，见 docs/DEV_STATUS.md §1.49 与 §1.26 ⚠ 条）。
 //   5) z_window=1 且角度穿越 z_phase 时产生 Z；z_window=0 时不产生 Z。
 //
-//  TW28 极性规则（datasheet §6.1 OUTPUT.apol/.bpol）：
+//  专用细分 ASIC 极性规则（datasheet §6.1 OUTPUT.apol/.bpol）：
 //    "只翻转 apol 或 bpol 之一会反转 AB 计数方向，两个都翻转不会。"
 //    本模块 apol/bpol 只做电平反相，abzdir 只控制索引行进方向；在标准格雷
 //    正交映射下，反相单路恰好等价于方向反转，因此 (apol ^ bpol)=1 时计数
@@ -127,7 +126,7 @@ module abz_gen #(
     // ---- Z 通道 ----
     input  wire                z_window,   // 来自顶层 Z 门控窗口
     input  wire [11:0]         z_phase,    // Z 相位，单位 360°/4096
-    input  wire [3:0]          z_width,    // Z 宽度参数（TW28 ZERO1.zwidth 0…15）；★ v9 起实际脉冲宽 = z_width+1 个 AB 边沿步（1…16）
+    input  wire [3:0]          z_width,    // Z 宽度参数（z_width 0…15）；★ v9 起实际脉冲宽 = z_width+1 个 AB 边沿步（1…16）
     // ---- 输出 ----
     output reg                 a_out,
     output reg                 b_out,
@@ -507,9 +506,8 @@ module abz_gen #(
     // ------------------------------------------------------------------
     //  6) Z 通道：角度穿越 z_phase 时产生 (z_width + 1) 个边沿步宽的 Z 脉冲，
     //     z_window=0 时不产生；带超时保护。
-    //     ★ v9（2026-10-11）：宽度由 z_width 改为 z_width + 1，对齐 TW28 手册
-    //     `zwidth_edges = (zwidth + 1) / div`（docs/TW28_digest.md:365/:786、
-    //     docs/01_technical_solution.md:332/:596）。v8 及以前为 z_width 个原始边沿步
+    //     ★ v9（2026-10-11）：宽度由 z_width 改为 z_width + 1，对齐公开数据手册的
+    //     `zwidth_edges = (zwidth + 1) / div` 约定（本设计 §3.5）。v8 及以前为 z_width 个原始边沿步
     //     （默认 4 vs 手册 5，短 20%；z_width=0 时 v8 无 Z、手册 1 步）。
     //     板上二值实证见 docs/DEV_STATUS.md §1.47（z_width=0 时 v8 无脉冲）。
     // ------------------------------------------------------------------
@@ -759,5 +757,117 @@ module abz_gen #(
             out_valid <= 1'b0;
         end
     end
+
+endmodule
+
+// ============================================================================
+//  z_index_gen.v  --  虚拟索引（Z）门控窗发生器
+// ----------------------------------------------------------------------------
+//  把"每 2^POLE_BITS 个输入周期（= 1 圈）一个 Z"的圈事件从 enc_top 里抽出来，
+//  便于单独例化做抖动回归（sim/tb_z_chatter.v），不改变 enc_top 的行为。
+//
+//  接口：angle（周期内角度，1 圈 = 2^AW LSB）、in_valid（有效样点）
+//        → z_window（门控窗脉冲，Z_WIN_CLKS 拍宽）、z_idx_evt（单拍圈事件）
+//
+//  ★ v75（2026-11-03）：arm 机制修复"停位抖动时 Z 连续喘振（chatter）"
+//    旧实现的事件式判据是
+//        z_idx_evt = (ang_wrap_f | ang_wrap_b) & (rev_cnt[POLE_BITS-1:0] == 0)
+//    转轴停在索引位附近时角度在 0° 附近来回 ⇒ ang_wrap_f/b 交替、rev_cnt 在
+//    0/1 之间翻 ⇒ **每翻回 0 就再出一次 Z**。实测 0x054A 的 Z 计数 12,128,530
+//    而实际只转约 4001 转（z_rate.py 实测转动时严格 1 Z/转），差额全部来自这种
+//    停位抖动（抖动频率约 3 kHz）。
+//
+//    现在：出过一次 Z 后 z_armed <= 0，只有当角度相对**上一个 Z 的位置**离开
+//    ≥ 1/8 圈（Z_ARM_DIST = 2^(AW-3) = 8192 LSB，模 2π 最短弧）才重新布防。
+//    ⇒ 抖动幅度只有几十 LSB 时永远不再布防 ⇒ 同一圈最多出一个 Z；
+//      正常转动离开 1/8 圈后立刻布防，圈事件照旧由 rev_cnt 保证 1 圈 1 次。
+//
+//    ⚠⚠ 最短弧**必须**用 AW 位补码差（模 2^AW 自动回绕）：
+//          wire signed [AW-1:0] z_arm_d = angle - z_arm_ang;
+//        绝不能写成 17 位扩位相减：0.2° 与 359.8° 的 16 位差是 +36（短弧），
+//        扩位相减会算成 −65500，被判成"已离开 90°" ⇒ 停位抖动照样喘振
+//        （这个 bug 在其它工程里踩过，见任务记录）。
+// ============================================================================
+module z_index_gen #(
+    parameter integer AW        = 16,      // 周期内角度位宽（1 圈 = 2^AW LSB）
+    parameter integer POLE_BITS = 11,      // 每 2^POLE_BITS 个输入周期 = 1 圈
+    parameter integer CW        = 32       // 圈计数器位宽（与 enc_top 的 CYCLE_BITS 一致）
+) (
+    input  wire          clk,
+    input  wire          rst_n,
+    input  wire [AW-1:0] angle,        // 周期内角度
+    input  wire          in_valid,     // 有效样点
+    output wire          z_window,     // Z 门控窗（6 拍宽）
+    output wire          z_idx_evt,    // 单拍圈事件（已过 arm 判据）
+    output wire          z_armed_o     // 探针：当前是否已布防
+);
+
+    localparam integer Z_WIN_CLKS = 6;                        // 窗宽（clk），> 2 拍读数延迟
+    localparam [AW-1:0] ZW_TOP = (1 << AW) - (1 << (AW-3));   // 7/8 圈（AW=16 → 57344）
+    localparam [AW-1:0] ZW_LOW = (1 << (AW-3));               // 1/8 圈（AW=16 → 8192）
+    localparam [AW-1:0] Z_ARM_DIST = (1 << (AW-3));           // 重新布防所需的角距（1/8 圈）
+
+    // ---- 过零事件：上一有效样点还在 7/8 圈外、本拍已进入 1/8 圈内（或反向）----
+    reg [AW-1:0] z_ang_prev;
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n)              z_ang_prev <= {AW{1'b0}};
+        else if (in_valid)       z_ang_prev <= angle;
+    end
+
+    wire ang_wrap_f = in_valid & (z_ang_prev >= ZW_TOP) & (angle <= ZW_LOW);
+    wire ang_wrap_b = in_valid & (z_ang_prev <= ZW_LOW) & (angle >= ZW_TOP);
+
+    // ---- 自由运行的圈计数（不在 Z 处清零，避免自我重触发）----
+    reg signed [CW-1:0] rev_cnt;
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n)          rev_cnt <= {CW{1'b0}};
+        else if (ang_wrap_f) rev_cnt <= rev_cnt + 1'b1;
+        else if (ang_wrap_b) rev_cnt <= rev_cnt - 1'b1;
+    end
+
+    // ---- ★ v75 arm 机制 ----
+    reg              z_armed;
+    reg  [AW-1:0]    z_arm_ang;                        // 上一个 Z 所在的角度
+    wire signed [AW-1:0] z_arm_d   = angle - z_arm_ang; // ★ 模 2^AW 最短弧（补码）
+    wire        [AW-1:0] z_arm_abs = z_arm_d[AW-1] ? (~z_arm_d + 1'b1) : z_arm_d;
+    wire                 z_arm_ok  = (z_arm_abs >= Z_ARM_DIST);
+
+    // 圈事件对齐：rev_cnt 的低 POLE_BITS 位为 0 ⇒ 每 2^POLE_BITS 个角度回绕出一次 Z
+    wire z_rev_ok;
+    //   POLE_BITS=11（生产配置）⇒ 每 2048 个电周期一个 Z。
+    //   POLE_BITS=0 是给仿真用的"每个回绕一个 Z"（sim/tb_z_chatter.v 用它把
+    //   "1 圈"映射成 1 个角度回绕，回归里 3 圈 = 3 个 Z；生产不受影响）。
+    //   注意 POLE_BITS=0 时 `rev_cnt[-1:0]` 是非法零宽切片，必须走 generate 分支。
+    generate
+        if (POLE_BITS <= 0) begin : g_rev_all
+            assign z_rev_ok = 1'b1;      // 2^0 = 1 ⇒ 每个回绕都算一个"圈"
+        end else begin : g_rev_bits
+            assign z_rev_ok = (rev_cnt[POLE_BITS-1:0] == {POLE_BITS{1'b0}});
+        end
+    endgenerate
+
+    assign z_idx_evt = (ang_wrap_f | ang_wrap_b) & z_armed & z_rev_ok;
+    assign z_armed_o = z_armed;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            z_armed   <= 1'b1;                          // ★ 复位即布防：首个索引正常出 Z
+            z_arm_ang <= {AW{1'b0}};
+        end else if (z_idx_evt) begin
+            z_armed   <= 1'b0;                          // 出过 Z ⇒ 撤防，必须离开 1/8 圈才重布
+            z_arm_ang <= angle;
+        end else if (in_valid && z_arm_ok) begin
+            z_armed   <= 1'b1;
+        end
+    end
+
+    // ---- 窗展宽 ----
+    reg [3:0] z_win_left;
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n)                    z_win_left <= 4'd0;
+        else if (z_idx_evt)            z_win_left <= Z_WIN_CLKS[3:0];
+        else if (z_win_left != 4'd0)   z_win_left <= z_win_left - 4'd1;
+    end
+    assign z_window = z_idx_evt | (z_win_left != 4'd0);
 
 endmodule

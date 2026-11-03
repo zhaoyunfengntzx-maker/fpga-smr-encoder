@@ -235,7 +235,7 @@ def frame_pipeline(i, n):
         aa = ease((t - 4.6) / 0.6)
         text(d, (X0, 790), "延迟是设计常数，不是调出来的", F_H1, rgba(INK, 245 * aa))
         text(d, (X0, 842), "ADC 内部 7 拍为估算（手册未给），其余每级在 RTL 里可数", F_SM, rgba(DIM, 230 * aa))
-        text(d, (X1, 798), "TW28 ≈ 1.5 µs", F_H2, rgba(DIM, 220 * aa), anchor="ra")
+        text(d, (X1, 798), "专用细分 ASIC ≈ 1.5 µs", F_H2, rgba(DIM, 220 * aa), anchor="ra")
 
     im = bloom(im, glow, 18)
     d = ImageDraw.Draw(im)

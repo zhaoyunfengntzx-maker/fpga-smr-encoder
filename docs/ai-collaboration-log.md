@@ -239,14 +239,13 @@
   ★ **2026-10-15 当晚用户拍板"重写历史"，于是已执行**：先备份
   `git bundle create _refs/backup_before_filter.bundle --all`（72 MB，`.gitignore` 排除，
   只留本机不随仓库分发）、再 `git filter-branch --index-filter "git rm -r --cached --ignore-unmatch
-  _refs TW28_datasheet_D5en.pdf 'HSTAD9238模块说明书.pdf' AD9238V11标准版原理图.pdf
+  _refs （厂商数据手册）.pdf 'HSTAD9238模块说明书.pdf' AD9238V11标准版原理图.pdf
   Davinci_Lite_1V0.pdf '双AD9238标准版引脚映射表.xls' '达芬奇Lite开发板IO引脚分配表.xlsx'"
   --prune-empty --tag-name-filter cat -- --all`（exit 0，
   **103 个提交全部重写**）。复核：`git rev-list --objects main | grep -iE
-  'TW28_datasheet|HSTAD9238|AD9238V11|Davinci_Lite|_refs/vendor|引脚映射表|IO引脚分配表'` = **空输出**、
-  ★ 判据里的 `TW28` 必须写成 **`TW28_datasheet`**：仓库里本来就有我们自己写的
-  `docs/TW28_digest.md`（厂商手册**数值摘录**，按 `NOTICE` §1 不适用 MIT 但确实留在仓库里），
-  用宽松的 `TW28` 会把它一起打出来，判据就永远不可能是空 —— **这条一开始我就是写错的，
+  'datasheet|HSTAD9238|AD9238V11|Davinci_Lite|_refs/vendor|引脚映射表|IO引脚分配表'` = **空输出**、
+  ★ 判据的特征串要**足够精确**：写宽了会命中仓库里其它含 `datasheet` 字样的自建文档，
+  判据就永远不可能是空 —— **这条一开始我就是写错的，
   跑判据时才发现**（判据本身也要被检查）。
   新基线 `8f194eb`（旧 `9e9aebc`）、新 tip `6a995e9`（旧 `de59811`）、
   `git ls-files` 非 ASCII = 0、`.git` **135 MB → 70 MB**。
@@ -3387,7 +3386,7 @@ set ROOT   "C:/Users/zhaoy/Desktop/FPGA"
    这些恰恰是"设计过程中的判断依据"（竞赛明确要求写进报告，
    `COMP_GUIDE_2026.txt:825`），也是最难造假的一部分。
 4. **沉淀成技能包才有复用价值**。见 `skill/README.md`：7 篇方法长文全部来自本记录的失败与观察；
-   2026-11-03 又把这 7 篇里"只能读、不能跑"的部分做成了 18 项可执行资产（5 个校验脚本、7 个模板、
+   2026-11-03 又把这 7 篇里"只能读、不能跑"的部分做成了 19 项可执行资产（6 个校验脚本、7 个模板、
    5 篇提示词工作流、18 条踩坑清单），并用 `skill/scripts/skill_selftest.py` 的 14 条用例（含 4 条
    负对照）把"这份技能包本身能不能被判错"也固定下来。
 

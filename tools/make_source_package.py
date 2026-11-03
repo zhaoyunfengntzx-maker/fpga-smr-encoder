@@ -38,6 +38,8 @@ INCLUDE_GLOBS = [
     "docs/*.md",
     "deliverables/*.md",
     "deliverables/figures/*.png",
+    "deliverables/figures/*.jpg",
+    "deliverables/submission/photos/*.jpg", "deliverables/submission/photos/*.md",
     "deliverables/poster/*.pptx", "deliverables/poster/*.pdf", "deliverables/poster/*.png",
     "deliverables/poster/*.py", "deliverables/poster/*.json",
     "deliverables/data/README.md", "deliverables/data/*/README.md",

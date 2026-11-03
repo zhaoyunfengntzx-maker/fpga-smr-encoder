@@ -1,12 +1,19 @@
 # Vivado 仿真与实现验证报告
 
-> ## ★（2026-11-02 v74）现行状态：生产/显示位流均已产出，仿真回归 36/36 PASS
+> ## ★（2026-11-04 v90）现行状态：生产 / 显示位流均已产出，仿真回归 37/37 + 20/20 PASS
 >
-> - **生产位流**：`_impl_v74/enc_top_v74.bit`（**1,512,664 B**，`RTL_BUILD_ID = 16'h0018`），已上板验收（RPM ≈ 720、Z 12 Hz、UVW 六态、以太网 ping/UDP 正常）。
-> - **显示位流**：`_impl_disp_v74/enc_top_disp_v74.bit`（**1,713,025 B @2026-11-02 14:07:35**，含 v75 界面改动），**待上板目视**。
-> - **仿真回归**：**36/36 PASS**；`tools/final_verify.ps1` ⇒ `ALL CHECKS PASSED`。
-> - **输出接口**：ABZ + UVW（另有 UART 遥测 / UDP 抓窗）。端口与引脚以 `constr/enc_top.xdc` 和 `docs/04` §2.2 为准。
-> - 下文 §3 的"13 个逐模块测试台 / 19 个测试台 19/19 PASS"是 **2026-10-10 的历史统计**，当前回归 36/36。
+> - **生产位流**：`_synth_work_v90/enc_top_v90.bit`（**1,504,220 B**，`RTL_BUILD_ID = 16'h0019`），
+>   WNS **+0.199** / 0 失败（24,691）、WHS +0.017 / 24,226、LUT **10,978 = 52.78%**、
+>   BRAM 32/50、DSP 17；已上板验收（Z 7.62/7.65 Hz ⇒ **457–459 rpm**、UVW 六态、
+>   `lock=0x0301`、`angle_vs_sc` RMS 0.71°、60 s 597,886 帧）。
+> - **显示位流**：`_synth_work_v90/enc_top_disp_v90.bit`（**1,688,245 B**），WNS **+0.221** / 0 失败
+>   （33,365）、LUT **17,090 = 82.16%**、BRAM **45.5/50 = 91%**；已写 Flash，**冷启动通过**。
+> - **仿真回归**：`sim/` **37/37 PASS**（2026-11-04 00:49:22）、`disp/` **20/20 PASS**
+>   （00:03:16），共 **57 台**；`tools/final_verify.ps1` 的 8 类检查全过。
+> - **输出接口**：ABZ + UVW（另有 UART 遥测 / UDP 抓窗）。端口与引脚以 `constr/enc_top.xdc`
+>   与 `docs/04` §2.2 为准。屏上 **4 页可导航**（P1/P2/P4/P6），P7 标定页已删除。
+> - 下文 §3 的"13 个逐模块测试台 / 19 个测试台 19/19 PASS"是 **2026-10-10 的历史统计**；
+>   之后依次扩到 29 台（v62）、36 台（v74），当前 **37 台**。
 >
 > ## ★（2026-10-12 v12）前置说明：下文实现/时序结论已被 v12 重建取代
 >
@@ -204,7 +211,7 @@ python tools/reconcile_cordic.py
 | `tb_pole_counter` | 正/反向扫描、跨零辨向、Z 附近抖动不得误计数、稀疏 valid | TEST PASSED |
 | `tb_abz_gen` | 边沿数=4×inter、A/B 正交与占空、Z 宽度 vs `z_width`、后分频、限频、极性。★ 该台把 `.z_window(1'b1)` **常开**（`sim/tb_abz_gen.v:129/307`）⇒ "Z 宽度 vs z_width" 只在此条件下成立；集成路径的 Z 脉宽曾被门控窗截成 40 ns（v8 已修，见 DEV_STATUS §1.44）。★ **v9 起判据/循环改为 `z_width + 1` 个边沿（`zw = 0…8`，跨零拍不计入步数），见 DEV_STATUS §1.49** | TEST PASSED |
 | `tb_uvw_gen` | 6 状态序列、等宽驻留、方向反转、相位偏移、频率告警 | TEST PASSED |
-| `tb_spi_slave` | SPI 模式 0、地址+数据读写、TW28 风格 32bit 包 | TEST PASSED |
+| `tb_spi_slave` | SPI 模式 0、地址+数据读写、32 位包 32bit 包 | TEST PASSED |
 | `tb_reg_file` | 寄存器读写、`DEVICE_ID`=0x0C、配置位到扁平输出的映射 | TEST PASSED |
 | `tb_enc_top` | **顶层集成**（见 3.2） | TEST PASSED (39 checks) |
 
@@ -315,7 +322,7 @@ python tools/reconcile_cordic.py
 - **根因**：零扩展（见 4.3）使 `dir_rev` 分支永远发不出负步进。
 - **修复**：同 4.3 的符号扩展。
 - **修后**：正常 +249、`apol=1` −249、`bpol=1` −249、`both=1` +249、
-  `abzdir=1` −249、`apol+abzdir=1` +249，与 RTL 头注释引用的 **TW28 §6.1** 一致。
+  `abzdir=1` −249、`apol+abzdir=1` +249，与 RTL 头注释引用的 **通用 ABZ 规范 §6.1** 一致。
 
 ### 4.7 `rtl/pole_counter.v` —— `prev_ang` 与 `ang_d1` 同拍更新（跨零检测失效）
 
@@ -468,7 +475,7 @@ python tools/reconcile_cordic.py
   **该死区只在"`eang` 刚好贴着 8192 栅格边界"的极窄角度窗内真正起作用**，
   对"在真实扇区边界 54614 附近的抖动"实际上不构成保护。~~ ⇒
   ✅ **该局限已于 2026-10 修掉，见 §4.15。**
-- **TW28 规格差异**：手册的 `UVW.hyst = ±hyst×360/2048` 与本实现的"角度 LSB"单位不同，
+- **同类专用方案规格差异**：手册的 `UVW.hyst = ±hyst×360/2048` 与本实现的"角度 LSB"单位不同，
   已在 `rtl/uvw_gen.v` 头注释里写明。
 
 ---
@@ -962,7 +969,7 @@ Checks found: 43
 | 10 | `tb_abz_gen` TEST C 最后一组打印 "div=3" 但实选分频 4 | 只断言 `z_pulses==1`，两边都过；装饰性 |
 | 11 | ★ `sim/tb_enc_top.v` 的"一圈"定义与 A 边沿期望值**与 SPEC 不符** | 深度探针（`_sim_work/pt_*.v`）实测证实 **RTL 侧正确**：`cyc_max=64`、每 64 个电周期恰好 1 个 Z、A 边沿率 = SPEC `4·inter/div`（误差 <3%）。旧 TB 把"一圈"写成 `64*640` 拍（应为 64×4096=262144 拍），并把 SPEC 的 `4·inter`（一个电周期、div=1、A+B 合计）当成"每圈只数 A"⇒ **是测试台期望值 bug，不是 RTL 缺陷**。当前回归仍 13/13 PASS，因为相关断言的容差恰好兜住了 |
 | 12 | ✅ ~~`rtl/abz_gen.v` 累加器会**静默丢 A 边沿**~~ → **真根因已定位并修复** | ✅ **真实 RTL 缺陷，已修并验证**。**真根因不是"符号门控"，而是有符号/无符号混比**：`acc_th` 原先声明为 `wire [ACCW-1:0]`（**无符号**），而点火判据是 `if (acc_step_sum >= acc_th)`。Verilog 混符号比较的规则是"只要有一边无符号就两边都按无符号比"，而 `acc_step_sum` 是 `wire signed [ACCW-1:0]`。于是累加器为负时（**反向路径必然出现**）`-1` 被读成 `8191`，`8191 >= 1` 成立 ⇒ **反向也被判成"正向点火"**，真正的反向排空分支 `acc_step_sum < ACC_ZERO` 永远轮不到，累加器单调滚向负饱和、A/B 边沿静默丢失，而 `lag_warn`/`lag_fatal` 全程为 0。逐拍 dump 证据（`_sim_work/pt_e3.v`，`abzdir=1 / inter=8 / div=0`，改前）：`i=16 acc_sum=-2 acc_th=1 fire_f=1 fire_b=0 r_acc=-2`，此后每拍 −1 单调下滚。**四处修法**：① `acc_th` 改 `wire signed [ACCW-1:0]`（**关键一行**，两边都变成有符号、比较才按补码语义进行）；② `d_fwd_raw`/`d_rev_raw`/`d_sgn`/`d_abs`/`half_per`/`period` 统一加宽到 **13 位有符号**（原 `wire [10:0] d_sgn` 把反向的 −1 存成 2047，`d_sgn[10]=1` + `~d_sgn+11'd1` 算出 −2047）；③ 删掉一行**遗留的重复 `assign step_val`**（`assign step_val = trig_ok ? {{(STEPW-11){d_sgn[10]}}, d_sgn} : STEP_ZERO;` —— 它按 `d_sgn[10]` 做零扩展、把 −1 变成 −2047，而且**覆盖了**上面新写的 generate 符号扩展分支）；④ 补 `step_val == 0` 拍的**残留进位排空**（唯一排空点在主时序 `r_acc`，组合块只出判据、绝不自己扣 `acc_th` —— 错误第一版两处都扣、同一拍排空两遍，回归曾掉到 `PASS 11/13`）。黄金模型 `model/abz_uvw_model.py` 同步（并把 `n_step = inter` 修正为 `4*inter`、把变长 `while` 排空改为与 RTL 一致的单次 `if`）。**验证**：隔离台 `tb_abz_gen` TEST A 的 A/B 边沿数**逐项精确等于** `4*inter/div`（`2/1` 总 8、`8/3` 总 10、`64/1` 总 256、`64/4` 总 64、`256/8` 总 128，偏差全部 ≤±1）；TEST E 方向/极性首次真正生效（`正常=+249`、`apol=1 → -249`、`bpol=1 → -249`、`both=1 → +249`、`abzdir=1 → -249`、`apol+abzdir=1 → +249`）；集成台 `tb_enc_top` 一圈 **A 沿 4096 = SPEC 精确值**、Z 1 个、`max_dev=5 LSB16`、`TEST PASSED (39 checks)`；全量回归 **13/13 PASS**。⇒ **不再需要降低输入速率或回避 `div=1`/`inter=256`。**（原记载的"1.8%~20%"来自只用 4 个采样点/电周期的隔离测试台，属混叠读数，不足为凭） |
-| 13 | ~~`cfg_zwidth` 复位默认值是 0，导致 Z 与 UVW 永久不出~~ | ✅ **已修**：`rtl/reg_file.v` 的 `r_zero1` 复位值由 `8'h00` 改为 **`8'h04`**。原来 0 会让 `rtl/abz_gen.v` 的 `assign z_pulse_n = (z_width == 4'd0) ? 4'd0 : z_width;` 恒为 0，Z 永不输出，`rtl/uvw_gen.v:232-233` 也把 u/v/w 同时钉死。4 个 AB 边沿步（★ 2026-10-10 更正：不是 50 MHz 拍，1 kHz/inter=256/div=1 时 1 步 = 977 ns ⇒ ≈3.9 µs，见 DEV_STATUS §1.26）对下游计数器足够宽。改后 **13/13 回归仍 PASS**、实现数字不变。⚠️ **2026-10-11 追加发现**：复位值修好≠宽度生效 —— 集成路径上推进逻辑被 `z_window` 门控窗截断，实际只有 2 clk = 40 ns，v8 已修（见 DEV_STATUS §1.44）。★ **2026-10-11 v9 再修语义**：`z_pulse_n` 改为 **`{1'b0, z_width} + 5'd1`**（按 TW28 手册 `zwidth+1`）⇒ 同一 `z_width = 4` 现在是 **5 步 = 4.88 µs**，且 `z_width = 0` 也出 1 步（不再"无 Z"），见 DEV_STATUS §1.49。★ **2026-10-11 板上闭环（ILA，v9 位流）**：`z_width = 4` 实测 240 拍 = **5 个边沿步**、`0x0108 = 0x4000` 实测 60 拍 = **1 个边沿步**（见 DEV_STATUS §1.26 板上实证块） |
+| 13 | ~~`cfg_zwidth` 复位默认值是 0，导致 Z 与 UVW 永久不出~~ | ✅ **已修**：`rtl/reg_file.v` 的 `r_zero1` 复位值由 `8'h00` 改为 **`8'h04`**。原来 0 会让 `rtl/abz_gen.v` 的 `assign z_pulse_n = (z_width == 4'd0) ? 4'd0 : z_width;` 恒为 0，Z 永不输出，`rtl/uvw_gen.v:232-233` 也把 u/v/w 同时钉死。4 个 AB 边沿步（★ 2026-10-10 更正：不是 50 MHz 拍，1 kHz/inter=256/div=1 时 1 步 = 977 ns ⇒ ≈3.9 µs，见 DEV_STATUS §1.26）对下游计数器足够宽。改后 **13/13 回归仍 PASS**、实现数字不变。⚠️ **2026-10-11 追加发现**：复位值修好≠宽度生效 —— 集成路径上推进逻辑被 `z_window` 门控窗截断，实际只有 2 clk = 40 ns，v8 已修（见 DEV_STATUS §1.44）。★ **2026-10-11 v9 再修语义**：`z_pulse_n` 改为 **`{1'b0, z_width} + 5'd1`**（按 公开手册 `zwidth+1`）⇒ 同一 `z_width = 4` 现在是 **5 步 = 4.88 µs**，且 `z_width = 0` 也出 1 步（不再"无 Z"），见 DEV_STATUS §1.49。★ **2026-10-11 板上闭环（ILA，v9 位流）**：`z_width = 4` 实测 240 拍 = **5 个边沿步**、`0x0108 = 0x4000` 实测 60 拍 = **1 个边沿步**（见 DEV_STATUS §1.26 板上实证块） |
 | 14 | ★ 调试版 ILA 的两个流程坑（已写进 `tools/ila_debug.tcl` 头注释） | (1) `read_verilog -define` 在非工程模式直接报 `ERROR: [Common 17-69] ... '-define' is only supported when is_compile_unit_mode is enabled on the source fileset` ⇒ 宏只能通过 `synth_design -verilog_define ENC_TOP_ILA` 给。(2) `get_debug_ports` **只枚举已存在的 debug core 的端口**；在 `create_debug_core` 之前调用只会打印 `WARNING: [Vivado 12-750] There are no ChipScope debug cores in this design.` 并返回空表（这一点让第一版脚本误判为"探针没加上"而 `exit 1`）⇒ 顺序必须是 `opt_design → create_debug_core → get_debug_ports → connect_debug_port`，探针网本身用 `get_nets -hier -filter {MARK_DEBUG==1}` 取（实测 252 条） |
 | 15 | ★ **`rtl/enc_top.v` 的标定窗口判据接错，窗口永远关不上** | ✅ **真实 RTL 缺陷，已修**（2026-10-10）。`calib_ctrl` 的 `.cycle_pulse` 原接 `u_pole` 的 `wrap_pos|wrap_neg`，而标定期间 `loop_filter` 被 freeze（`enc_top.v:395 .freeze(calib_busy)`）⇒ 角度永不跨周期边界、`wcnt` 恒 0、`win_cycles=64` 这条路径**永远走不到**，窗口只能靠 `MAX_SAMP=65536` 截断（实测修复前 `nsamp=65536 / wcnt=0 / truncated=1`）。修法：改用**未被冻结**的 CORDIC 原始角度 `angle_raw` 做整圈折返计数（MSB 翻转 = 半圈，两次 = 一个输入周期）产生 `calib_cycle_pulse`。修复后 `nsamp=17192 / wcnt=65 / truncated=0`。**为什么此前没发现**：模块级 `tb_calib_min` 自己造 `cycle_pulse`，顶层 `tb_enc_top` 从不触发标定 ⇒ 接法没人走过。已在 `sim/tb_enc_top.v` 新增 TEST F（39 → **63 checks**）覆盖整条集成路径 |
 | 16 | ★ **一键标定不可重复（标定看的是自己的输出 + 窗口不是整周期）** | ✅ **真实 RTL 缺陷，已修**（2026-10-10）。**两个来源，只修一个不够**：① `calib_ctrl` 累加的是 `sc_correct` 的**输出**（`.in_valid(cor_valid)`、`.s_n(s_cor)`、`.c_n(c_cor)`），而系数在第一次标定后已生效 ⇒ 第二次标定看到的是"已被校正过"的信号，把系数往回掰。改为累加校正前的原始抽取样点 `s_dec/c_dec` 后重跑，**仍然 FAIL（5 errors/64 checks，两次标定之差 `OFS_C=-947`）**。② `S_ACCUM` 从 `start` 那一拍就累加 ⇒ 窗口 = "起始残缺周期 + win_cycles 个整周期"，残缺段长度取决于触发相位（实测 `nsamp=17192 / wcnt=65`，而 64 整周期应为 16384）⇒ 正交性被破坏、偏置/相位估计被幅度泄漏污染。修法：新增 `armed` 对齐逻辑，**先等到第一个输入周期边界再累加**（`ARM_TMO_MAX=1 s` 超时保护，输入不转时 `truncated=1` 空窗口收尾不挂死），关门判据回到 `(wcnt+1) >= win_n`。★ 踩坑记录：对齐那一拍的样本**要计入**、周期**不计**（`wcnt` 自增加 `armed` 保护），否则分别得到 16383 与 16128。修复后（`tb_enc_top` 72 checks）：`nsamp=16384 wcnt=64`、两次标定六项结果**逐位一致**（差值全 0），`tb_calib_min` 未改动即通过 |

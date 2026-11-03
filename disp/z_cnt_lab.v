@@ -52,7 +52,19 @@ module z_cnt_lab (
     output reg  [11:0] waddr,
     output reg  [7:0]  wdata,
     output reg         busy,
-    output reg         done
+    output reg         done,
+    // ★ v86（任务C）：把计的 5 位十进制数报给 val_format 的「累计转数」字段。
+    //   为什么要通这一根线：上板 v85 同时显示「累计转数 2326 REV」与「Z 计数
+    //   1718」，而硬件 0x054A 的 Z 计数是 4856 —— 三个数互相矛盾。根因是
+    //   REV 走 pos_acc（f_q10 累加再 /cpr），Z 计数走独立的边沿计数器，两条
+    //   路各自的误差都不一样。本编码器**1 Z / 转**，所以「转过多少转」的
+    //   定义就是 Z 脉冲的个数 —— 把本模块的计数直接喂给 REV 字段，屏上
+    //   两个数在**定义上**就一致了。pos_acc 仍保留给转速/RPM 用。
+    //   ★ v86 第二版：改送**二进制**计数 rev_bin（0..99999）—— val_format 里
+    //   直接走已有的 double-dabble → 数字分支，不必为 REV 再添一条 cbuf 写路径
+    //   （实测那条路径在整片综合里要多花 500 个 LUT，越 88% 红线）。
+    //   二进制计数与 BCD 计数由同一个 upd 脉冲驱动，两者天然相等。
+    output wire [16:0] rev_bin
 );
 
     // 字符码：与 tools/gen_text_ram.py 的 ASCII_CHARS 顺序一致（'0' = 8）
@@ -68,6 +80,7 @@ module z_cnt_lab (
     //------------------------------------------------------------------
     reg        z_q;
     reg  [3:0] d0, d1, d2, d3, d4;       // d0 是个位
+    reg [16:0] bin;                      // ★ v86：同一计数的二进制形式（送 REV）
 
     // 5 ms @ 50 MHz = 250,000 拍（18 位足够：2^18 = 262,144）
     localparam [17:0] ZGATE = 18'd250_000;
@@ -106,9 +119,11 @@ module z_cnt_lab (
         if (!rst_n) begin
             z_q <= 1'b0;
             d0  <= 4'd0; d1 <= 4'd0; d2 <= 4'd0; d3 <= 4'd0; d4 <= 4'd0;
+            bin <= 17'd0;
         end else begin
             z_q <= z;
             if (upd) begin
+                bin <= bin + 17'd1;                // 与 BCD 同步；full 时 upd=0 自然停
                 d0 <= c1 ? 4'd0 : (d0 + 4'd1);
                 if (c1) d1 <= c2 ? 4'd0 : (d1 + 4'd1);
                 if (c2) d2 <= c3 ? 4'd0 : (d2 + 4'd1);
@@ -124,6 +139,9 @@ module z_cnt_lab (
     //   前导零抑制：某一位要显示，当且仅当它自己非零，或比它高的位里
     //   已经出现过非零。否则写空格 —— 这样 "Z计数 0" 而不是 "Z计数 00000"。
     //------------------------------------------------------------------
+    // ★ v86：二进制计数直接送 val_format（REV 字段）。
+    assign rev_bin = bin;
+
     reg         started;                   // 高位已出现过非零
 
     reg [1:0] st;

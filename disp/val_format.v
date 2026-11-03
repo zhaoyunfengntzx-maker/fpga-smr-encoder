@@ -36,6 +36,15 @@ module val_format #(
     input  wire               start,        // 一帧一次的启动脉冲（帧末有效像素）
     input  wire signed [31:0] f_q10,        // 输入频率，1/1024 Hz 定点（有符号）
     input  wire signed [47:0] pos_acc,      // 累计位置（电周期<<16，有符号）
+    // ★ v86（任务C）：「累计转数」= Z 计数（disp/z_cnt_lab.v 的 rev_bin）。
+    //   本编码器 1 Z / 转，转数的定义就是 Z 脉冲个数；v85 上板同一时刻
+    //   屏上 REV=2326、Z计数=1718、硬件 0x054A=4856 三个数互相矛盾，根因就是
+    //   REV 走 pos_acc 积分、Z 计数走边沿计数这两条独立路径。
+    //   ★ 为什么送**二进制**而不是 BCD：下游的 double-dabble + 数字分支
+    //   (fld0/2/3 已经在用) 本来就能把 v32 渲成十进制，fld4 复用它即可，
+    //   一行新逻辑都不用加；若给 REV 单开一条 cbuf 写路径，整片综合会多出
+    //   ~480 LUT，直接顶破 88% 红线（实测 19,310/90.29%）。
+    input  wire        [16:0] rev_bin,
     input  wire        [15:0] angle,        // 电角度 0..65535 = 0..360.00 度
     input  wire        [7:0]  io_state,     // {limiter,dir,w,v,u,z,b,a}
     input  wire        [9:0]  cfg_inter,    // 倍频率 2..256
@@ -224,9 +233,10 @@ module val_format #(
     wire [31:0] ang225 = (ang_x << 7) + (ang_x << 6) + (ang_x << 5) + ang_x + 32'd2048;
     wire [31:0] ang_x10 = ang225 >> 12;
 
-    // 累计转数 = (|pos_acc| >> 16) / cpr
-    wire [47:0] pa_mag = pos_acc[47] ? (~pos_acc + 48'd1) : pos_acc;
-    wire [39:0] pa_rev = {8'd0, pa_mag[47:16]};
+    // 累计转数 = Z 计数（rev_bin），★ v86 起与 pos_acc 的积分路径彻底解耦。
+    //   pos_acc 端口保留（enc_top_disp 的 tap 链路与将来用位置算转数的
+    //   回退方案都要它），但本版不再参与任何字段的换算。
+    wire [39:0] rev_ext = {23'd0, rev_bin};
 
     // 每转电周期数：CPR>0 时用固定值（v68 显示 64），否则沿用 cfg_pairs。
     // 极对数保护：0 视为 1（寄存器复位值本来就是 4）。
@@ -234,9 +244,11 @@ module val_format #(
     wire [15:0] cpr_s   = (CPR > 0) ? CPR : {11'd0, pairs_s};
 
     // 除法器输入（按当前字段选择）
+    // ★ v86：fld4 的商就是 rev_bin 本身（除数 1），后面照旧走
+    //   S_DIV → S_DDL → S_DDR → 数字分支，一行渲染逻辑都不用改。
     wire        need_div = (fld == 3'd2) || (fld == 3'd4);
-    wire [39:0] div_num = (fld == 3'd2) ? rpm_num : pa_rev;
-    wire [19:0] div_den = (fld == 3'd2) ? ({4'd0, cpr_s} << 7) : {4'd0, cpr_s};
+    wire [39:0] div_num = (fld == 3'd2) ? rpm_num : rev_ext;
+    wire [19:0] div_den = (fld == 3'd2) ? ({4'd0, cpr_s} << 7) : 20'd1;
 
     reg  [39:0] div_num_r, div_quot;
     reg  [19:0] div_den_r;
@@ -356,8 +368,9 @@ module val_format #(
                         vneg <= f_q10[31];                 // 负号 = 当前是反转
                         state <= S_DDL;
                     end else if (fld == 3'd4) begin        // 累计转数，需要除 pairs
-                        div_num_r <= pa_rev + {20'd0, div_den[19:1]};    // +den/2 = 四舍五入
-                        div_den_r <= div_den;
+                        div_num_r <= rev_ext;                 // 商就是 Z 计数本身
+                        div_den_r <= 20'd1;
+                        vneg      <= 1'b0;                    // 计数永远不带负号
                         state <= S_DIV;
                     end else begin                         // fld==5：ABZ 电平
                         state <= S_WRP;
