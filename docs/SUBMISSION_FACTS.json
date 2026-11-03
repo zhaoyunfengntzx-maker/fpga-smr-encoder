@@ -1,14 +1,14 @@
 {
   "zip": {
     "entries": 994,
-    "bytes": 65428660,
-    "mb": 65.43
+    "bytes": 65412393,
+    "mb": 65.41
   },
   "manifest_lines": 993,
   "pdf": {
-    "pages": 30,
-    "bytes": 2019912,
-    "mb": 2.02
+    "pages": 27,
+    "bytes": 2002876,
+    "mb": 2.0
   },
   "assets": {
     "scripts": 6,

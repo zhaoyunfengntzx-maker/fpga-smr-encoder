@@ -196,7 +196,7 @@ def shade(cell, hex_color):
     tcPr.append(shd)
 
 
-def cell_margins(table, top=30, bottom=30, left=80, right=80):
+def cell_margins(table, top=10, bottom=10, left=80, right=80):
     tblPr = table._tbl.tblPr
     mar = OxmlElement("w:tblCellMar")
     for name, val in (("top", top), ("left", left), ("bottom", bottom), ("right", right)):
@@ -208,16 +208,37 @@ def cell_margins(table, top=30, bottom=30, left=80, right=80):
 
 
 def table_borders(table, color="000000"):
+    """Journal style: three horizontal rules only, no vertical rules."""
     tblPr = table._tbl.tblPr
     borders = OxmlElement("w:tblBorders")
     for edge in ("top", "left", "bottom", "right", "insideH", "insideV"):
         el = OxmlElement("w:" + edge)
-        el.set(qn("w:val"), "single")
-        el.set(qn("w:sz"), "4")
-        el.set(qn("w:space"), "0")
-        el.set(qn("w:color"), color)
+        if edge in ("top", "bottom"):
+            el.set(qn("w:val"), "single")
+            el.set(qn("w:sz"), "12")
+            el.set(qn("w:space"), "0")
+            el.set(qn("w:color"), color)
+        else:
+            el.set(qn("w:val"), "none")
+            el.set(qn("w:sz"), "0")
+            el.set(qn("w:space"), "0")
+            el.set(qn("w:color"), "auto")
         borders.append(el)
     tblPr.append(borders)
+
+
+def header_rule(row, color="000000"):
+    for c in row.cells:
+        tcPr = c._tc.get_or_add_tcPr()
+        tb = OxmlElement("w:tcBorders")
+        for edge, sz in (("top", "12"), ("bottom", "6")):
+            b = OxmlElement("w:" + edge)
+            b.set(qn("w:val"), "single")
+            b.set(qn("w:sz"), sz)
+            b.set(qn("w:space"), "0")
+            b.set(qn("w:color"), color)
+            tb.append(b)
+        tcPr.append(tb)
 
 
 def repeat_header(row):
@@ -230,9 +251,18 @@ def repeat_header(row):
 def make_table(headers, rows, widths, cap=None, align_center=True, header_fill="D9D9D9"):
     if cap:
         p = doc.add_paragraph()
-        fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=CAP_PT, before=8, after=2, keep=True)
-        r = p.add_run(cap)
-        set_run(r, size=CAP_PT)
+        fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=CAP_PT, before=8, after=3, keep=True)
+        tag, rest = cap, ""
+        for sep in ("  ", " "):
+            i = cap.find(sep)
+            if i > 0:
+                tag, rest = cap[:i], cap[i + len(sep):]
+                break
+        r = p.add_run(tag)
+        set_run(r, size=CAP_PT, bold=True)
+        if rest:
+            r2 = p.add_run("  " + rest)
+            set_run(r2, size=CAP_PT)
     t = doc.add_table(rows=1, cols=len(headers))
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     t.autofit = False
@@ -250,31 +280,29 @@ def make_table(headers, rows, widths, cap=None, align_center=True, header_fill="
         t.columns[i].width = Cm(wid)
     hdr = t.rows[0]
     repeat_header(hdr)
+    header_rule(hdr)
     for i, h in enumerate(headers):
         c = hdr.cells[i]
         c.width = Cm(widths[i])
-        shade(c, header_fill)
         p = c.paragraphs[0]
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p.paragraph_format.space_before = Pt(2)
-        p.paragraph_format.space_after = Pt(2)
-        p.paragraph_format.line_spacing = 1.15
+        p.paragraph_format.space_before = Pt(2.5)
+        p.paragraph_format.space_after = Pt(2.5)
+        p.paragraph_format.line_spacing = Pt(12)
         r = p.add_run(h)
-        set_run(r, size=10.5, bold=True, east=SONG)
+        set_run(r, size=9.5, bold=True, east=SONG)
     for ridx, row in enumerate(rows):
         cells = t.add_row().cells
         for i, val in enumerate(row):
             c = cells[i]
             c.width = Cm(widths[i])
-            if ridx % 2 == 1:
-                shade(c, "F2F5F9")
             p = c.paragraphs[0]
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER if (align_center and i > 0) else WD_ALIGN_PARAGRAPH.LEFT
-            p.paragraph_format.space_before = Pt(1)
-            p.paragraph_format.space_after = Pt(1)
-            p.paragraph_format.line_spacing = 1.1
+            p.paragraph_format.space_before = Pt(2)
+            p.paragraph_format.space_after = Pt(2)
+            p.paragraph_format.line_spacing = Pt(12.5)
             r = p.add_run(str(val))
-            set_run(r, size=9.5, bold=False, east=SONG)
+            set_run(r, size=9.2, bold=False, east=SONG)
     for row in t.rows:
         trPr = row._tr.get_or_add_trPr()
         cant = OxmlElement("w:cantSplit")
@@ -388,15 +416,15 @@ make_table(
     [
         ["角度分辨率", "16 bit/电周期（0.0055° 电角/LSB）", "全周 65,536 码"],
         ["输入信号", "2048 周期/转正交 sin/cos", "SMR 传感头，0.5 Vpp/腿放大到 8 Vpp"],
-        ["采样", "2×12 bit @65 MSPS，50 MHz 同步采样", "÷4 平均后 12.5 MSPS 有效样本"],
+        ["采样", "2×12 bit @65 MSPS，同步采样", "÷4 平均 → 12.5 MSPS"],
         ["实测转速", "457–459 rpm", "真实转台，2026-11-04（z_rate.py，每转 1 个 Z）"],
         ["Z 索引", "7.62–7.65 Hz，每转 1 个", "z_index_gen 出 Z 后撤防，离开 ≥1/8 圈重布防"],
         ["角度延迟", "41.5 拍 ≈830 ns", "50 MHz，含 ADC 7 拍估计（设计预算）"],
         ["ABZ 输出", "2–256× 可配；32× 时 65,536 边沿/转", "A/B 正交，Z 门控"],
         ["UVW 输出", "六步换相，约 183 次/s", "458 rpm、4 极对"],
-        ["以太网", "28,672 点/帧 @50 MSPS，9,964.8 fps", "1 GbE UDP，60 s 连续 597,886 帧；ping 4/4"],
-        ["逻辑资源", "10,978 LUT（52.78%）、8,724 FF（20.97%）、32 BRAM、17 DSP", "v90 生产位流（无 UI、无网）"],
-        ["时序", "WNS +0.199 ns / WHS +0.017 ns / 0 失败", "24,691 个端点，DRC 0 Error"],
+        ["以太网", "28,672 点/帧，9,964.8 fps", "1 GbE UDP；60 s 597,886 帧；ping 4/4"],
+        ["逻辑资源", "10,978 LUT（52.78%）、8,724 FF、32 BRAM、17 DSP", "v90 生产位流（无 UI、无网）"],
+        ["时序", "WNS +0.199 / WHS +0.017 ns，0 失败", "24,691 端点，DRC 0 Error"],
         ["位流", "1,504,220 B，SHA-256 A89512A5…8F827125", "BUILD 0x0019，2026-11-04 上板验收"],
     ],
     [2.8, 5.6, 6.2],
@@ -719,19 +747,6 @@ body("通用 PYNQ 技能包（skill/pynq/，按指南 3.3.2 申报）：本项�
 
 part_heading("附录 C  复现说明")
 body("以下命令均以仓库根目录为工作目录；环境为 Vivado 2026.1、Python 3.13、ModelSim（本机 xsim 启动即崩，回归改用 vsim）、正点原子达芬奇-lite XC7A35TFGG484-2 + HSEDA AD9238。")
-body("（1）构建源：仓库 rtl/ 已是 v90 源（RTL_BUILD_ID=0x0019，rtl/enc_top.v:239），python tools/make_v90_rtl.py 只做复制与逐字节校验、不再改写 BUILD_ID，输出 _synth_work_v90/rtl_v90。")
-body("（2）综合与实现：vivado -mode batch -source tools/impl_check_v90.tcl，产物 _synth_work_v90/enc_top_v90.bit（1,504,220 B，SHA-256 A89512A5…8F827125）与时序/利用率报告；显示位流用 tools/impl_check_disp_v90.tcl，产物 _synth_work_v90/enc_top_disp_v90.bit（1,688,245 B）。")
-body("（3）仿真：powershell tools/run_sim.ps1（57 台 = sim 37 + disp 20，含 tb_acc2、tb_uvw_rev 定向台）；日志写入 sim/logs。")
-body("（4）上板：烧录 v90 生产位流，python _boardtest/check_v70.py --port COMx 读寄存器判据（寄存器地图自 v70 未变，脚本名保留 v70）；Z 频率与转速用 python _boardtest/z_rate.py；角度一致性用 python _boardtest/angle_vs_sc.py；60 s 长跑用 python _boardtest/soak_v68.py。期望：Z 7.62/7.65 Hz ⇒ 457–459 rpm、UVW 六态计数 {5174, 4761, 4423, 4776, 4763, 4786}、lock=0x0301、r 峰 0.845–0.850 FS、angle_vs_sc offset 1.76°/RMS 0.71°/max 2.88°、60 s 597,886 帧。")
-body("（5）签核：powershell tools/final_verify.ps1 检查源码与位流文本一致、WNS/WHS、位流 SHA 与文档齐套；cd deliverables/data && sha256sum -c SHA256SUMS.txt 应逐条通过（清单 323 条）。")
-body("（6）交付核对：design_report.pdf（本模板版）、technical_doc.pdf、source_code.zip / source_code.rar 的 MANIFEST.sha256 逐文件校验；任何数字都能在 evidence_index.md 找到对应文件、日志或位流哈希。")
-body("（7）一键自检：python skill\\scripts\\run_all_checks.py 一次跑完技能包用例、症状索引一致性、安全与命名检查、记录号可追踪、文档数字与现场一致，7 项全部通过（2026-11-04）；它不重新综合，只核对“仓库里的说法与仓库里的证据是否对得上”。")
-body("复现时最常卡住的四个点，按出现频率排序：")
-bullet("位流 BUILD_ID 不是 0x0019：说明烧的是旧 bit 文件。重跑 tools/impl_check_v90.tcl，再比对 deliverables/data/SHA256SUMS.txt 里的哈希。")
-bullet("屏上不亮：显示功能只在 enc_top_disp_v90.bit 里，生产位流不驱动 RGB 屏；两块位流不要混烧。")
-bullet("仿真起不来：run_sim.ps1 需在 sim/ 目录下运行，且 vsim 在 PATH 里；先单独跑一个 tb 看 license。")
-bullet("串口/UDP 打不开：串口要独占，先关掉上位机与串口助手；UDP 需 PC 与板同网段，并在防火墙放行对应端口。")
-
 body("复现环境与目录对照见表 C-1。版本号写进表里而不是散落在正文，换机器时只需核对这一张表。")
 make_table(
     ["项", "版本 / 路径", "在复现中的角色"],
@@ -748,6 +763,20 @@ make_table(
     [2.6, 6.4, 5.8],
     cap="表 C-1  复现环境与目录对照",
 )
+
+body("（1）构建源：仓库 rtl/ 已是 v90 源（RTL_BUILD_ID=0x0019，rtl/enc_top.v:239），python tools/make_v90_rtl.py 只做复制与逐字节校验、不再改写 BUILD_ID，输出 _synth_work_v90/rtl_v90。")
+body("（2）综合与实现：vivado -mode batch -source tools/impl_check_v90.tcl，产物 _synth_work_v90/enc_top_v90.bit（1,504,220 B，SHA-256 A89512A5…8F827125）与时序/利用率报告；显示位流用 tools/impl_check_disp_v90.tcl，产物 _synth_work_v90/enc_top_disp_v90.bit（1,688,245 B）。")
+body("（3）仿真：powershell tools/run_sim.ps1（57 台 = sim 37 + disp 20，含 tb_acc2、tb_uvw_rev 定向台）；日志写入 sim/logs。")
+body("（4）上板：烧录 v90 生产位流，python _boardtest/check_v70.py --port COMx 读寄存器判据（寄存器地图自 v70 未变，脚本名保留 v70）；Z 频率与转速用 python _boardtest/z_rate.py；角度一致性用 python _boardtest/angle_vs_sc.py；60 s 长跑用 python _boardtest/soak_v68.py。期望：Z 7.62/7.65 Hz ⇒ 457–459 rpm、UVW 六态计数 {5174, 4761, 4423, 4776, 4763, 4786}、lock=0x0301、r 峰 0.845–0.850 FS、angle_vs_sc offset 1.76°/RMS 0.71°/max 2.88°、60 s 597,886 帧。")
+body("（5）签核：powershell tools/final_verify.ps1 检查源码与位流文本一致、WNS/WHS、位流 SHA 与文档齐套；cd deliverables/data && sha256sum -c SHA256SUMS.txt 应逐条通过（清单 323 条）。")
+body("（6）交付核对：design_report.pdf（本模板版）、technical_doc.pdf、source_code.zip / source_code.rar 的 MANIFEST.sha256 逐文件校验；任何数字都能在 evidence_index.md 找到对应文件、日志或位流哈希。")
+body("（7）一键自检：python skill\\scripts\\run_all_checks.py 一次跑完技能包用例、症状索引一致性、安全与命名检查、记录号可追踪、文档数字与现场一致，7 项全部通过（2026-11-04）；它不重新综合，只核对“仓库里的说法与仓库里的证据是否对得上”。")
+body("复现时最常卡住的四个点，按出现频率排序：")
+bullet("位流 BUILD_ID 不是 0x0019：说明烧的是旧 bit 文件。重跑 tools/impl_check_v90.tcl，再比对 deliverables/data/SHA256SUMS.txt 里的哈希。")
+bullet("屏上不亮：显示功能只在 enc_top_disp_v90.bit 里，生产位流不驱动 RGB 屏；两块位流不要混烧。")
+bullet("仿真起不来：run_sim.ps1 需在 sim/ 目录下运行，且 vsim 在 PATH 里；先单独跑一个 tb 看 license。")
+bullet("串口/UDP 打不开：串口要独占，先关掉上位机与串口助手；UDP 需 PC 与板同网段，并在防火墙放行对应端口。")
+
 
 out = os.path.join("deliverables", "design_report.docx")
 doc.save(out)

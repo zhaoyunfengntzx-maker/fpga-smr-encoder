@@ -53,7 +53,7 @@ https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder
 | 表单项 | 上传文件 | 大小 |
 |---|---|---|
 | 演示视频 | 素材已实拍（`视频素材/` 16 段，10.05 GB），按 `../video_script_v3.md` 九镜剪辑；成品 MP4/AVC/≤3 min/≤300 MB | — |
-| 技术文档 | `design_report.pdf`（30 页，按《报告模版》，截至 2026-11-04 版） | 2,019,912 B |
+| 技术文档 | `design_report.pdf`（27 页，按《报告模版》，截至 2026-11-04 版） | 2,002,876 B |
 | 技术文档（备选） | `technical_doc.pdf`（17 页，同骨架精简版） | 1,267,067 B |
 | 全部代码 | `source_code.zip` → 在装有 WinRAR 的机器上执行 `make_rar.bat` 转 `source_FPGA_encoder.rar`（994 条目 = 993 个内容文件 + `MANIFEST.sha256`，另有 57 个目录项，zip 65.43 MB，远低于 200 MB） | 65.43 MB |
 | 承诺及使用授权书 | `authorization_letter.pdf`（1 页，2026-11-03 全体队员签名扫描） | 662,110 B |
