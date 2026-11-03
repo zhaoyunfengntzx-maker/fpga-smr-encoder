@@ -5,6 +5,10 @@
 # 的填空模板。骨架里每个 <...> 都要替换，每段注释写了"为什么这么写"以及
 # "写错会怎样"——后者都是本工程真实踩过的坑（见 skill/adc-source-sync-constraints.md）。
 #
+# 失效条件：面向"源同步接口 + 单一时钟域"的设计。DDR 源同步要补 -clock_fall 的第二组
+#   约束；有 PS/MMCM 时必须由工具生成主时钟，不要手写 create_clock 覆盖；
+#   多器件共享时钟要显式 set_clock_groups，否则会被误判为异步而"时序全绿"。
+#
 # 判定标准只有一条：写完之后 `report_check_timing` 里 no_input_delay / no_output_delay
 # 必须为 0；如果有豁免，豁免必须能在本文件里找到对应的一行 set_false_path，
 # 不允许"心里知道它不用管"。本工程 v74 有 5 条 no_input_delay、2 条 no_output_delay，

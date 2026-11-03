@@ -34,6 +34,12 @@
   仿真 20 分钟后打印 "TEST PASSED"，实际上 DUT 输入一直是 X。
   人工排查花了半天；这个脚本对同一处缺陷的定位时间是 1 秒（E1/E2 直接给行号）。
   记录见 docs/ai-collaboration-log.md 记录 1；方法论见 skill/testbench-blindspot.md §3.1。
+
+【失效条件】
+  1) 位置连接（`dut u1(a, b, c)`）不查——本脚本只认按名连接 `.port(sig)`；
+  2) 端口由宏/参数化拼接生成时解析不到方向，只能降级为 WARN；
+  3) 测试台用 force/release 或层次赋值驱动输入时，W1（从未赋值）会误报；
+  4) 它只查"接线"，不查"激励是否覆盖"——覆盖问题看 skill/testbench-blindspot.md §2。
 """
 
 from __future__ import annotations

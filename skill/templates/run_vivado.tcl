@@ -1,5 +1,9 @@
 # Vivado 非工程模式批处理：综合 → 实现 → 报告 → 位流，一次跑完
 #
+# 失效条件：非工程模式（read_verilog + synth_design + opt/place/route）不认 IP、
+#   Block Design 与 XCI 生成的产物；工程里有 IP/BD 时必须改用工程模式 + launch_runs。
+#   另外它假设源文件都在 rtl/ 下且能被 glob 收全——生成型 RTL（脚本产出的）要显式列。
+#
 # 用法（Windows PowerShell / cmd 都一样，路径按需改）：
 #   vivado -mode batch -nojournal -nolog -source skill/templates/run_vivado.tcl -tclargs enc_top xc7a35tfgg484-2 build/v74
 #
