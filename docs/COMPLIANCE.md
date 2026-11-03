@@ -25,9 +25,9 @@
 
 | 指南要求 | 仓库位置 | 状态 / 说明 |
 |---|---|---|
-| 置于 `skill/`，README 说明适用范围、使用方法、失效条件 | `skill/README.md` + 7 个技能文件 | ✅ 每项按统一 6 节模板：一句话 / 适用范围 / 使用方法 / 失效条件 / 提炼过程 / 已验证效果 |
-| 提示词工作流 / 案例模板 / 校验脚本 / 踩坑清单 | `golden-model-bit-exact.md`、`testbench-blindspot.md`、`fixedpoint-width-safety.md`、`adc-source-sync-constraints.md`、`deterministic-measurement.md`、`vivado-report-autocollect.md`、`repo-reproducibility.md` | ✅ 覆盖四类；均来自本项目真实失败记录 |
-| 可复用性（陌生队伍能否直接用） | `skill/README.md` 的「适用场景」列 + 各文件第 2/6 节 | ✅ 已去除队伍/板卡绑定表述；PYNQ 相关经验本项目没有，不编造 |
+| 置于 `skill/`，README 说明适用范围、使用方法、失效条件 | `skill/README.md`（9 节索引）+ 7 篇方法长文 + 5 个校验脚本 + 7 个模板 + 5 篇提示词 + 18 条踩坑清单 | ✅ 每项写明适用场景 / 使用方法 / 已验证效果 / 失效条件 / 来源记录号 |
+| 提示词工作流 / 案例模板 / 校验脚本 / 踩坑清单 | 校验脚本 `skill/scripts/*.py`（含自检 `skill_selftest.py`）；案例模板 `skill/templates/*`；提示词工作流 `skill/prompts/P1`–`P5`；踩坑清单 `skill/pitfalls.md` | ✅ 四类均为可直接复制/运行的资产，不是描述性文字；脚本自带夹具，`skill_selftest.py` 14/14 通过（含 4 条负对照） |
+| 可复用性（陌生队伍能否直接用） | `skill/README.md` §0 三步上手 + §7 换题目/换板卡/换 PYNQ 逐项移植表；脚本仅依赖 Python 标准库 | ✅ 不绑定本队路径与板卡；样例数值取自 v74 真实报告（含失败回放），改阈值即可用于他题 |
 | 通用 PYNQ Skill 加分 | — | ⚠ 不申报：本项目为 Artix-7 纯 RTL，无 PYNQ/Zynq 实践 |
 
 ## 3. §3.3.5.3 设计报告
@@ -59,7 +59,7 @@
 | 创新性与应用价值 | 30 | 用 FPGA 软件化 iC-TW28 类专用细分 SoC；六参数闭式标定 + 16 bit 全流水 CORDIC + 在线 UI/以太网；报告 §8 |
 | 性能与资源优化效果 | 20 | 20.9839° → 0.0165°（1273×）；2048 p/r、719–740 rpm；WNS +0.409、LUT 52.53%（生产）/ 86.96%（显示）；`docs/BASELINES.md` |
 | 功能正确性与设计完整性 | 20 | 36/36 仿真、v74 生产位流上板、v85 显示位流构建签核+下载；`deliverables/evidence_index.md` |
-| 大模型协作与技能包 | 15 | `docs/ai-collaboration-log.md`、报告 §13、`skill/` 7 项 |
+| 大模型协作与技能包 | 15 | `docs/ai-collaboration-log.md`、报告 §13、`skill/`（7 篇长文 + 18 项可执行资产） |
 | 文档质量与可复现性 | 15 | 根 README、`docs/` 索引、`docs/REPRODUCE.md`、`docs/BASELINES.md`、CI 检查脚本 |
 
 ## 6. §3.3.3 硬约束

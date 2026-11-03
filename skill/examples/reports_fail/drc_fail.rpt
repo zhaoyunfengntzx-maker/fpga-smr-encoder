@@ -1,0 +1,22 @@
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: enc_top
+          Floorplan: design_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max checks: <unlimited>
+             Checks found: 12
++---------+----------+-----------------------------------+--------+
+| Rule    | Severity | Description                       | Checks |
++---------+----------+-----------------------------------+--------+
+| RTSTAT-1| Error    | Unrouted nets                     | 2      |
+| DPIP-1  | Warning  | Input pipelining                  | 12     |
++---------+----------+-----------------------------------+--------+
+
+2. REPORT DETAILS
+-----------------

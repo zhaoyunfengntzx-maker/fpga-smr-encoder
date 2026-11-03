@@ -544,7 +544,7 @@ picture(os.path.join("deliverables", "figures", "fig_calibration_summary.png"), 
         "图 8  六参数标定与残余误差。（a）校正前 s–c 轨迹，圆度 CV 17.79%；（b）校正后回到单位圆，CV 0.10%；（c）半径分布；（d）16 个 22.5° 分箱的电角度残差与 1–4 次谐波拟合；（e）谐波幅度，四次谐波 0.096° 为当前最大残余项。")
 
 h3("3.4.2 动态闭环与多协议输出")
-body("v74 生产位流在真实转台上通过五条判据（表 5）：转速 719–731 rpm 与输入 25.27 kHz 一致；Z 稳定在 12.00 Hz；多圈计数在一圈内跨 −2047…0、distinct=2048，恰好 2048 个电周期，无丢拍/多拍；UVW 六态均匀、293 次换向/s；60 s 长跑 598,115 帧、9,968 fps、r 漂移 <0.02%。ABZ/UVW 的原始遥测保存在 `deliverables/data/telemetry_abz_uvw.csv`（v70 轮采集，与 v74 同一 RTL）中：A/B 正交、Z 每转一个、UVW 六态按序切换。")
+body("v74 生产位流在真实转台上通过五条判据（表 5）：转速 719–731 rpm 与输入 25.27 kHz 一致；Z 稳定在 12.00 Hz；多圈计数在一圈内跨 −2047…0、distinct=2048，恰好 2048 个电周期，无丢拍/多拍；UVW 六态均匀、293 次换向/s；60 s 长跑 598,115 帧、9,968 fps、r 漂移 <0.02%。ABZ/UVW 的原始遥测保存在 deliverables/data/telemetry_abz_uvw.csv（v70 轮采集，与 v74 同一 RTL）中：A/B 正交、Z 每转一个、UVW 六态按序切换。")
 make_table(
     ["判据", "结果", "结论"],
     [
@@ -635,7 +635,7 @@ make_table(
 body("两次真实误判：① 把“多圈计数恒 0”归因于 PPR/POLE_BITS 配置，A/B 换回 v68 同样死，假设被证伪；② 只修前向 UVW、漏掉反向，tb_uvw_rev 显示反向 7 次中 82% 停在 110，才补上 bwd_wide。最终用“真机四观测同死 → 探针位流 → tb_dbg6 单拍 BADSTEP → 读 RTL”四步定位。提示词、模型回答与纠错轨迹已随仓库提交（docs/ai-collaboration-log.md），本报告只做摘要。")
 
 part_heading("附录 B  技能包提炼过程")
-body("skill/ 目录 7 项技能全部按“一句话 / 适用范围 / 使用方法 / 失效条件 / 提炼过程 / 已验证效果”六节撰写；每项都来自本工程的一次真实失败或观察，并给出可回溯的证据锚点，供陌生队伍换题、换板卡直接复用。")
+body("skill/ 目录 7 篇方法长文全部按“一句话 / 适用范围 / 使用方法 / 失效条件 / 提炼过程 / 已验证效果”六节撰写；每项都来自本工程的一次真实失败或观察，并给出可回溯的证据锚点，供陌生队伍换题、换板卡直接复用。另有 18 项可直接复制执行的四类资产（5 个校验脚本 / 7 个模板 / 5 篇提示词工作流 / 18 条踩坑清单），同样逐项标注适用场景、用法、已验证效果与失效条件。")
 make_table(
     ["技能", "提炼自哪次失败 / 观察", "如何验证有效", "失效边界"],
     [
@@ -651,14 +651,15 @@ make_table(
     cap="表 B-1  技能包与失败来源、验证方法、失效边界",
 )
 body("陌生队伍的三步用法：只抄经验读 §3/§4；搬脚本改顶部路径常量；复现本工程按根 README 的快速开始执行。评价标准按指南原文执行——“拿到该目录能否直接用在自主题目上”。")
+body("可执行资产的可信度不靠自述：5 个脚本仅依赖 Python 标准库，夹具全部取自本工程真实数值（v74 报告 +0.409 ns / LUT 52.53%，另有 −0.123 ns / 7 个失败端点的失败回放），python skill/scripts/skill_selftest.py 在陌生机器上一条命令即可复验 14/14，其中 4 条是“必须失败”的负对照——只验证“该过的过”正是本工程踩过的坑。")
 
 part_heading("附录 C  复现说明")
 body("以下命令均以仓库根目录为工作目录；环境为 Vivado 2026.1、Python 3.13、ModelSim（本机 xsim 启动即崩，回归改用 vsim）、正点原子达芬奇-lite XC7A35TFGG484-2 + HSEDA AD9238。")
-body("（1）生成 v74 构建源：`python tools/make_v74_rtl.py`，脚本幂等，输出 _synth_work_v74/rtl_v74；与仓库 rtl/ 相比只差 RTL_BUILD_ID 一处（0x0015 → 0x0018），脚本逐行自检其余内容。")
-body("（2）综合与实现：`vivado -mode batch -source tools/impl_check_v74.tcl`，产物 _impl_v74/enc_top_v74.bit（1,512,664 B，SHA-256 E4634907…DA2680）与时序/利用率报告；显示位流用 tools/impl_check_disp_v74.tcl。")
-body("（3）仿真：`powershell tools/run_sim.ps1`（54 台 = sim 36 + disp 18，含 tb_acc2、tb_uvw_rev 定向台）；日志写入 sim/logs。")
-body("（4）上板：烧录 v74 生产位流，`python _boardtest/check_v70.py --port COMx` 读五判据（寄存器地图自 v70 未变，脚本名保留 v70）；60 s 长跑用 `python _boardtest/soak_v68.py`。期望：Z 12.00 Hz、计数 −2047…0、distinct=2048、719–731 rpm、UVW 六态各约 5,000 点。")
-body("（5）签核：`powershell tools/final_verify.ps1` 检查源码与位流文本一致、WNS/WHS、位流 SHA 与文档齐套；`cd deliverables/data && sha256sum -c SHA256SUMS.txt` 应 283/283 通过。")
+body("（1）生成 v74 构建源：python tools/make_v74_rtl.py，脚本幂等，输出 _synth_work_v74/rtl_v74；与仓库 rtl/ 相比只差 RTL_BUILD_ID 一处（0x0015 → 0x0018），脚本逐行自检其余内容。")
+body("（2）综合与实现：vivado -mode batch -source tools/impl_check_v74.tcl，产物 _impl_v74/enc_top_v74.bit（1,512,664 B，SHA-256 E4634907…DA2680）与时序/利用率报告；显示位流用 tools/impl_check_disp_v74.tcl。")
+body("（3）仿真：powershell tools/run_sim.ps1（54 台 = sim 36 + disp 18，含 tb_acc2、tb_uvw_rev 定向台）；日志写入 sim/logs。")
+body("（4）上板：烧录 v74 生产位流，python _boardtest/check_v70.py --port COMx 读五判据（寄存器地图自 v70 未变，脚本名保留 v70）；60 s 长跑用 python _boardtest/soak_v68.py。期望：Z 12.00 Hz、计数 −2047…0、distinct=2048、719–731 rpm、UVW 六态各约 5,000 点。")
+body("（5）签核：powershell tools/final_verify.ps1 检查源码与位流文本一致、WNS/WHS、位流 SHA 与文档齐套；cd deliverables/data && sha256sum -c SHA256SUMS.txt 应 283/283 通过。")
 body("（6）交付核对：design_report.pdf（本模板版）、technical_doc.pdf、source_code.zip / source_code.rar 的 MANIFEST.sha256 逐文件校验；任何数字都能在 evidence_index.md 找到对应文件、日志或位流哈希。")
 
 out = os.path.join("deliverables", "design_report.docx")

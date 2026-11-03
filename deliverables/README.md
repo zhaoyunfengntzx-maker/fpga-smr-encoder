@@ -27,7 +27,7 @@
 ```
 deliverables/
 ├── README.md                    ← 本文件：提交物清单 + 状态 + 写作规范
-├── design_report.docx/pdf       ★ 技术文档（按《报告模版》：作品名称/摘要/五部分 + 附录 A/B/C）——20 页
+├── design_report.docx/pdf       ★ 技术文档（按《报告模版》：作品名称/摘要/五部分 + 附录 A/B/C）——21 页
 ├── design_report_full.pdf       ← 详细工程版 59 页（md2pdf 导出，答辩技术底稿）
 ├── design_report.md                 详细工程版源文件
 ├── technical_doc.docx/pdf       ★ 另一版技术文档（同一模板骨架，15 页，面向"精简可读"）
@@ -55,7 +55,7 @@ deliverables/
 |---|---|---|---|
 | 1 | 作品名称 | 基于FPGA的细分编码器 | 🟢 全文统一，无别名 |
 | 2 | 演示视频（MP4/AVC/≤3 min/≤300 MB） | `video_script.md/.pdf` + `video/assets/` 3 段 CG；成片在 `video/` | 🔴 **未成片**：本机无采集设备，需真实转台 + 触摸屏 + 上位机同框实拍 |
-| 3 | 技术文档（PDF/≤50 MB/按模板） | `design_report.pdf`（23 页 / 0.96 MB）+ `technical_doc.pdf`（15 页 / 0.91 MB），二选一提交，建议用 `design_report.pdf` | 🟢 完成（零身份信息，见 §5） |
+| 3 | 技术文档（PDF/≤50 MB/按模板） | `design_report.pdf`（21 页 / 1.18 MB）+ `technical_doc.pdf`（15 页 / 0.91 MB），二选一提交，建议用 `design_report.pdf` | 🟢 完成（零身份信息，见 §5） |
 | 4 | 全部代码（RAR/≤200 MB） | `submission/source_code.zip`（ZIP 等价物）+ `make_rar.bat` | 🟡 **本机无 WinRAR/Rar.exe**，只能产出 ZIP；须在装有 WinRAR 的机器上执行 `make_rar.bat` 转 RAR |
 | 5 | 参赛作品承诺及使用授权书（PDF） | — | 🔴 **待签署**：从大赛系统下载模板，签字/盖章后扫描为 PDF |
 | 6 | 作品海报（选填，PDF/PPT/≤50 MB） | `poster/poster_A4_EN.pdf`（A4 竖版）、`poster/poster_amd_A4.pdf`（A4 横版）、`poster/poster_amd_official.pdf`（官方模板 16:9） | 🟢 三版均已重建为 v74 口径、零身份信息 |
@@ -114,4 +114,5 @@ cscript //nologo tools\pptx2pdf.vbs "C:\Users\zhaoy\Desktop\FPGA\deliverables\po
 & E:\Anaconda\python.exe tools\md2pdf.py deliverables\design_report.md
 ```
 
-当前页数与体积：`design_report.pdf` **23 页 / 963,066 B**；`technical_doc.pdf` **15 页 / 952,521 B**；`design_report_full.pdf` **59 页**。
+当前页数与体积：`design_report.pdf` **21 页 / 1,241,508 B**；`technical_doc.pdf` **15 页 / 952,521 B**；`design_report_full.pdf` **59 页 / 4,935,590 B**。
+（2026-11-03 重建：报告新增技能包可执行资产段落并修正正文里残留的 Markdown 反引号，故页数由 23 → 21。）

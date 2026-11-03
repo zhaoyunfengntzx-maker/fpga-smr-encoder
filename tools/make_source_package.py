@@ -29,6 +29,8 @@ INCLUDE_GLOBS = [
     "host/*.py", "host/*.spec", "host/*.bat", "host/*.json", "host/*.md", "host/*.txt",
     "host/assets/*",
     "skill/*.md", "skill/README*",
+    "skill/scripts/*.py", "skill/prompts/*.md", "skill/templates/*",
+    "skill/examples/*/*", "skill/examples/*/*/*",
     "docs/*.md",
     "deliverables/*.md",
     "deliverables/figures/*.png",

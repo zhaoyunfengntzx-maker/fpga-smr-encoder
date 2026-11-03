@@ -1,0 +1,23 @@
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: enc_top
+          Floorplan: design_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max checks: <unlimited>
+             Checks found: 45
++--------+----------+------------------------+--------+
+| Rule   | Severity | Description            | Checks |
++--------+----------+------------------------+--------+
+| DPIP-1 | Warning  | Input pipelining       | 12     |
+| DPOP-1 | Warning  | PREG Output pipelining | 16     |
+| DPOP-2 | Warning  | MREG Output pipelining | 17     |
++--------+----------+------------------------+--------+
+
+2. REPORT DETAILS
+-----------------

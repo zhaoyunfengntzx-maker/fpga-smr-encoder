@@ -1576,7 +1576,7 @@ wire signed [AW:0] bwd_wide = (r_sec == 3'd0 && eang_x > 17'd54614)
 
 > 完整记录见 [`../docs/ai-collaboration-log.md`](../docs/ai-collaboration-log.md)（提示词、模型回答、
 > 自我纠错轨迹、智能体工作流设计；**2026-11-02 已追加 §6「v70 转台死锁的两次误判与四步定位」**）；
-> 可复用技能见 [`../skill/README.md`](../skill/README.md)（7 项）。
+> 可复用技能见 [`../skill/README.md`](../skill/README.md)（7 篇方法长文 + 18 项可执行资产）。
 > 本节只写**这套协作方式在本工程里真正改变了什么**，因为"用了 AI"本身不是成果。
 
 ### 13.1 分工与判定权
@@ -1620,7 +1620,7 @@ wire signed [AW:0] bwd_wide = (r_sec == 3'd0 && eang_x > 17'd54614)
 三条实践约定：① 子代理任务必须**自包含**（它看不到主对话，要给全路径与判据）；
 ② 要求它给出 `文件:行号` 并**逐条复核行号命中**；③ **复核不可省**——第 9 条记录里子代理报了不止 26 条，多出来的是误报。
 
-### 13.4 技能包（`skill/`，7 项）
+### 13.4 技能包（`skill/`，7 篇方法长文 + 18 项可执行资产）
 
 技能包按统一模板撰写（一句话 / 适用范围 / 使用方法 / **失效条件** / **提炼过程** / 已验证的效果），
 其中"提炼过程"要求写明**从哪些失败或观察中总结**，"失效条件"要求写清**什么时候这条经验不成立**。
@@ -1634,6 +1634,19 @@ wire signed [AW:0] bwd_wide = (r_sec == 3'd0 && eang_x > 17'd54614)
 | 5 | `deterministic-measurement.md` | 确定性测量：用**整数电周期数 + 余数**而不是"墙上时间 ÷ 帧数"算频率 | ★★★ 任何经低速遥测测高速信号的场合 |
 | 6 | `vivado-report-autocollect.md` | 综合/实现报告与仿真日志自动采集 → 一页可引用数据表 | ★★★ 任何 Vivado 工程 |
 | 7 | `repo-reproducibility.md` | 可复现性清单：纯英文命名、单一入口、从零复现、答辩自检 | ★★★ 任何竞赛/交付型工程 |
+
+上表是"为什么"和方法推导；判据要能被人复制执行，还需要可运行的资产。2026-11-03 补齐了四类
+（脚本仅依赖 Python 标准库，夹具全部来自本工程真实数值，含失败回放）：
+
+| 形态 | 内容 | 已验证的效果 |
+|---|---|---|
+| 校验脚本 | `check_impl_reports.py`（实现报告→判决）、`check_vectors.py`（黄金 vs 仿真逐点）、`check_manifest.py`（SHA-256 清单）、`tb_wiring.py`（空转测试台）、`skill_selftest.py`（前四者的自检） | v74 真实报告 `PASS 9/9`（WNS +0.409 / LUT 52.53%）；失败回放 `FAIL 2/10`（WNS −0.123 / failing 7 / DRC 2）；`skill_selftest.py` **14/14**，含 4 条"必须失败"的负对照 |
+| 案例模板 | 测试台骨架 `tb_skeleton.v` + `dut_passthrough.v`、定点模型 `fixedpoint_model.py`、源同步约束 `xdc_source_sync.xdc`、构建脚本 `run_vivado.tcl`、报告骨架 `REPORT_OUTLINE.md`、复现清单 `REPRO_CHECKLIST.md` | `tb_skeleton.v` 在 Vivado xsim **实跑** `TEST PASSED (64 checks)`；改错 1 个期望值 → `TEST FAILED (1 errors)`；`fixedpoint_model.py --check` 6 项原语断言 + 单调性全过 |
+| 提示词工作流 | P1 算法→数据通路位宽、P2 报告→瓶颈、P3 测试台证伪、P4 子代理只读审计、P5 五段式纠错回合 | 直接来自 §13.1–13.3 的实际用法：CORDIC 17 级 RMS 0.9375 LSB、6 子代理 23 文件报 26 处真缺陷（剔除 3 条误报）、86 条纠错记录 |
+| 踩坑清单 | `pitfalls.md` 18 条：触发条件 / 现象 / 排查命令 / 根因 / 修法 / 回归验证 / 来源记录号 | 每条都能追到 `../docs/ai-collaboration-log.md` 的具体记录号，不是泛泛而谈 |
+
+这套资产自己也接受检验：`python skill/scripts/skill_selftest.py` 在陌生机器上一条命令即可复验
+"该通过的通过、该失败的失败"。只验证前者是不够的——那正是 P-16 记录的同一个错误。
 
 > ⚠️ 本工程是**纯 FPGA（Artix-7，无 PS）**，因此拿不到指南里「通用 PYNQ Skill 单独加分」那一项。
 > 这是选型时就认下的取舍（初级组器件范围明确允许 7 Series FPGA），不是遗漏——写在技能包 README 里，

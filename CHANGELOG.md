@@ -7,6 +7,39 @@
 完整基线数据（位流哈希、时序、资源、上板状态）见
 [docs/BASELINES.md](docs/BASELINES.md)。
 
+## [Unreleased]
+
+技能包从"7 篇描述性长文"补齐为"长文 + 可直接复用的可执行资产"，对应指南 §3.3.5.2
+的四类形态。全部资产自带夹具，`python skill/scripts/skill_selftest.py` 一条命令自证。
+
+### Added
+
+- `skill/scripts/`：5 个仅依赖 Python 标准库的校验脚本，退出码 0 通过 / 1 判据失败 /
+  2 无法判断。
+  - `check_impl_reports.py`：解析 Vivado 实现报告（WNS/WHS/失败端点/资源/DRC/
+    `check_timing`）→ 机器判决 + JSON；
+  - `check_vectors.py`：黄金模型与仿真输出逐点比对（最大误差/RMS/容差直方图/最坏点）；
+  - `check_manifest.py`：SHA-256 清单写入与校验，防"改了文件没重打包"；
+  - `tb_wiring.py`：测试台接线体检，抓"激励没接上却打印 PASSED"的空转测试台；
+  - `skill_selftest.py`：上述四个脚本的 14 项自检（含 4 条负对照）。
+- `skill/templates/`：7 个可直接复制的模板——测试台骨架 `tb_skeleton.v`（含超时保护、
+  `stim.txt` 激励、逐点比对）、配对 DUT `dut_passthrough.v`、定点黄金模型骨架
+  `fixedpoint_model.py`、源同步约束骨架 `xdc_source_sync.xdc`、非工程模式构建脚本
+  `run_vivado.tcl`、报告骨架 `REPORT_OUTLINE.md`、复现清单 `REPRO_CHECKLIST.md`。
+- `skill/prompts/`：5 篇提示词工作流（算法→数据通路、报告→瓶颈、测试台证伪、
+  子代理只读审计、五段式纠错回合）。
+- `skill/pitfalls.md`：18 条结构化踩坑清单（触发条件 / 现象 / 排查命令 / 根因 /
+  修法 / 回归验证 / 来源记录号）。
+- `skill/examples/`：与脚本配套的夹具（v74 真实数值的通过/失败报告回放、
+  16 点角度向量、SHA-256 样例、好/坏测试台）。
+
+### Changed
+
+- `skill/README.md` 重写为 9 节索引：陌生队伍三步上手、脚本/模板/提示词表、
+  症状索引、方法长文、自检方法、换题目/换板卡/换 PYNQ 的逐项移植指引、来源追溯。
+- 根 `README.md`、`docs/README.md`、`docs/COMPLIANCE.md` 的技能包描述同步为
+  "7 篇方法长文 + 18 项可执行资产"。
+
 ## [1.0.0] — 2026-11-03
 
 首个公开开源版本。参赛提交口径：**v74 生产位流**（签核 + 上板验收）；
