@@ -52,11 +52,11 @@ https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder
 
 | 表单项 | 上传文件 | 大小 |
 |---|---|---|
-| 演示视频 | 待录制（现行脚本 `../video_script_v3.md`，MP4/AVC/≤3 min/≤300 MB） | — |
-| 技术文档 | `design_report.pdf`（25 页，按《报告模版》） | 1,522,679 B |
-| 技术文档（备选） | `technical_doc.pdf`（15 页，同骨架精简版） | 952,521 B |
-| 全部代码 | `source_code.zip` → 在装有 WinRAR 的机器上执行 `make_rar.bat` 转 `source_FPGA_encoder.rar`（984 条目 = 983 个内容文件 + `MANIFEST.sha256`，另有 57 个目录项，zip 63.38 MB，远低于 200 MB） | 63.38 MB |
+| 演示视频 | 素材已实拍（`视频素材/` 16 段，10.05 GB），按 `../video_script_v3.md` 九镜剪辑；成品 MP4/AVC/≤3 min/≤300 MB | — |
+| 技术文档 | `design_report.pdf`（25 页，按《报告模版》，截至 2026-11-04 版） | 1,840,449 B |
+| 技术文档（备选） | `technical_doc.pdf`（17 页，同骨架精简版） | 1,267,067 B |
+| 全部代码 | `source_code.zip` → 在装有 WinRAR 的机器上执行 `make_rar.bat` 转 `source_FPGA_encoder.rar`（984 条目 = 983 个内容文件 + `MANIFEST.sha256`，另有 57 个目录项，zip 60.40 MB，远低于 200 MB） | 60.40 MB |
 | 承诺及使用授权书 | `authorization_letter.pdf`（1 页，2026-11-03 全体队员签名扫描） | 662,110 B |
 | 作品海报（选填） | `poster_a4.pdf`（A4 竖版）/ `poster_amd_a4.pdf`（A4 横版）/ `poster_amd_official.pdf`（AMD 官方模板） | 0.10 / 0.34 / 0.31 MB |
-| 作品全貌图 | `photos/01_overview_full.jpg`（8064×6048，2026-11-03 实拍） | 63.38 MB |
+| 作品全貌图 | `photos/01_overview_full.jpg`（8064×6048，2026-11-03 实拍） | 7,222,120 B |
 | 开发板照片 | `photos/02_board_adc_frontend.jpg` / `03_board_front.jpg` / `04_board_screen.jpg`（3 张，2026-11-03 实拍） | 均 ≤10 MB |
