@@ -89,7 +89,9 @@
 ## 8. 提交前自检命令
 
 ```powershell
-python skill\scripts\run_all_checks.py       # 技能包 + 仓库门禁一条命令（7 项，当前 7/7 PASS）
+python skill\scripts\run_all_checks.py       # 技能包 + 仓库门禁一条命令（7 项，当前 7/7 PASS；
+                                             #  全新克隆里 check_counts 会 SKIP——zip 不进 git，
+                                             #  先跑 tools\make_source_package.py 再验）
 python tools\check_links.py                  # 文档相对链接 0 死链
 python tools\check_anonymity.py --strict-new # 公开面 0 命中
 python tools\check_names.py                  # 静态未定义名 0
