@@ -1,15 +1,16 @@
-# 提交成品包（2026-11-04 v90 口径核对；PDF 仍为 v74 期导出）
+# 提交成品包（2026-11-04 v90 口径；报告 PDF/Word 同源，均由模板版 docx 导出）
 
 作品名称：**基于FPGA的细分编码器**
 
 | 文件 | 对应官网项 | 说明 |
 |---|---|---|
-| `design_report.pdf` | **技术文档（必交，建议提交这份）** | **27 页 / 1.52 MB**；严格按《报告模版》：作品名称 / 摘要 / 五部分 + 附录 A/B/C；v90 口径（2026-11-04 重导）；附录 B 已含技能包四类可执行资产 |
-| `technical_doc.pdf` | 技术文档（另一版，16 页） | 16 页 / 0.97 MB；同一模板骨架的精简版，二选一 |
+| `design_report.pdf` | **技术文档（必交，建议提交这份）** | **27 页 / 2.00 MB**；严格按《报告模版》：作品名称 / 摘要 / 五部分 + 附录 A/B/C；v90 口径（2026-11-04 重导）；附录 B 已含技能包四类可执行资产 |
+| `design_report.docx` | 同上（可编辑源，随 PDF 一起留存） | 7.26 MB；与 PDF 同一份文件导出，三线表、模板页眉页脚、13 表 22 图；已纳入版本管理 |
+| `technical_doc.pdf` | 技术文档（另一版，17 页） | 17 页 / 0.99 MB；同一模板骨架的精简版，二选一 |
 | `poster_a4.pdf` | 作品海报（选填，匿名提交版） | A4 竖版 210×297 mm / 0.10 MB；`poster/poster_A4_EN.pptx` 可重跑 |
 | `poster_amd_a4.pdf` | 作品海报（A4 横版备选） | 297×210 mm / 0.34 MB；AMD 版式，匿名 |
 | `poster_amd_official.pdf` | 作品海报（AMD 官方模板版） | 16:9 / 0.31 MB；`poster/build_amd_template.py` 可重跑 |
-| `source_code.zip` | 全部代码（必交，≤200 MB） | **65.43 MB / 994 条目**（993 个内容文件 + `MANIFEST.sha256`，另有 57 个目录项）；含 RTL（含 `rtl/eth`、`rtl/ddr3`）、约束、仿真与逐台日志、`model/` 黄金模型、上位机、技能包（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包）、设计报告与技术文档 PDF、海报、实物照片（`submission/photos/` 4 张 + 报告用缩放图）、v90 两个交付位流与全部 `.rpt`、证据索引与 SHA256 清单；根目录 `MANIFEST.sha256` 993 行，逐文件校验 993/993；`tools/verify_source_package.py` 一键复核（唯一未解析的 20 条链接指向文档化的 `.bit/.csv` 体积排除项） |
+| `source_code.zip` | 全部代码（必交，≤200 MB） | **65.41 MB / 994 条目**（993 个内容文件 + `MANIFEST.sha256`，另有 57 个目录项）；含 RTL（含 `rtl/eth`、`rtl/ddr3`）、约束、仿真与逐台日志、`model/` 黄金模型、上位机、技能包（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包）、设计报告与技术文档 PDF、海报、实物照片（`submission/photos/` 4 张 + 报告用缩放图）、v90 两个交付位流与全部 `.rpt`、证据索引与 SHA256 清单；根目录 `MANIFEST.sha256` 993 行，逐文件校验 993/993；`tools/verify_source_package.py` 一键复核（唯一未解析的 20 条链接指向文档化的 `.bit/.csv` 体积排除项） |
 | `intro_and_keywords.md` | 作品简介 / 关键词 | **v90 口径已重写（2026-11-04）**：中性叙事、无厂商芯片型号、7 个关键词，可直接粘贴到提交系统 |
 | `photos/` | 作品全貌图（第 6 项）+ 开发板重要角度照片（第 7 项） | 2026-11-03 20:02 实拍 4 张，`01_overview_full` / `02_board_adc_frontend` / `03_board_front` / `04_board_screen`，均 ≤10 MB；逐张说明与屏上读数见 `photos/README.md` |
 | `authorization_letter.pdf` | 参赛作品承诺及使用授权书（必交） | **1 页 / 662,110 B**；2026-11-03 打印后全体队员签名、扫描（2416×3612 px / RGB / A4 / ≈292 dpi）；实名件，只交大赛系统，不进仓库匿名材料 |

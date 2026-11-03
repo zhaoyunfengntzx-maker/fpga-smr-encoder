@@ -15,6 +15,7 @@
 - 报告正文同步扩写：2.1 增加“数值域收敛”段；2.2.1 增加板级拓扑与“为什么不用外部 PGA”；2.2.3 增加显示/网络时序段；2.3.1 增加“为什么不用 PS/软核”；2.3.2 增加 ABZ/UVW 时序、CORDIC 单级、PI 稳定域三段；3.2.3 增加四页导航关系；3.3.2 增加标定五步与饱和/坏样本保护。
 - 图号重排为 1–20，表号保持 1–8 加 A-1/B-1/C-1；图宽统一按版心 14.6 cm 排版。
 - 全部 13 张表改为三线表（顶线 1.5 pt / 表头线 0.75 pt / 底线 1.5 pt，无竖线、无底纹）；表头跨页自动重复并带顶线；表题编号加粗；单元格 9.2 pt、行距固定 12.5 pt。
+- 提交目录新增 `design_report.docx`（与 PDF 同源的可编辑 Word）并纳入版本管理；`submission/README.md` 更新为 v90 现有数字（27 页 / 2.00 MB、17 页技术文档、65.41 MB 源码包）。
 - 产物：`deliverables/design_report.docx`（以模板为基底）、`design_report.pdf` 30 页 / 2,019,912 B；`deliverables/submission/design_report.pdf` 同步。
 - 数字回填：`deliverables/README.md`、`deliverables/submission/README.md`、`form_answers.md`、`submission_checklist.md`、`docs/SUBMISSION_FACTS.json`；`check_counts` 10/10、`run_all_checks` 7/7。
 - 源码包按 git 索引重打：994 条目 / 65.43 MB / MANIFEST 993 行。
