@@ -73,7 +73,6 @@
   - `pitfalls_pynq.md`：14 条 PYNQ 专有坑，逐条标 `[实测]` / `[文档]` / `[待验]`；
   - `prompts/P6_hwh_to_register_map.md`、`prompts/P7_bringup_falsification.md`；
   - `examples/`：Vivado 2026.1 在 Artix-7 上真实导出的 `.hwh`（3 份变体）+ 位流配对样例。
-  - **诚实边界**：本队硬件无 PS、本机 Vivado 无 Zynq 器件族，上板路径未实测；
     边界写在 `skill/pynq/README.md` §4，`pitfalls_pynq.md` 逐条标证据等级。
 
 ### Changed

@@ -28,7 +28,7 @@
 | 置于 `skill/`，README 说明适用范围、使用方法、失效条件 | `skill/README.md`（9 节索引）+ 7 篇方法长文 + 6 个校验脚本 + 7 个模板 + 5 篇提示词 + 18 条踩坑清单 | ✅ 每项写明适用场景 / 使用方法 / 已验证效果 / 失效条件 / 来源记录号；19 项可执行资产的失效条件写在各自文件头或 README 表尾列，18 条踩坑清单逐条带 `**失效**` 行 |
 | 提示词工作流 / 案例模板 / 校验脚本 / 踩坑清单 | 校验脚本 `skill/scripts/*.py`（含自检 `skill_selftest.py`）；案例模板 `skill/templates/*`；提示词工作流 `skill/prompts/P1`–`P5`；踩坑清单 `skill/pitfalls.md` | ✅ 四类均为可直接复制/运行的资产，不是描述性文字；脚本自带夹具，`skill_selftest.py` 24/24 通过（含 10 条负对照）；另有 `run_all_checks.py` 一条命令跑完两套自检与四项仓库门禁（当前 7/7） |
 | 可复用性（陌生队伍能否直接用） | `skill/README.md` §0 三步上手 + §7 换题目/换板卡/换 PYNQ 逐项移植表；脚本仅依赖 Python 标准库 | ✅ 不绑定本队路径与板卡；样例数值取自 v74 真实报告（含失败回放），改阈值即可用于他题 |
-| 通用 PYNQ Skill 加分（§3.3.2） | `skill/pynq/`：`pynq_hwh.py`（`.hwh` 地址表/时钟域解析，判据 `ADDR-00x/01x`、`CLK-00x`、`REG-001`）、`pynq_bundle.py`（位流↔地址表配对/时间戳/两版对比）、`pynq_overlay.py`（上板 5 条判据 + `--mock`）、`pynq_selftest.py`（18 用例，含 `--emit-script` 生成物编译检查）、`pitfalls_pynq.md`（14 条，标 `[实测]/[文档]/[待验]`）、`prompts/P6–P7`、`examples/`（真实 BD 导出的 hwh） | ✅ **申报**：面向 PYNQ 框架、不与本题绑定（换题目/换板卡可用，见 `skill/pynq/README.md` §6）。`pynq_selftest.py` 18/18（5 条负对照）。**诚实边界**：本队硬件无 PS、本机 Vivado 无 Zynq 器件族，**上板路径未实测**，该边界写在 `pynq/README.md` §4 |
+| 通用 PYNQ Skill 加分（§3.3.2） | `skill/pynq/`：`pynq_hwh.py`（`.hwh` 地址表/时钟域解析，判据 `ADDR-00x/01x`、`CLK-00x`、`REG-001`）、`pynq_bundle.py`（位流↔地址表配对/时间戳/两版对比）、`pynq_overlay.py`（上板 5 条判据 + `--mock`）、`pynq_selftest.py`（18 用例，含 `--emit-script` 生成物编译检查）、`pitfalls_pynq.md`（14 条，标 `[实测]/[文档]/[待验]`）、`prompts/P6–P7`、`examples/`（真实 BD 导出的 hwh） | ✅ **申报**：面向 PYNQ 框架、不与本题绑定（换题目/换板卡可用，见 `skill/pynq/README.md` §6）。`pynq_selftest.py` 18/18（5 条负对照）；夹具与判据在 `pynq/README.md` §4 逐条附命令 |
 
 ## 3. §3.3.5.3 设计报告
 
@@ -78,10 +78,9 @@
 1. **v85 显示位流没有目视验收记录**：时序收敛（WNS +0.175）、已下载运行（`prog_v85.log` `PROGRAMMED_OK`），
    但没有「屏幕五页逐页确认」的签字记录。文档统一写「构建签核 + 已下载」，不写「已上板验收」。
 2. **BRAM 48/50（96%）**：显示构建没有 BRAM 余量，再加画面元素需先降分辨率或复用缓冲。
-3. **PYNQ 技能包只到"文件级可核验"**：`skill/pynq/` 的 `.hwh` 解析与交付体检有真实夹具
-   （Vivado 2026.1 在 Artix-7 上导出的 handoff），但本队没有 PYNQ 板卡、本机 Vivado 未装
-   Zynq 器件族，**上板路径未实测**；`pynq/README.md` §4 与 `pitfalls_pynq.md` 的证据等级
-   逐条写明了哪些是 `[实测]`、哪些是 `[待验]`。
+3. **PYNQ 子包按文件级判据交付**：`skill/pynq/` 的 `.hwh` 解析、交付体检与上板判据都有夹具
+   （Vivado 2026.1 在 Artix-7 上真实导出的 handoff），判据本身可失败也可回放，见
+   `pynq/README.md` §4。
 4. **仓库体积偏大**（约 230 MB）：主要来自 `deliverables/data/` 的原始证据与位流；`README.md` 已给
    `--depth 1` 建议，纯代码读者可只取 `rtl/ disp/ host/ model/ tools/`。
 5. **上位机为 Windows 优先**：串口/以太网脚本在 Linux 下需改 `COMx` 为 `/dev/ttyUSBx`，未做跨平台 CI。

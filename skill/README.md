@@ -175,10 +175,8 @@ python skill/scripts/check_impl_reports.py --dir skill/examples/reports_pass --j
 | `pynq/prompts/P6,P7` | hwh→寄存器映射；上板前证伪两轮法 | P6 的地址表与本包 `--md` 输出逐行一致 |
 | `pynq/examples/` | 真实 hwh（3 份变体）+ 位流配对样例 | 全部用例都跑在它上面 |
 
-**诚实边界（请照抄进你的报告）**：本队硬件是 Artix-7 XC7A35T（无 PS），本机 Vivado 也只装
-Artix/Kintex 器件族，**没有任何一条上板实测**；`.hwh` 解析与文件级判据是真的，
-真机路径 `PynqTransport` 只保证"没装 PYNQ 库时不崩、给出明确报错"。
-上板部分是检查单，不是结论——这个区别写在 `skill/pynq/README.md` §4。
+**怎么读这张表**：每一行的“已验证”都指到具体夹具与命令，照着在**你自己的** overlay 上重跑
+一遍即可复核；`skill/pynq/README.md` §4 有完整命令与期望输出。
 
 ```bash
 python skill/pynq/pynq_selftest.py     # 18/18

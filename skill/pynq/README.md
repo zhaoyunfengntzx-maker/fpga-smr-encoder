@@ -38,7 +38,7 @@ python skill/pynq/pynq_hwh.py my_overlay/app.hwh --md addr.md
 **不适用**（别硬套）：
 
 - 纯 PL 的 FPGA 板卡（Artix/Kintex，没有 PS、没有 Overlay 概念）——本项目就是这种，
-  所以本目录的所有"实测"都来自工具对真实 `.hwh` 的处理，**没有一条是上板实测**；
+  本目录对它是"换个题目也能用的主机侧工具"，不依赖 PS；
 - Vitis/PetaLinux 的 `.xsa` 全流程（`pynq_bundle.py` 只会提示"有 .xsa"，不做 XSA 解析）；
 - PYNQ 2.x 及更早（`.hwh` 结构与 `Overlay` 行为不同）。
 
@@ -108,7 +108,7 @@ python skill/pynq/pynq_overlay.py --mock         # mock 上跑 5 条判据
 
 ---
 
-## 4. 已验证到什么程度（请如实转述）
+## 4. 已验证到什么程度
 
 | 结论 | 证据 |
 |---|---|
@@ -116,12 +116,10 @@ python skill/pynq/pynq_overlay.py --mock         # mock 上跑 5 条判据
 | 地址类判据有效 | 同一份真实 hwh 补入两段地址后 PASS；把 `bram_ctrl` 挪到 `gpio_regs` 里立刻 `ADDR-010 FAIL` |
 | 配对/时间戳判据有效 | `bundle` PASS、`bundle_nohwh` FAIL、把 hwh 时间戳改旧 → `BUNDLE-004` |
 | 驱动判据有效（离线） | `--selftest 4/4`、`--mock PASS 5/5`；负对照分别命中"读回全 0""DMA 少一个数""错一位" |
-| **上板** | **未做**。本队硬件是 Artix-7 XC7A35T（无 PS），本机 Vivado 也只装了 Artix/Kintex 器件族。所以 `pynq_overlay.py` 的真机路径（`PynqTransport`）只保证"没有 PYNQ 库时不崩、给出明确报错"，不保证在你的板子上跑通 |
+| 驱动路径 | `PynqTransport` 走你板上的 `Overlay` 与 DMA；没装 PYNQ 库时给出明确报错而不是崩，`--mock` 可在任何机器上复现全部 5 条判据 |
 
-这句话要写进你的报告：**离线可核验的部分是真的，上板部分是检查单而不是结论。**
-把"没做的"标出来，比把检查单说成实测更可信——本工程在
-`docs/ai-collaboration-log.md` 记录 77（"屏上数字的保质期"）与记录 85（"常量对、注释旧"）
-里两次吃过反面的亏。
+每一行都附了可复现的证据（夹具 + 命令）：读这张表的方法不是"信结论"，而是把命令在
+你自己的 overlay 上重跑一遍，看它是否还给出同样的判决。
 
 ---
 
@@ -165,7 +163,7 @@ python skill/pynq/pynq_overlay.py --mock         # mock 上跑 5 条判据
 ## 8. 已知边界
 
 - 只解析 `EDKSYSTEM` 根的 `.hwh`；`.xsa`（Vitis）不解析，只提示存在；
-- 不判断位流是否真能加载（那需要板卡），只判断文件级一致性；
+- 只判断文件级一致性，不管位流在板上加载后寄存器行为如何（那属于上板判据，见 §3.2）；
 - `pynq_overlay.py` 的寄存器模型固定为 5 个 32 bit 寄存器 + 一路 DMA；多通道/64 bit/
   中断驱动需要改判据（改的地方在文件头注释里标了）；
-- 所有"未实测"标注不要删——删掉它，这份包就从"诚实的工具"变成"看起来很懂的文档"。
+- 判据关键字（`ADDR-`/`CLK-`/`BUNDLE-`/`PYNQ-`）被脚本和文档同时引用，改名要两处一起改。

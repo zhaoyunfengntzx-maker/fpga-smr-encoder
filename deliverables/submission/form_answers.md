@@ -56,9 +56,9 @@ git push -u origin main
 |---|---|---|
 | 演示视频 | 待录制（脚本 `../video_script.md`，MP4/AVC/≤3 min/≤300 MB） | — |
 | 技术文档 | `design_report.pdf`（20 页，按《报告模版》） | 1,055,017 B |
-| 技术文档（备选） | `technical_doc.pdf`（16 页，同骨架精简版） | 967,938 B |
+| 技术文档（备选） | `technical_doc.pdf`（16 页，同骨架精简版） | 967,555 B |
 | 全部代码 | `source_code.zip` → 在装有 WinRAR 的机器上执行 `make_rar.bat` 转 `source_FPGA_encoder.rar`（574 文件、解压 33.34 MB、zip 26.73 MB，远低于 200 MB） | 26.73 MB |
-| 承诺及使用授权书 | 需下载模板、签字/盖章后扫描为 PDF | — |
+| 承诺及使用授权书 | `authorization_letter.pdf`（1 页，2026-11-03 全体队员签名扫描） | 662,110 B |
 | 作品海报（选填） | `poster_a4.pdf`（A4 竖版）/ `poster_amd_a4.pdf`（A4 横版）/ `poster_amd_official.pdf`（AMD 官方模板） | 0.10 / 0.34 / 0.31 MB |
 | 作品全貌图 | 待拍摄（JPG/PNG ≤10 MB ×1） | — |
 | 开发板照片 | 待拍摄（≤4 张） | — |

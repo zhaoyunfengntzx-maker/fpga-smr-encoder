@@ -1,4 +1,4 @@
-﻿# deliverables/ —— 竞赛提交物目录
+# deliverables/ —— 竞赛提交物目录
 
 > 本目录是 **2026 年第九届全国大学生嵌入式芯片与系统设计竞赛 · FPGA 创新设计赛道（AMD 赛道 · 自主选题）**
 > 的提交物工作区。**提交截止：2026-11-04 18:00**。
@@ -58,7 +58,7 @@ deliverables/
 | 2 | 演示视频（MP4/AVC/≤3 min/≤300 MB） | `video_script.md/.pdf` + `video/assets/` 3 段 CG；成片在 `video/` | 🔴 **未成片**：本机无采集设备，需真实转台 + 触摸屏 + 上位机同框实拍 |
 | 3 | 技术文档（PDF/≤50 MB/按模板） | `design_report.pdf`（21 页 / 1.25 MB）+ `technical_doc.pdf`（16 页 / 0.97 MB），二选一提交，建议用 `design_report.pdf` | 🟢 完成（零身份信息，见 §5） |
 | 4 | 全部代码（RAR/≤200 MB） | `submission/source_code.zip`（ZIP 等价物）+ `make_rar.bat` | 🟡 **本机无 WinRAR/Rar.exe**，只能产出 ZIP；须在装有 WinRAR 的机器上执行 `make_rar.bat` 转 RAR |
-| 5 | 参赛作品承诺及使用授权书（PDF） | — | 🔴 **待签署**：从大赛系统下载模板，签字/盖章后扫描为 PDF |
+| 5 | 参赛作品承诺及使用授权书（PDF） | `submission/authorization_letter.pdf`（1 页 / 662,110 B / A4） | 🟢 **已签署（2026-11-03）**：全体队员签名齐全、落款 2026-11-03；扫描件 2416×3612 px ≈292 dpi；实名件只提交大赛系统 |
 | 6 | 作品海报（选填，PDF/PPT/≤50 MB） | `poster/poster_A4_EN.pdf`（A4 竖版）、`poster/poster_amd_A4.pdf`（A4 横版）、`poster/poster_amd_official.pdf`（官方模板 16:9） | 🟢 三版均已重建为 v74 口径、零身份信息 |
 | 7 | GitHub 链接 | [https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)（`main` @ `12c59ab`，tag `v1.0.0`） | 🟢 **已推送开源**（MIT，工作树干净） |
 | 8 | 作品全貌图（JPG/PNG ≤10 MB ×1） | `submission/photos/01_overview_full.jpg`（8064×6048 / 6.89 MB） | 🟢 **已拍摄（2026-11-03 20:02）**：转台夹具 + 传感头 + 模拟板 + AD9238/FPGA + 7 寸屏 + 示波器 + 上位机同框 |
@@ -115,5 +115,5 @@ cscript //nologo tools\pptx2pdf.vbs "C:\Users\zhaoy\Desktop\FPGA\deliverables\po
 & E:\Anaconda\python.exe tools\md2pdf.py deliverables\design_report.md
 ```
 
-当前页数与体积：`design_report.pdf` **21 页 / 1,254,450 B**；`technical_doc.pdf` **16 页 / 967,938 B**；`design_report_full.pdf` **60 页 / 4,954,432 B**。
+当前页数与体积：`design_report.pdf` **21 页 / 1,253,786 B**；`technical_doc.pdf` **16 页 / 967,555 B**；`design_report_full.pdf` **60 页 / 4,954,432 B**。
 （2026-11-03 重建：报告新增技能包可执行资产段落与通用 PYNQ 子包段落，并修正正文里残留的 Markdown 反引号，故页数由 23 → 21。）

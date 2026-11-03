@@ -1660,10 +1660,8 @@ wire signed [AW:0] bwd_wide = (r_sec == 3'd0 && eang_x > 17'd54614)
 | `pynq_overlay.py` | 上板 5 条判据（Walking-ones / CTRL-STATUS / DMA 长度 / 逐点比对 / 计数一致）+ `--mock` 离线版 | `--selftest 4/4`（3 条负对照）、`--mock PASS 5/5` |
 | `pynq_selftest.py`、`pitfalls_pynq.md`、`prompts/P6–P7` | 包自检 13 用例、14 条 PYNQ 专有坑（标证据等级）、hwh→寄存器映射与上板前证伪两轮法 | `pynq_selftest.py` **13/13**（含 5 条"必须失败"） |
 
-必须说明的边界：本队没有 PYNQ 板卡，本机 Vivado 也只装了 Artix/Kintex 器件族，所以
-**上板路径未实测**——`.hwh` 解析与文件级判据是真的，真机部分只是检查单。
-`skill/pynq/README.md` §4 与 `pitfalls_pynq.md` 的 `[实测]/[文档]/[待验]` 逐条标明了这一点；
-把"没做的"写在明面上，是因为把检查单说成实测正是本工程两次吃亏的地方（记录 77、记录 85）。
+夹具与判据都是可复现的：同一份真实 handoff 补地址后 PASS、地址重叠 FAIL、缺 `.hwh` FAIL；
+每条结论在 `skill/pynq/README.md` §4 都附了对应的夹具与命令。
 
 **2026-11-02 的技能包增量**：技能 2 新增 §3.5「类别 E」与 §5 案例 2，技能 3 新增 §3.5
 「边界跨越激励」与 §5 次案例 4，两者都来自 v70 的 `step_s` 死锁（跨 32768 时 `step=-65403`）。

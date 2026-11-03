@@ -48,4 +48,4 @@ python skill/scripts/check_impl_reports.py --dir <你的实现报告目录>
 ## 6. 失效条件
 
 本卡只是索引：具体适用范围、用法、失效条件、提炼过程在每一项自己的文件里（`README.md` §2/§3 有列）。
-命令在 Windows + PowerShell 下验证过；Linux/macOS 需要把 `.bat` 换成 `.sh`，其余是纯 Python。
+命令按 Windows + PowerShell 写；Linux/macOS 把 `.bat` 换成 `.sh`，其余是纯 Python。

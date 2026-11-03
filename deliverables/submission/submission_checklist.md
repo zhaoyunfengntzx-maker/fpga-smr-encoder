@@ -8,8 +8,8 @@
 |---|---|---|---|
 | 1 | 演示视频（MP4 / AVC(H264) / ≤3 min / ≤300 MB） | **脚本完成，待录制** | 脚本 `../video_script.md` / `.pdf`（3:00、29 镜、旁白逐句时间码、特效与拍摄表）；成片需真实转台 + 触摸屏 + 上位机同框，本机无采集设备、无实拍素材，无法代录 |
 | 2 | 技术文档（PDF / ≤50 MB / 按模板） | ✅ 完成 | 主用 `design_report.pdf`（21 页 / 1.25 MB，严格按《报告模版》）；备选 `technical_doc.pdf`（16 页 / 0.97 MB，同骨架精简版）。两者均为 v74 口径、零身份信息 |
-| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 已整理，待转 RAR | `source_code.zip`（**30.07 MB / 684 文件**，含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*`、`skill/`（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包 + 夹具）、`data/*/README.md` 与 `SHA256SUMS.txt`；`MANIFEST.sha256` 用 `skill/scripts/check_manifest.py` 逐文件 683/683 校验通过）；本机未安装 WinRAR，已附 `make_rar.bat` |
-| 4 | 参赛作品承诺及使用授权书（PDF） | **待签署** | 从大赛系统下载后签字/盖章扫描；程序无法代签 |
+| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 已整理，待转 RAR | `source_code.zip`（**30.07 MB / 684 条目 = 683 文件 + `MANIFEST.sha256`**，解压 37.96 MB；含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*`、`skill/`（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包 + 夹具）、`data/*/README.md` 与 `SHA256SUMS.txt`；**2026-11-03 重打**后 `MANIFEST.sha256` 用 `skill/scripts/check_manifest.py --verify --strict` 校验 **683/683 通过、清单外 0**）；本机未安装 WinRAR，已附 `make_rar.bat` |
+| 4 | 参赛作品承诺及使用授权书（PDF） | ✅ **已签署并归档（2026-11-03）** | `authorization_letter.pdf`（1 页 / 662,110 B / A4 595×842 pt / 扫描 2416×3612 px·RGB ≈292 dpi）；全体队员签名齐全，落款 2026-11-03；队伍编号与姓名以报名系统为准（实名件只交大赛系统，不进仓库匿名材料）。SHA-256 `6E6038F9D88FA747FBB718570DCC7FED19AAAEA05FCA55AD6E769071EA3D6004` |
 | 5 | GitHub 链接 | ✅ 已开源 | [https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)（MIT，`main` 默认分支，tag `v1.0.0`） |
 | 6 | 作品全貌图（JPG/PNG ≤10 MB ×1） | ✅ **已拍摄（2026-11-03 20:02）** | `photos/01_overview_full.jpg`（8064×6048 / 6.89 MB）：转台夹具 + 传感头 + 模拟板 + AD9238/FPGA + 7 寸屏 + 示波器 + 上位机同框 |
 | 7 | 开发板重要角度照片（JPG/PNG ≤10 MB，≤4 张） | 🟡 **已拍 3/4 类** | `photos/02_board_adc_frontend.jpg`（ADC 模拟前端）、`photos/03_board_front.jpg`（FPGA 板正面丝印）、`photos/04_board_screen.jpg`（屏与触摸，P1 总览实时读数）；**磁环气隙特写仍缺**，见 `photos/README.md` |
@@ -61,6 +61,7 @@ rem 双击本目录的 make_rar.bat 即可（自动查找 WinRAR 并生成 sourc
 ## 六、已核对的合规项
 
 - 技术文档、海报正文均无学校/学院/指导教师/团队字样；仅有赛事名中的“全国大学生”。
+- 授权书 `authorization_letter.pdf` 是大赛要求的**实名文件**（队伍编号 + 队员姓名/签名），只提交给大赛系统，不进入技术文档、海报、仓库等匿名材料，因此与“零身份信息”要求不冲突。
 - 文档中保留“正点原子达芬奇-lite”“HSEDA AD9238”等器件/开发板型号，属技术描述，不是身份信息。
 - 海报页脚已删除 Team/School/Advisor 占位，改为赛道、器件与时钟域说明。
 - 仓库目录名与文件名均为纯 ASCII（小写字母、数字、下划线），技能包位于 `skill/`；`README.md` 已附“推荐结构 → 实际目录”对照表。
