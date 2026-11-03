@@ -56,72 +56,101 @@ def set_run(run, size=BODY_PT, bold=False, color=None, east=SONG, ascii_font=TNR
     rFonts.set(qn("w:cs"), ascii_font)
 
 
-def fmt_par(p, align=WD_ALIGN_PARAGRAPH.JUSTIFY, indent_chars=2.0, size=BODY_PT,
-            before=0, after=0, line=1.5, keep=False):
+def _set_ind_chars(p, first_line_chars):
+    """Word honours the *Chars variants; the template uses firstLineChars=200."""
+    pPr = p._p.get_or_add_pPr()
+    ind = pPr.find(qn("w:ind"))
+    if ind is None:
+        ind = OxmlElement("w:ind")
+        pPr.append(ind)
+    ind.set(qn("w:firstLineChars"), str(first_line_chars))
+    if first_line_chars == 0:
+        ind.set(qn("w:firstLine"), "0")
+
+
+def fmt_par(p, align=None, indent_chars=0.0, size=BODY_PT, before=None, after=None,
+            line=1.5, keep=False, left_cm=None):
+    """Apply the template's paragraph look: 1.5 spacing, no extra space, left align."""
     pf = p.paragraph_format
     pf.alignment = align
     pf.line_spacing = line
-    pf.space_before = Pt(before)
-    pf.space_after = Pt(after)
-    if indent_chars:
-        pf.first_line_indent = Pt(size * indent_chars)
+    pf.space_before = Pt(before) if before is not None else None
+    pf.space_after = Pt(after) if after is not None else None
+    if left_cm is not None:
+        pf.left_indent = Cm(left_cm)
+    pf.first_line_indent = Pt(size * indent_chars) if indent_chars else Pt(0)
+    _set_ind_chars(p, int(round(indent_chars * 100)))
     pf.keep_with_next = keep
     pf.widow_control = True
 
 
-def body(text, indent=True, after=0, bold=False, size=BODY_PT, align=WD_ALIGN_PARAGRAPH.JUSTIFY):
+def body(text, indent=True, after=None, bold=False, size=BODY_PT, align=None):
     p = doc.add_paragraph()
+    p.style = doc.styles["Normal"]
     fmt_par(p, align=align, indent_chars=2.0 if indent else 0, size=size, after=after)
     r = p.add_run(text)
     set_run(r, size=size, bold=bold)
     return p
 
 
+_PART = {"no": 0, "sub": 0}
+
+
 def part_heading(text):
+    if not text.startswith("摘要"):
+        blank = doc.add_paragraph()
+        blank.style = doc.styles["Normal"]
+        fmt_par(blank, indent_chars=0, line=1.5)
+    if text.startswith("第") and "部分" in text:
+        cn = "零一二三四五六七八九"
+        ch = text[text.index("第") + 1:text.index("部分")]
+        if ch and ch in cn:
+            _PART["no"] = cn.index(ch)
+            _PART["sub"] = 0
     p = doc.add_paragraph()
-    fmt_par(p, align=WD_ALIGN_PARAGRAPH.LEFT, indent_chars=0, size=14, before=16, after=6, keep=True)
-    head, _, tail = text.partition("  ")
-    if tail:
-        r = p.add_run(head + "  ")
-        set_run(r, size=14, bold=True, east=SONG)
-        r = p.add_run(tail)
-        set_run(r, size=12, bold=True, east=SONG)
-        return p
+    p.style = doc.styles["Normal"]
+    fmt_par(p, indent_chars=0, size=14, keep=True)
     r = p.add_run(text)
     set_run(r, size=14, bold=True, east=SONG)
-    # bottom rule
     return p
 
 
 def h2(text, num=None, size=12):
+    """Section heading: 12 pt regular in the template's list style, literal number."""
+    if text.strip() in ("摘要", "关键词"):
+        return part_heading(text) if text.strip() == "摘要" else body(text, indent=False)
+    blank = doc.add_paragraph()
+    blank.style = doc.styles["Normal"]
+    fmt_par(blank, indent_chars=0, line=1.5)
+    label = num
+    if not label and _PART["no"]:
+        _PART["sub"] += 1
+        label = "%d.%d" % (_PART["no"], _PART["sub"])
     p = doc.add_paragraph()
-    fmt_par(p, align=WD_ALIGN_PARAGRAPH.LEFT, indent_chars=0, size=size, before=10, after=4, keep=True)
-    r = p.add_run((num + " " if num else "") + text)
-    set_run(r, size=size, bold=True, east=SONG)
+    p.style = doc.styles["List Paragraph"]
+    fmt_par(p, indent_chars=0, size=12, keep=True, left_cm=0.0)
+    r = p.add_run((label + " " if label else "") + text)
+    set_run(r, size=12, bold=False, east=SONG)
     return p
 
 
 def h3(text):
     p = doc.add_paragraph()
-    fmt_par(p, align=WD_ALIGN_PARAGRAPH.LEFT, indent_chars=0, size=12, before=6, after=2, keep=True)
+    p.style = doc.styles["List Paragraph"]
+    fmt_par(p, indent_chars=0, size=12, keep=True, left_cm=0.74)
     r = p.add_run(text)
-    set_run(r, size=12, bold=True, east=SONG)
+    set_run(r, size=12, bold=False, east=SONG)
     return p
 
 
 def bullet(text):
-    p = doc.add_paragraph()
-    fmt_par(p, align=WD_ALIGN_PARAGRAPH.JUSTIFY, indent_chars=0, size=12, after=0)
-    p.paragraph_format.left_indent = Cm(0.74)
-    p.paragraph_format.first_line_indent = Cm(-0.37)
-    r = p.add_run("•\u00a0" + text)
-    set_run(r, size=12)
-    return p
+    return body("\u2022 " + text, indent=True)
 
 
-def caption(text, before=2, after=8):
+def caption(text, before=None, after=None):
     p = doc.add_paragraph()
-    fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=CAP_PT, before=before, after=after)
+    p.style = doc.styles["Normal"]
+    fmt_par(p, align=WD_ALIGN_PARAGRAPH.CENTER, indent_chars=0, size=CAP_PT)
     r = p.add_run(text)
     set_run(r, size=CAP_PT, east=SONG)
     return p
@@ -674,7 +703,6 @@ bullet("屏上不亮：显示功能只在 enc_top_disp_v90.bit 里，生产位�
 bullet("仿真起不来：run_sim.ps1 需在 sim/ 目录下运行，且 vsim 在 PATH 里；先单独跑一个 tb 看 license。")
 bullet("串口/UDP 打不开：串口要独占，先关掉上位机与串口助手；UDP 需 PC 与板同网段，并在防火墙放行对应端口。")
 
-doc.add_page_break()
 body("复现环境与目录对照见表 C-1。版本号写进表里而不是散落在正文，换机器时只需核对这一张表。")
 make_table(
     ["项", "版本 / 路径", "在复现中的角色"],
