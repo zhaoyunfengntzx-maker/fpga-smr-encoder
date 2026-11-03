@@ -14,8 +14,8 @@ authors:
 version: "1.0.0"
 date-released: "2026-11-03"
 license: MIT
-repository-code: "https://github.com/your-org/fpga-smr-encoder"
-url: "https://github.com/your-org/fpga-smr-encoder"
+repository-code: "https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder"
+url: "https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder"
 keywords:
   - FPGA
   - magnetic encoder

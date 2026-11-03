@@ -59,14 +59,14 @@ deliverables/
 | 4 | 全部代码（RAR/≤200 MB） | `submission/source_code.zip`（ZIP 等价物）+ `make_rar.bat` | 🟡 **本机无 WinRAR/Rar.exe**，只能产出 ZIP；须在装有 WinRAR 的机器上执行 `make_rar.bat` 转 RAR |
 | 5 | 参赛作品承诺及使用授权书（PDF） | — | 🔴 **待签署**：从大赛系统下载模板，签字/盖章后扫描为 PDF |
 | 6 | 作品海报（选填，PDF/PPT/≤50 MB） | `poster/poster_A4_EN.pdf`（A4 竖版）、`poster/poster_amd_A4.pdf`（A4 横版）、`poster/poster_amd_official.pdf`（官方模板 16:9） | 🟢 三版均已重建为 v74 口径、零身份信息 |
-| 7 | GitHub 链接 | 本地发布提交（`v1.0.0` tag，工作树干净） | 🔴 **待推送**：无 remote，命令见 `submission/submission_checklist.md` §4 |
+| 7 | GitHub 链接 | [https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)（`main` @ `12c59ab`，tag `v1.0.0`） | 🟢 **已推送开源**（MIT，工作树干净） |
 | 8 | 作品全貌图（JPG/PNG ≤10 MB ×1） | — | 🔴 **待拍摄**（转台 + 板卡 + 屏 + 传感器全景） |
 | 9 | 开发板重要角度高清照片（≤4 张） | `photo_shot_list.md` 的取证清单 | 🔴 **待拍摄**（正面 / ADC 模拟前端 / 屏与触摸 / 磁环气隙） |
 | 10 | 作品简介 | `submission/intro_and_keywords.md`（v74 口径，可直接粘贴） | 🟢 完成 |
 | 11 | 是否参加其他赛事/往届获奖 | 建议口径见 submission/form_answers.md §4 | 🔴 **待你按实勾选** |
 | 12 | 是否为老师科研项目/实验室作品 | 建议口径见 submission/form_answers.md §5 | 🔴 **待你按实勾选**（本项目为自主选题） |
 | 13 | 三个创新关键词 | 闭式自校准 / 多协议同源 / 高精度细分 | 🟢 完成 |
-| — | （附加）证据归档 | `data/`：263 件证据、145,643,651 B、`SHA256SUMS.txt` 283 行 | 🟢 可复核：`cd deliverables/data` 后 `sha256sum -c SHA256SUMS.txt` 应 283/283 通过 |
+| — | （附加）证据归档 | `data/`：291 个文件、149,069,651 B、`SHA256SUMS.txt` 299 条 | 🟢 可复核：`cd deliverables/data` 后 `sha256sum -c SHA256SUMS.txt` 应 299/299 通过 |
 
 ## 3. 写作三条硬规则（`../docs/02` §3 的要求，本目录强制执行）
 

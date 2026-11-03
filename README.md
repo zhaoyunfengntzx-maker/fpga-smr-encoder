@@ -7,6 +7,8 @@
 
 `MIT License` · `Vivado 2026.1` · `XC7A35TFGG484-2` · `纯 RTL（无 PS / 无 PYNQ）` · 中文文档
 
+**仓库**：<https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder>（`main` · tag [`v1.0.0`](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder/releases/tag/v1.0.0)）
+
 > 2026 年第九届全国大学生嵌入式芯片与系统设计竞赛 · FPGA 创新设计赛道 ·
 > AMD 赛道 · 自主选题（初级）。仓库内不含学校、院系、指导教师、团队与个人信息。
 

@@ -1,4 +1,4 @@
-# 提交清单与状态（2026-11-02 23:50 定版，仓库提交 e1109ec）
+# 提交清单与状态（2026-11-03 19:20 定版，仓库提交 12c59ab / tag v1.0.0）
 
 > 作品名称统一为 **基于FPGA的细分编码器**。本清单只使用该名称，不含学校、指导教师、团队等信息。
 
@@ -8,9 +8,9 @@
 |---|---|---|---|
 | 1 | 演示视频（MP4 / AVC(H264) / ≤3 min / ≤300 MB） | **脚本完成，待录制** | 脚本 `../video_script.md` / `.pdf`（3:00、29 镜、旁白逐句时间码、特效与拍摄表）；成片需真实转台 + 触摸屏 + 上位机同框，本机无采集设备、无实拍素材，无法代录 |
 | 2 | 技术文档（PDF / ≤50 MB / 按模板） | ✅ 完成 | 主用 `design_report.pdf`（23 页 / 0.96 MB，严格按《报告模版》）；备选 `technical_doc.pdf`（15 页 / 0.91 MB，同骨架精简版）。两者均为 v74 口径、零身份信息 |
-| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 已整理，待转 RAR | `source_code.zip`（**26.73 MB 压缩 / 33.34 MB 解压 / 575 文件**，含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*`、`data/*/README.md` 与 `SHA256SUMS.txt`；`MANIFEST.sha256` 逐文件 575/575 校验通过）；本机未安装 WinRAR，已附 `make_rar.bat` |
+| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 已整理，待转 RAR | `source_code.zip`（**29,609,202 B / 617 文件**，含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*`、`data/*/README.md` 与 `SHA256SUMS.txt`；`MANIFEST.sha256` 逐文件 617/617 校验通过）；本机未安装 WinRAR，已附 `make_rar.bat` |
 | 4 | 参赛作品承诺及使用授权书（PDF） | **待签署** | 从大赛系统下载后签字/盖章扫描；程序无法代签 |
-| 5 | GitHub 链接 | **待填写** | 本地仓库已可推送，但当前无 remote；见下方发布说明 |
+| 5 | GitHub 链接 | ✅ 已开源 | [https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)（MIT，`main` 默认分支，tag `v1.0.0`） |
 | 6 | 作品全貌图（JPG/PNG ≤10 MB ×1） | **待拍摄** | 需作品整体（转台 + 板卡 + 屏 + 传感器）；可用 `deliverables/figures/fig1_system_architecture.png` 作系统示意，但不能替代实物全貌 |
 | 7 | 开发板重要角度照片（JPG/PNG ≤10 MB，≤4 张） | **待拍摄** | 建议：正面、ADC/模拟前端、屏与触摸、传感器与磁环气隙 |
 | 8 | 作品简介 | ✅ 完成 | `intro_and_keywords.md`（v74 口径，可直接粘贴） |
@@ -36,20 +36,17 @@ rem 双击本目录的 make_rar.bat 即可（自动查找 WinRAR 并生成 sourc
 
 或右键 `_pkg\FPGA_encoder_source` →「添加到压缩文件」→ 格式选 RAR5 → 压缩级别「最好」。压缩包根目录应直接是 `README.md`、`rtl/`、`sim/` 等，不要再套一层同名目录。
 
-## 四、GitHub 发布说明（供参考）
+## 四、GitHub 发布说明
 
-本地已提交并打 tag：当前签出的 `main` 是**单提交的公开历史**（`v1.0.0`），刻意不带旧提交，
-避免把厂商 PDF 与 166 MB 中间产物带进公开仓库；完整旧历史保留在本地 `history` 分支（tag `archive-pre-release`）。
+仓库已上线：**[https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)**（Public，MIT）。
 
-```bat
-git remote add origin https://github.com/<账号>/<仓库名>.git
-git push -u origin main
-git push origin v1.0.0
-```
+- `main` 是**单提交的公开历史**（`12c59ab`，tag `v1.0.0`），刻意不带旧提交，避免把厂商 PDF 与 166 MB 中间产物带进公开仓库；完整旧历史保留在本地 `history` 分支（tag `archive-pre-release`），未上传。
+- 克隆：`git clone https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder.git`
+- 仓库含 `LICENSE`（MIT）、`README.md`、`skill/`、`docs/ai-collaboration-log.md`、`deliverables/` 文档与 291 个证据文件（142 MB）。
+- 复现入口：`README.md` §快速开始、`docs/REPRODUCE.md`、`docs/COMPLIANCE.md`。
 
-推送后 `main` 即默认分支；仓库名建议 `fpga-smr-encoder`（全小写、连字符）。
-
-仓库已含 `LICENSE`（MIT）、`README.md`、`skill/`、`docs/ai-collaboration-log.md`、`deliverables/` 文档与证据索引；`deliverables/data/` 的 291 件证据（142 MB）是否随仓库上传可按平台限制取舍，至少保留 `SHA256SUMS.txt` 与 `README.md`。
+> 推送提示：作者所在网络对大文件 HTTPS 上行返回 403（约 1–2 MB 以上即失败），最终改用 SSH-over-443 推送：
+> `ssh://git@ssh.github.com:443/<账号>/<仓库名>.git`。如你 Fork 后推送遇到 `RPC failed; HTTP 403`，可直接改用该地址。
 
 ## 五、视频拍摄建议（3 分钟内）
 
