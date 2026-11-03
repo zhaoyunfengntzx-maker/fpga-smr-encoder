@@ -38,7 +38,9 @@ def md_files(argv: list[str]) -> list[str]:
         return [os.path.abspath(a) for a in argv]
     try:
         out = subprocess.check_output(
-            ["git", "ls-files", "-co", "--exclude-standard", "*.md"], cwd=ROOT
+            ["git", "ls-files", "-co", "--exclude-standard", "*.md"],
+            cwd=ROOT,
+            stderr=subprocess.DEVNULL,  # 导出的 tarball 里没有 .git，别把 git 的抱怨当成本工具的结论
         )
         names = out.decode("utf-8", "replace").splitlines()
         return [os.path.join(ROOT, n) for n in names if n.strip()]
