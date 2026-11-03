@@ -296,6 +296,153 @@ def _selftest() -> int:
     return 0 if bad == 0 else 1
 
 
+EMIT_TEMPLATE = '''#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""在你自己的 PYNQ 板子上跑这一步 —— 由 skill/pynq/pynq_overlay.py --emit-script 生成。
+
+这份脚本是**骨架**：寄存器名字/偏移/位定义要按你自己的 IP 改（见下面的 TODO）。
+它自带 5 条"必须同时为真"的判据，以及一张可以填上板记录的 CSV 表。
+
+用法（板卡上的 Jupyter / ssh 都行）：
+    python {script_name}                 # 跑一遍，打印 5 条判据
+    python {script_name} --record        # 顺便把结果追加到 bringup_record.csv
+
+生成参数：--dev {dev} --dma {dma} --clk-mhz {clk:g} --count {count} --bit-name {bit}
+生成时间：{stamp}
+
+为什么不是"打印 PASS 就算过"：
+  记录 47/49 —— "下载成功""灯亮""没报错"这三条都不构成判据。
+  下面每一条都要求一个**能被推翻的数**：读回值、长度、逐点比对、计数器。
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import time
+from pathlib import Path
+
+BIT_NAME = {bit!r}
+DEV = {dev!r}
+DMA = {dma!r}
+CLK_MHZ = {clk!r}
+COUNT = {count!r}
+
+# TODO: 按你的 IP 寄存器手册改这三行；偏移不要从 .hwh 里找（Vivado 默认不导出寄存器）
+REG_CTRL = 0x00
+REG_STATUS = 0x04
+REG_COUNT = 0x0C
+
+HERE = Path(__file__).resolve().parent
+OVERLAY = HERE / BIT_NAME
+
+
+def make_pattern(n, seed=0x12345678):
+    out, x = [], seed
+    for _ in range(n):
+        x = (1103515245 * x + 12345) & 0xFFFF
+        out.append(x)
+    return out
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--record", action="store_true")
+    args = ap.parse_args()
+
+    from pynq import Overlay, allocate          # 只在板卡上有
+
+    ol = Overlay(str(OVERLAY))
+    dev = ol.{dev}
+    dma = ol.{dma}
+    checks = []
+
+    # 判据 1：寄存器读回（Walking-ones，读回必须与原值一致）
+    walking = [0x1, 0x2, 0x4, 0x8, 0x10, 0x80000000]
+    ok1 = all((dev.write(REG_CTRL, v), dev.read(REG_CTRL) & v == v)[1] for v in walking)
+    checks.append(("寄存器 walking-ones 读回", ok1, "6 个位型"))
+
+    # 判据 2：写 CTRL 之后 STATUS.bit0 必须置起（证明时钟/复位通）
+    dev.write(REG_CTRL, 0x1)
+    ok2 = bool(dev.read(REG_STATUS) & 0x1)
+    checks.append(("STATUS.bit0 置起", ok2, f"读回 0x{{dev.read(REG_STATUS):08X}}"))
+
+    # 判据 3：DMA 收发长度一致
+    n = int(COUNT)
+    words = make_pattern(n)
+    buf_in = allocate(shape=(n,), dtype="u4")
+    buf_out = allocate(shape=(n,), dtype="u4")
+    for i, w in enumerate(words):
+        buf_in[i] = w
+    buf_in.flush()
+    t0 = time.perf_counter()
+    dma.recvchannel.transfer(buf_out)
+    dma.sendchannel.transfer(buf_in)
+    dma.sendchannel.wait()
+    dma.recvchannel.wait()
+    buf_out.invalidate()
+    wall_ms = (time.perf_counter() - t0) * 1e3
+    got = [int(buf_out[i]) for i in range(n)]
+    ok3 = len(got) == n
+    checks.append(("DMA 收发长度", ok3, f"发 {{n}} 收 {{len(got)}}"))
+
+    # 判据 4：逐点比对（这里假定"硬件不改数据"；你的 DUT 有变换就改 expected）
+    expected = words
+    first_bad = next((i for i, (a, b) in enumerate(zip(expected, got)) if a != b), None)
+    ok4 = first_bad is None
+    checks.append(("逐点比对", ok4,
+                   "全部一致" if ok4 else f"首个坏点 #{{first_bad}}: 期望 {{expected[first_bad]}} 实测 {{got[first_bad]}}"))
+
+    # 判据 5：硬件计数器与点数一致（没有计数器就明确说"这条不适用"，别用墙钟凑）
+    cnt = dev.read(REG_COUNT)
+    ok5 = cnt == n
+    checks.append(("硬件计数 == 点数", ok5, f"计数 {{cnt}} vs 点数 {{n}}"))
+
+    for name, ok, detail in checks:
+        print(f"  [{{'OK' if ok else 'XX'}}] {{name}}: {{detail}}")
+    print(f"  [NOTE] 墙钟 {{wall_ms:.1f}} ms 不作判据（P-15：wall clock 会把 DMA 启动开销算进去）")
+    passed = all(c[1] for c in checks)
+    print(f"=> {{'PASS' if passed else 'FAIL'}}（{{sum(c[1] for c in checks)}}/{{len(checks)}} 条判据）")
+
+    if args.record:
+        path = Path("bringup_record.csv")
+        new = not path.exists()
+        with path.open("a", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            if new:
+                w.writerow(["时间", "位流", "点数", "墙钟ms", "判据通过", "结论"])
+            w.writerow([time.strftime("%Y-%m-%dT%H:%M:%S"), BIT_NAME, n,
+                        f"{{wall_ms:.1f}}", f"{{sum(c[1] for c in checks)}}/{{len(checks)}}",
+                        "PASS" if passed else "FAIL"])
+        print(f"  记录已追加到 {{path.resolve()}}")
+    return 0 if passed else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+'''
+
+
+def emit_script(path: Path, dev: str, dma: str, clk: float, count: int, bit: str) -> int:
+    """把上面那份骨架写到 path；不连板卡、不需要 pynq 库。"""
+    import datetime
+    body = EMIT_TEMPLATE.format(
+        script_name=path.name, dev=dev, dma=dma, clk=float(clk), count=int(count), bit=bit,
+        stamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(body, encoding="utf-8", newline="\n")
+    # 生成物必须能被解释器读进去：语法错在板卡上才发现最费时间
+    try:
+        compile(body, str(path), "exec")
+    except SyntaxError as exc:
+        print(f"[EXIT2] 生成的脚本有语法错（模板写坏了）：{exc}")
+        return 2
+    print(f"已生成 {path}（{len(body.splitlines())} 行）")
+    print("  下一步：把 REG_CTRL/REG_STATUS/REG_COUNT 改成你自己 IP 的偏移，再拷到板卡上跑")
+    print("  它自带 5 条判据；--record 会往 bringup_record.csv 追加一行，方便贴进报告")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     for stream in (sys.stdout, sys.stderr):
         try:
@@ -313,7 +460,15 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--clk-mhz", type=float, default=100.0)
     ap.add_argument("--count", type=int, default=512)
     ap.add_argument("--json", type=Path)
+    ap.add_argument("--emit-script", type=Path, metavar="OUT.py",
+                    help="不连板卡，只生成一份“在你的板子上跑”的独立脚本（含 5 条判据与记录表）")
+    ap.add_argument("--bit-name", default="design_1.bit",
+                    help="--emit-script 时写进脚本的位流文件名（与 .hwh 同目录）")
     args = ap.parse_args(argv)
+
+    if args.emit_script:
+        return emit_script(args.emit_script, args.dev, args.dma, args.clk_mhz,
+                           args.count, args.bit_name)
 
     if args.selftest:
         return _selftest()

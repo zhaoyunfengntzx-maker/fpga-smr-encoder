@@ -32,6 +32,23 @@
   修法 / 回归验证 / 失效 / 来源记录号）。
 - `skill/examples/`：与脚本配套的夹具（v74 真实数值的通过/失败报告回放、
   16 点角度向量、SHA-256 样例、好/坏测试台）。
+- **证据补强与防漂移门禁**（2026-11-03 第二轮，四组改进里的 A/B/C）：
+  - `skill/scripts/run_all_checks.py`：一条命令总判决（两套自检 + 链接/命名/记录号/
+    计数四项仓库门禁），`--fast` 跳过自检，缺依赖记 `SKIP` 并提示"别把 SKIP 当 PASS"；
+  - `skill/pynq/pynq_overlay.py --emit-script OUT.py`：生成一份可拷到板卡上跑的
+    独立上板脚本（5 条判据 + `--record` 追加 `bringup_record.csv`），生成时立即
+    `compile()` 自检，寄存器偏移处留 `TODO`；
+  - `tools/check_citations.py`：把"记录 N 必须能追到日志标题"变成门禁
+    （CITE-001 号不存在 / CITE-002 无线索 / CITE-003 无括注 / CITE-004 重复过多），
+    用规范化 3-gram 比对，避免引号把标题切碎造成的假阳性；
+  - `tools/check_counts.py`：核对文档口径与现场事实（zip 条目数、MANIFEST 行数、
+    PDF 页数/字节数、资产计数、自检用例数），按文件名分段取数，避免把
+    "≤200 MB 上限"当成包体积；
+  - `tools/gen_pitfall_index.py` 生成 `skill/pitfalls_index.md`（两份清单 18 + 14 条
+    按症状/首条命令编成索引），`--check` 抓"清单改了索引没改"的漂移。
+- `skill/pynq/examples/` 增加三种 `.hwh` 形状夹具（`ps7/`、`clk_multi/`、`clk_missing/`），
+  各带 `SHAPE.md` 说明"哪段真实、哪段手改"；`pynq_hwh.py` 新增 `CLK-003`（从口没声明
+  时钟）与 `--lenient`（只让 FAIL 拦流程）。
 - `skill/pynq/`：**通用 PYNQ 技能包**（按指南 §3.3.2 申报加分，不与本题绑定）。
   - `pynq_hwh.py`：解析 Vivado handoff `.hwh`（IP 清单 / 从口地址表 / 时钟域），判据
     `ADDR-000/001/002/003/004/005/010`、`CLK-001/002`、`REG-001`，支持 `--diff/--json/--md`；
@@ -49,10 +66,22 @@
 - `skill/README.md` 重写为 9 节索引：陌生队伍三步上手、脚本/模板/提示词表、
   症状索引、方法长文、自检方法、换题目/换板卡/换 PYNQ 的逐项移植指引、来源追溯。
 - 根 `README.md`、`docs/README.md`、`docs/COMPLIANCE.md` 的技能包描述同步为
-  "7 篇方法长文 + 18 项可执行资产"。
+  "7 篇方法长文 + 19 项可执行资产"。
 - 18 项资产逐项补"失效条件"（脚本 docstring 的 `【失效条件】`、模板头部注释、
   pitfalls 每条 `**失效**` 行、README 两张表的表尾列）——只说"能用在什么场景"
   而不说"什么时候不管用"，等于把别人往坑里带。
+- 自检扩容：`skill_selftest.py` 14 → **24 用例**（新增 10 条钉参数语义：`--min-wns`、
+  `--max-util`、`--col-ref/--col-got`、`--hist`、`--write`、`--strict`、`--exclude`…），
+  `pynq_selftest.py` 13 → **18 用例**（含 `--lenient`、`CLK-003`、`--emit-script` 生成物
+  可编译）。`--with-tests` 的期望值也随之改成 24/24 与 18/18。
+- `skill/templates/run_vivado.tcl` 的"已验证"改成模板自身的实跑证据（`dut_tiny` @50 MHz
+  → 位流 + `PASS 9/9`；@100 MHz → `WNS=-1.220`、`EXIT 3`、不写位流），并把所有 `puts`
+  改成 ASCII（Vivado 2026.1 的 `puts` 落盘中文会掉字节，判据关键字必须能 grep）。
+- `check_vectors.py` 改为单遍流式统计（`iter_rows` 生成器 + `Stats`），百万点实测
+  2.9 s / 峰值 15.3 MB（旧版全读进内存 5.0 s / 550 MB），输出格式逐字节不变。
+- 口径随之更新：资产 18 → **19 项**（新增 `run_all_checks.py`），提交包
+  **683 条目 / 30.05 MB**、`MANIFEST.sha256` **682 行**、`design_report.pdf`
+  **21 页 / 1.25 MB**（1,251,771 B）。
 
 ### Fixed
 
@@ -63,6 +92,14 @@
   从 `skill/` 目录调用时 13 个用例全红（0/13，看起来像判据坏了，其实是路径假设
   坏了）。改为相对 `__file__` 解析后，从仓库根、从 `skill/pynq/`、从全新导出的
   HEAD 副本运行都是 13/13；这条与 `pitfalls.md` P-14 同类，已把教训写进用例表注释。
+- `run_vivado.tcl` 里 `report_check_timing` **不是 Vivado 命令**（真跑才暴露：
+  `invalid command name`），改为 `check_timing -verbose -file`；`report_utilization
+  -hierarchical` 只出层次表、解析器读不到资源汇总行，改为 summary 写 `util.rpt`、
+  另存 `util_hier.rpt`；`check_impl_reports.py --dir` 的报告发现逻辑会选中
+  `clock_util.rpt`，改为 `^util` + 排除 `hier`/`clock`。
+- `-q` 曾把 `PASS/FAIL: n/m` 判决行一起吞掉（退出码成了唯一输出），
+  `check_impl_reports.py` 与 `check_vectors.py` 改为无条件打印判决行，
+  `--hist` 直方图也不再受 `-q` 影响。
 
 ## [1.0.0] — 2026-11-03
 

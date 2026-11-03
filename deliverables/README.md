@@ -1,4 +1,4 @@
-# deliverables/ —— 竞赛提交物目录
+﻿# deliverables/ —— 竞赛提交物目录
 
 > 本目录是 **2026 年第九届全国大学生嵌入式芯片与系统设计竞赛 · FPGA 创新设计赛道（AMD 赛道 · 自主选题）**
 > 的提交物工作区。**提交截止：2026-11-04 18:00**。
@@ -28,7 +28,7 @@
 deliverables/
 ├── README.md                    ← 本文件：提交物清单 + 状态 + 写作规范
 ├── design_report.docx/pdf       ★ 技术文档（按《报告模版》：作品名称/摘要/五部分 + 附录 A/B/C）——21 页
-├── design_report_full.pdf       ← 详细工程版 59 页（md2pdf 导出，答辩技术底稿）
+├── design_report_full.pdf       ← 详细工程版 60 页（md2pdf 导出，答辩技术底稿）
 ├── design_report.md                 详细工程版源文件
 ├── technical_doc.docx/pdf       ★ 另一版技术文档（同一模板骨架，15 页，面向"精简可读"）
 ├── topic_proposal.md/.pdf           资格审查用 2 页选题说明
@@ -36,7 +36,7 @@ deliverables/
 ├── photo_shot_list.md               视频分镜 + 上板取证素材清单（待拍项逐条打勾）
 ├── board_day_checklist.md           上板日执行单（屏验收/屏网并存/拔网断电/Z 游标/延迟/拍摄/记录表）
 ├── qa_prep.md                       答辩问答准备（10 问 + 标准答法 + 缺口交代口径）
-├── data/                        证据归档 **278 个文件，其中 263 件证据 / 145,643,651 B**，`SHA256SUMS.txt` **283 行**
+├── data/                        证据归档 **294 个文件 / 149,157,322 B**，`SHA256SUMS.txt` **299 条**（280 条覆盖本目录 + 19 条覆盖 `../figures/`），**已实测 299/299 全部校验通过**
 │   ├── bitstreams/ 27 · ila/ 21 · timing/ 23 · logs/ 17 · v62/ 13 · v66/ 20 · v67/ 12 · v68/ 25 · v70/ 24 · **v74/ 24**
 │   └── v74/    ★ 本轮新增：v74 生产 + v74 显示的位流、时序/利用率/DRC/IO/路径报告、构建日志、VARIANT_INFO
 ├── figures/                     报告插图（框图/标定/残差/ILA/格点/机械/屏照，31 张 PNG，每图另有 pdf/svg）
@@ -56,7 +56,7 @@ deliverables/
 |---|---|---|---|
 | 1 | 作品名称 | 基于FPGA的细分编码器 | 🟢 全文统一，无别名 |
 | 2 | 演示视频（MP4/AVC/≤3 min/≤300 MB） | `video_script.md/.pdf` + `video/assets/` 3 段 CG；成片在 `video/` | 🔴 **未成片**：本机无采集设备，需真实转台 + 触摸屏 + 上位机同框实拍 |
-| 3 | 技术文档（PDF/≤50 MB/按模板） | `design_report.pdf`（21 页 / 1.19 MB）+ `technical_doc.pdf`（15 页 / 0.91 MB），二选一提交，建议用 `design_report.pdf` | 🟢 完成（零身份信息，见 §5） |
+| 3 | 技术文档（PDF/≤50 MB/按模板） | `design_report.pdf`（21 页 / 1.25 MB）+ `technical_doc.pdf`（15 页 / 0.91 MB），二选一提交，建议用 `design_report.pdf` | 🟢 完成（零身份信息，见 §5） |
 | 4 | 全部代码（RAR/≤200 MB） | `submission/source_code.zip`（ZIP 等价物）+ `make_rar.bat` | 🟡 **本机无 WinRAR/Rar.exe**，只能产出 ZIP；须在装有 WinRAR 的机器上执行 `make_rar.bat` 转 RAR |
 | 5 | 参赛作品承诺及使用授权书（PDF） | — | 🔴 **待签署**：从大赛系统下载模板，签字/盖章后扫描为 PDF |
 | 6 | 作品海报（选填，PDF/PPT/≤50 MB） | `poster/poster_A4_EN.pdf`（A4 竖版）、`poster/poster_amd_A4.pdf`（A4 横版）、`poster/poster_amd_official.pdf`（官方模板 16:9） | 🟢 三版均已重建为 v74 口径、零身份信息 |
@@ -66,8 +66,8 @@ deliverables/
 | 10 | 作品简介 | `submission/intro_and_keywords.md`（v74 口径，可直接粘贴） | 🟢 完成 |
 | 11 | 是否参加其他赛事/往届获奖 | 建议口径见 submission/form_answers.md §4 | 🔴 **待你按实勾选** |
 | 12 | 是否为老师科研项目/实验室作品 | 建议口径见 submission/form_answers.md §5 | 🔴 **待你按实勾选**（本项目为自主选题） |
-| 13 | 三个创新关键词 | 闭式自校准 / 多协议同源 / 高精度细分 | 🟢 完成 |
-| — | （附加）证据归档 | `data/`：291 个文件、149,069,651 B、`SHA256SUMS.txt` 299 条 | 🟢 可复核：`cd deliverables/data` 后 `sha256sum -c SHA256SUMS.txt` 应 299/299 通过 |
+| 13 | 三个创新关键词 | 闭式自校准 / 多协议高速输出适配 / FPGA 正余弦高精度细分 | 🟢 完成（2026-11-03 定稿） |
+| — | （附加）证据归档 | `data/`：294 个文件、149,157,322 B、`SHA256SUMS.txt` 299 条 | 🟢 可复核：`cd deliverables/data` 后按 `SHA256SUMS.txt` 逐条校验，**实测 299/299 通过**（含 19 条 `../figures/`） |
 
 ## 3. 写作三条硬规则（`../docs/02` §3 的要求，本目录强制执行）
 
@@ -111,9 +111,9 @@ cscript //nologo tools\docx2pdf.vbs "C:\Users\zhaoy\Desktop\FPGA\deliverables\te
 # 2) pptx -> pdf + 首屏 PNG（PowerPoint 晚绑定）
 cscript //nologo tools\pptx2pdf.vbs "C:\Users\zhaoy\Desktop\FPGA\deliverables\poster\poster_amd_official.pptx" "C:\Users\zhaoy\Desktop\FPGA\deliverables\poster\poster_amd_official.pdf" "C:\Users\zhaoy\Desktop\FPGA\.tmp\poster_png" 3200
 
-# 3) 详细工程版（59 页，无头 Edge 打印）
+# 3) 详细工程版（60 页，无头 Edge 打印）
 & E:\Anaconda\python.exe tools\md2pdf.py deliverables\design_report.md
 ```
 
-当前页数与体积：`design_report.pdf` **21 页 / 1,251,133 B**；`technical_doc.pdf` **15 页 / 952,521 B**；`design_report_full.pdf` **59 页 / 4,935,590 B**。
+当前页数与体积：`design_report.pdf` **21 页 / 1,254,450 B**；`technical_doc.pdf` **15 页 / 954,851 B**；`design_report_full.pdf` **60 页 / 4,954,432 B**。
 （2026-11-03 重建：报告新增技能包可执行资产段落与通用 PYNQ 子包段落，并修正正文里残留的 Markdown 反引号，故页数由 23 → 21。）

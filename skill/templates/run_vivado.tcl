@@ -18,11 +18,19 @@
 # 产物（正是 check_impl_reports.py 期待的四个文件）：
 #   <out>/timing.rpt  util.rpt  drc.rpt  check_timing.rpt  + <top>.bit
 #
-# 已验证：本工程 v74 就是这套流程跑出来的（WNS +0.409 ns、LUT 52.53%），
-#   报告随后被 check_impl_reports.py 判为 PASS 9/9。
+# 已验证（2026-11-03 本模板自身实跑，不是"本工程用过同一套流程"）：
+#   %TEMP%\viv_template_test 里 dut_tiny（两级流水加法）+ tiny.xdc，50 MHz 那次
+#   RESULT WNS=8.346 WHS=0.166 → 写出 dut_tiny.bit → EXIT 0，
+#   四个报告随后被 check_impl_reports.py 判为 PASS 9/9；
+#   同一设计改 10 MHz/10 ns 约束那次 RESULT WNS=-1.220 → EXIT 3 且不写位流（负路径成立）。
+#
+# 输出行一律 ASCII：2026-11-03 实测 Vivado 2026.1 的 Tcl `puts` 打中文，
+#   落盘后按 UTF-8 解码会得到 `测试�?文：完成` 这类非法序列（控制台区域设置决定编码），
+#   于是判据关键字固定成 ASCII（RESULT / PASS / FAIL），grep 与 CI 都不受区域设置影响。
+#   中文只出现在注释里，注释不会被打印。
 
 if {[llength $argv] != 3} {
-    puts "ERROR 用法: -tclargs top part outdir"
+    puts "ERROR usage: -tclargs <top> <part> <outdir>"
     exit 1
 }
 lassign $argv top part outdir
@@ -42,7 +50,7 @@ set rtl_files [concat \
     [glob -nocomplain $root/rtl/*/*.v] \
     [glob -nocomplain $root/rtl/*/*.sv] ]
 if {[llength $rtl_files] == 0} {
-    puts "ERROR $root/rtl 下没有源文件"
+    puts "ERROR no verilog/sv sources under $root/rtl"
     exit 2
 }
 read_verilog -sv $rtl_files
@@ -50,7 +58,7 @@ read_verilog -sv $rtl_files
 # ---- 约束 ----
 set xdc [glob -nocomplain $root/constr/*.xdc]
 if {[llength $xdc] > 0} { read_xdc $xdc }
-puts "INFO 读入 [llength $rtl_files] 个源文件、[llength $xdc] 个约束文件"
+puts "INFO read [llength $rtl_files] verilog files, [llength $xdc] xdc files"
 
 # ---- 综合 ----
 synth_design -top $top -part $part -flatten_hierarchy rebuilt
@@ -63,11 +71,21 @@ phys_opt_design
 route_design
 
 # ---- 报告：文件名固定，供脚本解析 ----
+# 注意 util.rpt 必须用**默认（summary）**格式：`check_impl_reports.py` 找的是
+#   | Slice LUTs | 10926 | ... |
+# 这种行；而 `-hierarchical` 只输出"Utilization by Hierarchy"一张表，解析不到资源行
+# （2026-11-03 真跑一次才发现：脚本对模板自己的报告报了四条 "没找到 Slice LUTs 行"）。
+# 分层表另存 util_hier.rpt，给人看，不给脚本解析。
 report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose \
     -max_paths 10 -input_pins -file $out/timing.rpt
-report_utilization -hierarchical -file $out/util.rpt
+report_utilization -file $out/util.rpt
+report_utilization -hierarchical -file $out/util_hier.rpt
 report_drc -file $out/drc.rpt
-report_check_timing -file $out/check_timing.rpt
+# 注意：Vivado 里没有 `report_check_timing` 这个命令，跑起来会报
+#   invalid command name "report_check_timing"
+# 正确的命令是 `check_timing`（2026.1 里仍有 -file 选项）。
+# 这一行是第一版凭印象写的，2026-11-03 真跑一次才发现（模板自身没跑过就别写"已验证"）。
+check_timing -verbose -file $out/check_timing.rpt
 report_clock_utilization -file $out/clock_util.rpt
 
 # ---- 判决条件写进 Tcl：不靠人眼看报告 ----
@@ -77,10 +95,10 @@ puts "RESULT WNS=$wns WHS=$whs"
 if {$wns < 0 || $whs < 0} {
     # 注意：不要在这里 exit 0。负余量要留下报告给 check_impl_reports.py 判，
     # 但流程本身必须非零退出，否则 CI 会把"时序没收敛"当成成功。
-    puts "FAIL 时序未收敛（WNS=$wns WHS=$whs），位流不生成"
+    puts "FAIL timing not met (WNS=$wns WHS=$whs), bitstream not written"
     exit 3
 }
 
 write_bitstream -force $out/$top.bit
-puts "PASS 实现完成：$out/$top.bit"
+puts "PASS implementation done: $out/$top.bit"
 exit 0

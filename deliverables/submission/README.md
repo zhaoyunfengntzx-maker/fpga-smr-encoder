@@ -4,12 +4,12 @@
 
 | 文件 | 对应官网项 | 说明 |
 |---|---|---|
-| `design_report.pdf` | **技术文档（必交，建议提交这份）** | **21 页 / 1.19 MB**；严格按《报告模版》：作品名称 / 摘要 / 五部分 + 附录 A/B/C；数字全部为 v74 口径；附录 B 已含技能包四类可执行资产 |
+| `design_report.pdf` | **技术文档（必交，建议提交这份）** | **21 页 / 1.25 MB**；严格按《报告模版》：作品名称 / 摘要 / 五部分 + 附录 A/B/C；数字全部为 v74 口径；附录 B 已含技能包四类可执行资产 |
 | `technical_doc.pdf` | 技术文档（另一版，15 页） | 15 页 / 0.91 MB；同一模板骨架的精简版，二选一 |
 | `poster_a4.pdf` | 作品海报（选填，匿名提交版） | A4 竖版 210×297 mm / 0.10 MB；`poster/poster_A4_EN.pptx` 可重跑 |
 | `poster_amd_a4.pdf` | 作品海报（A4 横版备选） | 297×210 mm / 0.34 MB；AMD 版式，匿名 |
 | `poster_amd_official.pdf` | 作品海报（AMD 官方模板版） | 16:9 / 0.31 MB；`poster/build_amd_template.py` 可重跑 |
-| `source_code.zip` | 全部代码（必交，≤200 MB） | **28.60 MB / 670 文件**；含 RTL、约束、仿真、上位机、技能包（7 篇长文 + 18 项可执行资产 + 通用 PYNQ 子包）、设计报告与技术文档 PDF、海报、证据索引与 SHA256 清单；根目录有 `MANIFEST.sha256`（670 行，逐文件校验） |
+| `source_code.zip` | 全部代码（必交，≤200 MB） | **30.06 MB / 683 文件**；含 RTL、约束、仿真、上位机、技能包（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包）、设计报告与技术文档 PDF、海报、证据索引与 SHA256 清单；根目录有 `MANIFEST.sha256`（682 行，逐文件校验） |
 | `intro_and_keywords.md` | 作品简介 / 三个关键词 | 可直接粘贴到提交系统 |
 | `photos/` | 作品全貌图（第 6 项）+ 开发板重要角度照片（第 7 项） | 2026-11-03 20:02 实拍 4 张，`01_overview_full` / `02_board_adc_frontend` / `03_board_front` / `04_board_screen`，均 ≤10 MB；逐张说明与屏上读数见 `photos/README.md` |
 | `submission_checklist.md` | 全项对照 | 逐项状态、RAR 转换命令、GitHub 发布命令、视频拍摄要点 |

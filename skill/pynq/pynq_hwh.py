@@ -250,6 +250,14 @@ def check(design: Design) -> tuple[list, list, list]:
         findings.append(("WARN", "CLK-002",
                          "hwh 里没有 FREQ_HZ：无法核对时钟，只能靠 ps.Clocks 读回"))
 
+    # 单个从口没声明时钟（其它口声明了）：这比"整个设计没有时钟"常见得多，
+    # 手写 AXI 从设备、或老版本导出都容易缺这一段。
+    silent = [ip.instance for ip in design.ips if ip.slaves and not ip.clk_domains]
+    if silent and clocks:
+        findings.append(("WARN", "CLK-003",
+                         f"{len(silent)} 个从设备没声明时钟：{', '.join(silent[:6])}；"
+                         "它的寄存器访问时序只能按最慢的那个域估，或去查 PS 侧 FCLK"))
+
     if not any(ip.registers for ip in design.ips):
         findings.append(("NOTE", "REG-001",
                          "hwh 不含寄存器列表（Vivado 默认如此）：寄存器偏移要查 IP 文档"
@@ -265,6 +273,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--json", type=Path)
     ap.add_argument("--md", type=Path)
     ap.add_argument("-q", "--quiet", action="store_true")
+    ap.add_argument("--lenient", action="store_true",
+                    help="只让 FAIL 拦住流程（多时钟域、缺时钟声明这类 WARN 不判失败）；"
+                         "脚本化“先跑起来”时用，做交付体检时不要用")
     args = ap.parse_args(argv)
 
     if not args.hwh.is_file():
@@ -349,6 +360,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     print(f"\n=> PASS（{len(design.ips)} 个 IP，{sum(len(ip.ranges) for ip in design.ips)} 段地址，"
           f"{len(warns)} 条警告）")
+    if warns and args.lenient:
+        print("[--lenient] 警告不判失败：这些是“要你去看一眼”的，不是“一定坏了”的")
+        return 0
     return 1 if warns else 0
 
 

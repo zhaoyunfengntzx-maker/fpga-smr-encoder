@@ -25,10 +25,10 @@
 
 | 指南要求 | 仓库位置 | 状态 / 说明 |
 |---|---|---|
-| 置于 `skill/`，README 说明适用范围、使用方法、失效条件 | `skill/README.md`（9 节索引）+ 7 篇方法长文 + 5 个校验脚本 + 7 个模板 + 5 篇提示词 + 18 条踩坑清单 | ✅ 每项写明适用场景 / 使用方法 / 已验证效果 / 失效条件 / 来源记录号；18 项可执行资产的失效条件写在各自文件头或 README 表尾列，18 条踩坑清单逐条带 `**失效**` 行 |
-| 提示词工作流 / 案例模板 / 校验脚本 / 踩坑清单 | 校验脚本 `skill/scripts/*.py`（含自检 `skill_selftest.py`）；案例模板 `skill/templates/*`；提示词工作流 `skill/prompts/P1`–`P5`；踩坑清单 `skill/pitfalls.md` | ✅ 四类均为可直接复制/运行的资产，不是描述性文字；脚本自带夹具，`skill_selftest.py` 14/14 通过（含 4 条负对照） |
+| 置于 `skill/`，README 说明适用范围、使用方法、失效条件 | `skill/README.md`（9 节索引）+ 7 篇方法长文 + 6 个校验脚本 + 7 个模板 + 5 篇提示词 + 18 条踩坑清单 | ✅ 每项写明适用场景 / 使用方法 / 已验证效果 / 失效条件 / 来源记录号；19 项可执行资产的失效条件写在各自文件头或 README 表尾列，18 条踩坑清单逐条带 `**失效**` 行 |
+| 提示词工作流 / 案例模板 / 校验脚本 / 踩坑清单 | 校验脚本 `skill/scripts/*.py`（含自检 `skill_selftest.py`）；案例模板 `skill/templates/*`；提示词工作流 `skill/prompts/P1`–`P5`；踩坑清单 `skill/pitfalls.md` | ✅ 四类均为可直接复制/运行的资产，不是描述性文字；脚本自带夹具，`skill_selftest.py` 24/24 通过（含 10 条负对照）；另有 `run_all_checks.py` 一条命令跑完两套自检与四项仓库门禁（当前 7/7） |
 | 可复用性（陌生队伍能否直接用） | `skill/README.md` §0 三步上手 + §7 换题目/换板卡/换 PYNQ 逐项移植表；脚本仅依赖 Python 标准库 | ✅ 不绑定本队路径与板卡；样例数值取自 v74 真实报告（含失败回放），改阈值即可用于他题 |
-| 通用 PYNQ Skill 加分（§3.3.2） | `skill/pynq/`：`pynq_hwh.py`（`.hwh` 地址表/时钟域解析，判据 `ADDR-00x/01x`、`CLK-00x`、`REG-001`）、`pynq_bundle.py`（位流↔地址表配对/时间戳/两版对比）、`pynq_overlay.py`（上板 5 条判据 + `--mock`）、`pynq_selftest.py`（13 用例）、`pitfalls_pynq.md`（14 条，标 `[实测]/[文档]/[待验]`）、`prompts/P6–P7`、`examples/`（真实 BD 导出的 hwh） | ✅ **申报**：面向 PYNQ 框架、不与本题绑定（换题目/换板卡可用，见 `skill/pynq/README.md` §6）。`pynq_selftest.py` 13/13（5 条负对照）。**诚实边界**：本队硬件无 PS、本机 Vivado 无 Zynq 器件族，**上板路径未实测**，该边界写在 `pynq/README.md` §4 |
+| 通用 PYNQ Skill 加分（§3.3.2） | `skill/pynq/`：`pynq_hwh.py`（`.hwh` 地址表/时钟域解析，判据 `ADDR-00x/01x`、`CLK-00x`、`REG-001`）、`pynq_bundle.py`（位流↔地址表配对/时间戳/两版对比）、`pynq_overlay.py`（上板 5 条判据 + `--mock`）、`pynq_selftest.py`（18 用例，含 `--emit-script` 生成物编译检查）、`pitfalls_pynq.md`（14 条，标 `[实测]/[文档]/[待验]`）、`prompts/P6–P7`、`examples/`（真实 BD 导出的 hwh） | ✅ **申报**：面向 PYNQ 框架、不与本题绑定（换题目/换板卡可用，见 `skill/pynq/README.md` §6）。`pynq_selftest.py` 18/18（5 条负对照）。**诚实边界**：本队硬件无 PS、本机 Vivado 无 Zynq 器件族，**上板路径未实测**，该边界写在 `pynq/README.md` §4 |
 
 ## 3. §3.3.5.3 设计报告
 
@@ -59,7 +59,7 @@
 | 创新性与应用价值 | 30 | 用 FPGA 软件化 iC-TW28 类专用细分 SoC；六参数闭式标定 + 16 bit 全流水 CORDIC + 在线 UI/以太网；报告 §8 |
 | 性能与资源优化效果 | 20 | 20.9839° → 0.0165°（1273×）；2048 p/r、719–740 rpm；WNS +0.409、LUT 52.53%（生产）/ 86.96%（显示）；`docs/BASELINES.md` |
 | 功能正确性与设计完整性 | 20 | 36/36 仿真、v74 生产位流上板、v85 显示位流构建签核+下载；`deliverables/evidence_index.md` |
-| 大模型协作与技能包 | 15 | `docs/ai-collaboration-log.md`、报告 §13、`skill/`（7 篇长文 + 18 项可执行资产 + `pynq/` 通用子包） |
+| 大模型协作与技能包 | 15 | `docs/ai-collaboration-log.md`、报告 §13、`skill/`（7 篇长文 + 19 项可执行资产 + `pynq/` 通用子包） |
 | 文档质量与可复现性 | 15 | 根 README、`docs/` 索引、`docs/REPRODUCE.md`、`docs/BASELINES.md`、CI 检查脚本 |
 
 ## 6. §3.3.3 硬约束
@@ -68,7 +68,7 @@
 |---|---|
 | 工具版本 Vivado/Vitis 2026.1（推荐）或 2025.2 | ✅ 全部签核构建使用 **Vivado v2026.1**（见 `deliverables/data/v85/disp_impl.log` 头、各 `prod_impl.log`） |
 | 提交大模型协作交互记录 | ✅ `docs/ai-collaboration-log.md` + 报告 §13 |
-| 提炼技能包随作品提交 | ✅ `skill/`（本体 7 篇长文 + 18 项资产；另有通用 PYNQ 子包 `skill/pynq/`） |
+| 提炼技能包随作品提交 | ✅ `skill/`（本体 7 篇长文 + 19 项资产；另有通用 PYNQ 子包 `skill/pynq/`） |
 | 声明具体器件并完成板级验证 | ✅ XC7A35TFGG484-2（达芬奇-lite）+ AD9238；v74 生产位流有转台实测 |
 | 开源（MIT 或 Apache-2.0） | ✅ `LICENSE` = MIT；`NOTICE` 列第三方边界 |
 | 决赛一页英文海报（A4 彩打、不含队伍信息） | ✅ `deliverables/poster/poster_A4_EN.pptx` / `.pdf` / `.png`（另含 AMD 模板版 `poster_amd_official.*`） |
@@ -89,14 +89,19 @@
 ## 8. 提交前自检命令
 
 ```powershell
+python skill\scripts\run_all_checks.py       # 技能包 + 仓库门禁一条命令（7 项，当前 7/7 PASS）
 python tools\check_links.py                  # 文档相对链接 0 死链
 python tools\check_anonymity.py --strict-new # 公开面 0 命中
 python tools\check_names.py                  # 静态未定义名 0
+python tools\check_citations.py              # "记录 N" 都能追到协作日志标题（0 ERROR / 0 WARN）
+python tools\check_counts.py                 # 文档口径 vs 现场事实（zip 683 条目 / 清单 682 行 / PDF 21 页）
+python tools\gen_pitfall_index.py --check     # 症状索引与两份清单不脱钩
 python host\regs.py --selftest               # 寄存器表自检
 python host\analysis.py --selftest           # 分析链自检
 python host\encoder.py --selftest            # 编码器模型自检
-python skill\scripts\skill_selftest.py       # 技能包自检 14/14（含 4 条负对照）
-python skill\pynq\pynq_selftest.py           # PYNQ 子包自检 13/13（含 5 条负对照）
+python skill\scripts\skill_selftest.py       # 技能包自检 24/24（含 10 条负对照）
+python skill\pynq\pynq_selftest.py           # PYNQ 子包自检 18/18（含 5 条负对照）
+python skill\pynq\pynq_overlay.py --emit-script out\bringup.py   # 生成可拷到板卡的上板脚本
 ```
 
 哈希复核：`cd deliverables\data; sha256sum -c SHA256SUMS.txt`（Linux）或按该目录 README §3 的 PowerShell 循环。

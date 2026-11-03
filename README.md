@@ -1,4 +1,4 @@
-# 基于 SMR 磁阻传感器与 FPGA 的高精度细分磁编码器
+﻿# 基于 SMR 磁阻传感器与 FPGA 的高精度细分磁编码器
 
 **A software-defined, high-resolution magnetic encoder on a Xilinx Artix-7 FPGA.**
 用一片 FPGA 软件化实现 iC-Haus **iC-TW28**（10-bit 正余弦细分器）的全部功能，
@@ -99,7 +99,7 @@ FPGA/
 ├── tools/                    构建 / 仿真 / 签核 / 分析脚本
 ├── constr/                   XDC 约束（屏、触摸、以太网、引脚）
 ├── docs/                     开发日志、方案、复现与发布文档
-├── skill/                    ★ 可复用技能包（7 篇长文 + 18 项可执行资产 + 通用 PYNQ 子包）
+├── skill/                    ★ 可复用技能包（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包）
 ├── deliverables/             ★ 设计报告、证据索引、海报、提交包、data/ 证据归档
 └── LICENSE / NOTICE           MIT + 第三方材料边界
 ```
@@ -117,7 +117,7 @@ FPGA/
 | `build/` | `tools/`、`constr/` | 综合/实现/签核脚本与约束 |
 | `board/` | `tools/board_*.py`、`host/`、`_boardtest/` | 上板联调、定位、长跑脚本 |
 | `data/` | `deliverables/data/` | 位流、时序/资源报告、SHA-256 清单 |
-| `skill/` | `skill/` | 7 篇方法长文 + 18 项可执行资产（5 校验脚本 / 7 模板 / 5 提示词 / 1 踩坑清单）；另有独立子包 `skill/pynq/`（通用 PYNQ 技能包，申报 3.3.2） |
+| `skill/` | `skill/` | 7 篇方法长文 + 19 项可执行资产（6 校验脚本 / 7 模板 / 5 提示词 / 1 踩坑清单）；另有独立子包 `skill/pynq/`（通用 PYNQ 技能包，申报 3.3.2） |
 | `report/` | `deliverables/` | 设计报告、技术文档、证据索引、海报 |
 
 ## 5. 快速开始
@@ -193,7 +193,7 @@ vivado -mode batch -source tools\impl_check_disp_v74.tcl
 | 文档 | 用途 |
 |---|---|
 | [`deliverables/design_report.pdf`](deliverables/design_report.pdf) | **主设计报告**（21 页，按竞赛模板，提交用） |
-| [`deliverables/design_report_full.pdf`](deliverables/design_report_full.pdf) | 详细工程版（59 页，答辩技术底稿） |
+| [`deliverables/design_report_full.pdf`](deliverables/design_report_full.pdf) | 详细工程版（60 页，答辩技术底稿） |
 | [`deliverables/technical_doc.pdf`](deliverables/technical_doc.pdf) | 精简技术文档（15 页） |
 | [`deliverables/evidence_index.md`](deliverables/evidence_index.md) | 每个数字 → 可复核产物 |
 | [`docs/README.md`](docs/README.md) | 文档总索引（按主题） |
@@ -202,7 +202,7 @@ vivado -mode batch -source tools\impl_check_disp_v74.tcl
 | [`docs/COMPLIANCE.md`](docs/COMPLIANCE.md) | 指南 §3.3.5 逐条对照与缺口登记（提交前自检） |
 | [`docs/DEV_STATUS.md`](docs/DEV_STATUS.md) | 16k 行开发日志（任何结论的来龙去脉） |
 | [`docs/ai-collaboration-log.md`](docs/ai-collaboration-log.md) | 大模型协作记录（提示词、纠错轨迹） |
-| [`skill/README.md`](skill/README.md) | 可复用技能包：7 篇方法长文 + 18 项可执行资产，附自检 |
+| [`skill/README.md`](skill/README.md) | 可复用技能包：7 篇方法长文 + 19 项可执行资产，附自检 |
 | [`skill/pynq/README.md`](skill/pynq/README.md) | **通用 PYNQ 技能包**（申报 3.3.2）：`.hwh` 地址表解析、交付目录体检、上板 5 条判据、13 用例自检 |
 | [`CHANGELOG.md`](CHANGELOG.md) | 版本变更与 v1.0.0 发布说明 |
 

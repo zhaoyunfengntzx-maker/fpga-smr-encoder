@@ -108,6 +108,21 @@ def cases():
              args=["--selftest"], rc=0, must=["自检 4/4"]),
         dict(name="回环：mock 上 5 条判据全过", script=overlay,
              args=["--mock", "--count", "256"], rc=0, must=["PASS（5/5"]),
+        # ---- A3：另外三种 .hwh 形状（ps7 / 多时钟域 / 从口没声明时钟） ----
+        dict(name="形状：PS7 设计不该把 PS 误报成没地址", script=hwh,
+             args=[str(ex / "ps7" / "design_1.hwh"), "-q"], rc=0,
+             must=["4 个 IP", "0 条警告"]),
+        dict(name="形状：两个频率必须报 CLK-001", script=hwh,
+             args=[str(ex / "clk_multi" / "design_1.hwh"), "-q"], rc=1, must=["CLK-001"]),
+        dict(name="形状：多频率 + --lenient 才放行", script=hwh,
+             args=[str(ex / "clk_multi" / "design_1.hwh"), "-q", "--lenient"], rc=0,
+             must=["--lenient"]),
+        dict(name="形状：从口没声明时钟要报 CLK-003", script=hwh,
+             args=[str(ex / "clk_missing" / "design_1.hwh"), "-q"], rc=1, must=["CLK-003"]),
+        # ---- C2：--emit-script 生成的上板脚本必须能编译、且带 TODO 提示 ----
+        dict(name="上板脚本：--emit-script 生成可编译的骨架", script=overlay,
+             args=["--emit-script"], rc=0, must=["已生成", "5 条判据"],
+             prep=lambda tmp: [str(tmp / "bringup.py")], py_file="bringup.py"),
     ]
 
 
@@ -143,6 +158,18 @@ def run_case(c: dict, tmp: Path, verbose: bool) -> tuple[bool, str]:
         p = tmp / c["md_file"]
         if not p.is_file() or "地址表" not in p.read_text(encoding="utf-8"):
             ok, why = False, "md 没生成或没有标题"
+    if ok and c.get("py_file"):
+        p = tmp / c["py_file"]
+        if not p.is_file():
+            ok, why = False, f"没有生成 {p}"
+        else:
+            body = p.read_text(encoding="utf-8")
+            try:
+                compile(body, str(p), "exec")
+            except SyntaxError as exc:
+                ok, why = False, f"生成的脚本语法错：{exc}"
+            if ok and "TODO" not in body:
+                ok, why = False, "生成的脚本没有 TODO 提示（用户不知道要改寄存器偏移）"
 
     if verbose and not ok:
         print(out)

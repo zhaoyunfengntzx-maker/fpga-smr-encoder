@@ -313,7 +313,12 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         args.timing = args.timing or find_by_patterns(
             d, [r"timing.*\.rpt$", r".*timing.*\.rpt$"], exclude=("check_timing",))
-        args.util = args.util or find_by_patterns(d, [r"util.*\.rpt$"])
+        # 资源报告：只认"以 util 开头"或"名字里带 utilization"的，
+        # 并排除 util_hier（分层表没有汇总行）与 clock_util（时钟资源表）。
+        # 这是 2026-11-03 用 skill/templates/run_vivado.tcl 真跑一次才暴露的：
+        # 原来写 `util.*\.rpt$`，结果选中了 clock_util.rpt，四条资源判据全部"没找到行"。
+        args.util = args.util or find_by_patterns(
+            d, [r"^util.*\.rpt$", r"utilization.*\.rpt$"], exclude=("hier", "clock"))
         args.drc = args.drc or find_by_patterns(d, [r"drc.*\.rpt$"])
         args.check_timing = args.check_timing or find_by_patterns(d, [r"check_timing.*\.rpt$"])
 
@@ -428,8 +433,9 @@ def main(argv: list[str] | None = None) -> int:
         print("-" * 78)
     for w in warnings:
         print(f"[WARN] {w}")
-    if not args.quiet:
-        print(f"\n{status}: {sum(c.ok for c in checks)}/{len(checks)} 判据通过")
+    # 即使 -q 也要打判决行：只有退出码、没有一行人话时，
+    # 日志里就只剩"某一步失败"，别人得自己重跑才知道红在哪（P-16）。
+    print(f"\n{status}: {sum(c.ok for c in checks)}/{len(checks)} 判据通过")
 
     if args.json:
         payload = {

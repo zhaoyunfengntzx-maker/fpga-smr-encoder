@@ -71,6 +71,44 @@ def _tampered_manifest() -> list[str]:
     return ["--dir", dst, "--verify"]
 
 
+def _copy_manifest(tag: str) -> str:
+    """把 manifest 样例复制到独立临时目录（每个用例一份，互不干扰）。"""
+    dst = os.path.join(tempfile.gettempdir(), f"skill_selftest_{tag}")
+    shutil.rmtree(dst, ignore_errors=True)
+    shutil.copytree(os.path.join(EX, "manifest"), dst)
+    return dst
+
+
+def _add_file(dst: str, name: str) -> None:
+    with open(os.path.join(dst, name), "w", encoding="utf-8", newline="\n") as f:
+        f.write("not in the manifest\n")
+
+
+def _manifest_write() -> list[str]:
+    """删掉清单里的一个文件、再加一个新文件，然后 --write：
+
+    期望 0——写清单本来就该把"现状"记下来，包括新增与消失。
+    """
+    dst = _copy_manifest("write")
+    os.remove(os.path.join(dst, "SHA256SUMS.txt"))
+    _add_file(dst, "extra.bin")
+    return ["--dir", dst, "--write"]
+
+
+def _manifest_extra() -> list[str]:
+    """清单没变、多了一个文件 → --strict 必须失败（"清单外"）。"""
+    dst = _copy_manifest("extra")
+    _add_file(dst, "extra.bin")
+    return ["--dir", dst, "--verify", "--strict"]
+
+
+def _manifest_extra_excluded() -> list[str]:
+    """同一个多出来的文件，用 --exclude 放过 → 0（证明排除参数真的生效）。"""
+    dst = _copy_manifest("excluded")
+    _add_file(dst, "extra.bin")
+    return ["--dir", dst, "--verify", "--strict", "--exclude", "extra.bin"]
+
+
 def cases() -> list[dict]:
     """每个用例：名字 / 脚本 / 参数 / 期望退出码 / 输出里必须出现的片段（可选）。
     prep 存在时在运行时生成参数（用于需要临时目录的负对照）。"""
@@ -138,6 +176,42 @@ def cases() -> list[dict]:
          "args": ["--scan", os.path.join(EX, "wiring"),
                   "--dut", os.path.join(EX, "wiring", "dut_sample.v")],
          "rc": 1, "must": "共 2 个测试台"},
+
+        # ---- 补充：把 31 个参数里最容易被误用/误读的那些各钉一条 ----
+        {"name": "实现报告·--min-wns 10 让通过样例失败（阈值真的生效）", "script": impl,
+         "args": ["--dir", os.path.join(EX, "reports_pass"), "--min-wns", "10", "-q"],
+         "rc": 1, "must": "FAIL"},
+        {"name": "实现报告·放宽阈值后失败样例的通过数上升（10 项里 7 项过）", "script": impl,
+         "args": ["--dir", os.path.join(EX, "reports_fail"), "--max-drc-errors", "5",
+                  "--min-wns", "-1", "--max-failing", "99", "--max-util", "Slice LUTs=99",
+                  "--max-util", "Block RAM Tile=99", "-q"],
+         "rc": 1, "must": "7/10"},
+        {"name": "实现报告·单独指定 --timing/--util 也能判", "script": impl,
+         "args": ["--timing", os.path.join(EX, "reports_pass", "timing_pass.rpt"),
+                  "--util", os.path.join(EX, "reports_pass", "util_pass.rpt"), "-q"],
+         "rc": 0, "must": "PASS"},
+        {"name": "逐点比对·--col-ref/--col-got 选列（第 1 列两边相同 → 通过）", "script": vec,
+         "args": [os.path.join(EX, "vectors", "golden.csv"),
+                  os.path.join(EX, "vectors", "sim_bad.csv"),
+                  "--col-ref", "1", "--col-got", "1", "-q"],
+         "rc": 0, "must": "PASS"},
+        {"name": "逐点比对·--hist 分出误差倍数区间", "script": vec,
+         "args": [os.path.join(EX, "vectors", "golden.csv"),
+                  os.path.join(EX, "vectors", "sim_bad.csv"), "--tol", "5", "--hist", "-q"],
+         "rc": 0, "must": "0L"},
+        {"name": "清单·--write 生成清单后退出 0（负对照的反面）", "script": man,
+         "prep": _manifest_write, "rc": 0, "must": ""},
+        {"name": "清单·--strict 下清单外多一个文件必须失败", "script": man,
+         "prep": _manifest_extra, "rc": 1, "must": "清单外"},
+        {"name": "清单·--exclude 放过被排除的文件", "script": man,
+         "prep": _manifest_extra_excluded, "rc": 0, "must": "PASS"},
+        {"name": "接线体检·--strict 下好测试台仍然 0（不能为了严格就误报）", "script": wire,
+         "args": [os.path.join(EX, "wiring", "tb_good.v"),
+                  "--dut", os.path.join(EX, "wiring", "dut_sample.v"), "--strict"],
+         "rc": 0, "must": "PASS"},
+        {"name": "接线体检·不给 --dut 时仍查得出常量激励 E2（方向类不猜）", "script": wire,
+         "args": [os.path.join(EX, "wiring", "tb_dangling.v"), "--strict"],
+         "rc": 1, "must": "E2"},
     ]
 
 

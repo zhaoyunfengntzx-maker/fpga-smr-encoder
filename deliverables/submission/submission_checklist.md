@@ -7,15 +7,15 @@
 | # | 项目 | 状态 | 文件 / 说明 |
 |---|---|---|---|
 | 1 | 演示视频（MP4 / AVC(H264) / ≤3 min / ≤300 MB） | **脚本完成，待录制** | 脚本 `../video_script.md` / `.pdf`（3:00、29 镜、旁白逐句时间码、特效与拍摄表）；成片需真实转台 + 触摸屏 + 上位机同框，本机无采集设备、无实拍素材，无法代录 |
-| 2 | 技术文档（PDF / ≤50 MB / 按模板） | ✅ 完成 | 主用 `design_report.pdf`（21 页 / 1.19 MB，严格按《报告模版》）；备选 `technical_doc.pdf`（15 页 / 0.91 MB，同骨架精简版）。两者均为 v74 口径、零身份信息 |
-| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 已整理，待转 RAR | `source_code.zip`（**28.60 MB / 670 文件**，含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*`、`skill/`（7 篇长文 + 18 项可执行资产 + 通用 PYNQ 子包 + 夹具）、`data/*/README.md` 与 `SHA256SUMS.txt`；`MANIFEST.sha256` 用 `skill/scripts/check_manifest.py` 逐文件 670/670 校验通过）；本机未安装 WinRAR，已附 `make_rar.bat` |
+| 2 | 技术文档（PDF / ≤50 MB / 按模板） | ✅ 完成 | 主用 `design_report.pdf`（21 页 / 1.25 MB，严格按《报告模版》）；备选 `technical_doc.pdf`（15 页 / 0.91 MB，同骨架精简版）。两者均为 v74 口径、零身份信息 |
+| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 已整理，待转 RAR | `source_code.zip`（**30.06 MB / 683 文件**，含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*`、`skill/`（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包 + 夹具）、`data/*/README.md` 与 `SHA256SUMS.txt`；`MANIFEST.sha256` 用 `skill/scripts/check_manifest.py` 逐文件 682/682 校验通过）；本机未安装 WinRAR，已附 `make_rar.bat` |
 | 4 | 参赛作品承诺及使用授权书（PDF） | **待签署** | 从大赛系统下载后签字/盖章扫描；程序无法代签 |
 | 5 | GitHub 链接 | ✅ 已开源 | [https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)（MIT，`main` 默认分支，tag `v1.0.0`） |
 | 6 | 作品全貌图（JPG/PNG ≤10 MB ×1） | ✅ **已拍摄（2026-11-03 20:02）** | `photos/01_overview_full.jpg`（8064×6048 / 6.89 MB）：转台夹具 + 传感头 + 模拟板 + AD9238/FPGA + 7 寸屏 + 示波器 + 上位机同框 |
 | 7 | 开发板重要角度照片（JPG/PNG ≤10 MB，≤4 张） | 🟡 **已拍 3/4 类** | `photos/02_board_adc_frontend.jpg`（ADC 模拟前端）、`photos/03_board_front.jpg`（FPGA 板正面丝印）、`photos/04_board_screen.jpg`（屏与触摸，P1 总览实时读数）；**磁环气隙特写仍缺**，见 `photos/README.md` |
 | 8 | 作品简介 | ✅ 完成 | `intro_and_keywords.md`（v74 口径，可直接粘贴） |
 | 9 | 是否参加其他赛事 / 往届获奖 / 是否教师科研或实验室作品 | **待确认** | 需你按实际情况勾选，不能代填；建议口径与逐项可复制文本见 `form_answers.md` §4/§5 |
-| 10 | 三个创新关键词 | ✅ 完成 | 闭式自校准 / 多协议同源 / 高精度细分 |
+| 10 | 三个创新关键词 | ✅ 完成 | 闭式自校准 / 多协议高速输出适配 / FPGA 正余弦高精度细分 |
 
 
 > 报名系统每一项的可复制文本（作品名称、简介、关键词、两项声明、附件对照）见 `form_answers.md`。
@@ -42,7 +42,7 @@ rem 双击本目录的 make_rar.bat 即可（自动查找 WinRAR 并生成 sourc
 
 - `main` 是**单提交的公开历史**（`12c59ab`，tag `v1.0.0`），刻意不带旧提交，避免把厂商 PDF 与 166 MB 中间产物带进公开仓库；完整旧历史保留在本地 `history` 分支（tag `archive-pre-release`），未上传。
 - 克隆：`git clone https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder.git`
-- 仓库含 `LICENSE`（MIT）、`README.md`、`skill/`、`docs/ai-collaboration-log.md`、`deliverables/` 文档与 291 个证据文件（142 MB）。
+- 仓库含 `LICENSE`（MIT）、`README.md`、`skill/`、`docs/ai-collaboration-log.md`、`deliverables/` 文档与 294 个证据文件（149,157,322 B，299 条 SHA-256 实测 299/299 通过）。
 - 复现入口：`README.md` §快速开始、`docs/REPRODUCE.md`、`docs/COMPLIANCE.md`。
 
 > 推送提示：作者所在网络对大文件 HTTPS 上行返回 403（约 1–2 MB 以上即失败），最终改用 SSH-over-443 推送：
@@ -69,6 +69,6 @@ rem 双击本目录的 make_rar.bat 即可（自动查找 WinRAR 并生成 sourc
 
 | 指南要求 | 本仓库对应 | 状态 |
 |---|---|---|
-| 工程包：源码、仿真/验证结果、综合与实现报告、上板工程与实测对比、可复现构建脚本 | `source_code.zip`（rtl/sim/constr/tools/host/_boardtest/docs/skill/deliverables，`MANIFEST.sha256` 575 行）+ 根 `README.md` 目录对照 + 附录 C | ✅ |
-| 技能包：`skill/`，每项写适用范围 / 使用方法 / 失效条件 | `skill/README.md`（9 节索引）+ 7 篇方法长文（六节模板）+ 18 项可执行资产：5 个校验脚本 / 7 个模板 / 5 篇提示词工作流 / 18 条踩坑清单，全部带夹具与失败来源 | ✅ |
-| 设计报告：选题背景与创新点、原理与框图、软硬件划分与接口、优化前后对比、大模型协作、技能包提炼、复现说明 | `design_report.pdf`（模板版 21 页 / 1.19 MB）含选题背景、3.3 优化对比、附录 A/B/C（附录 B 含可执行资产与自检证据）；详细版 `design_report_full.pdf` 59 页 | ✅ |
+| 工程包：源码、仿真/验证结果、综合与实现报告、上板工程与实测对比、可复现构建脚本 | `source_code.zip`（rtl/sim/constr/tools/host/_boardtest/docs/skill/deliverables，`MANIFEST.sha256` 682 行）+ 根 `README.md` 目录对照 + 附录 C | ✅ |
+| 技能包：`skill/`，每项写适用范围 / 使用方法 / 失效条件 | `skill/README.md`（9 节索引）+ 7 篇方法长文（六节模板）+ 19 项可执行资产：6 个校验脚本 / 7 个模板 / 5 篇提示词工作流 / 18 条踩坑清单（索引由脚本生成），全部带夹具与失败来源 | ✅ |
+| 设计报告：选题背景与创新点、原理与框图、软硬件划分与接口、优化前后对比、大模型协作、技能包提炼、复现说明 | `design_report.pdf`（模板版 21 页 / 1.25 MB）含选题背景、3.3 优化对比、附录 A/B/C（附录 B 含可执行资产与自检证据）；详细版 `design_report_full.pdf` 59 页 | ✅ |

@@ -24,6 +24,14 @@
 
 【退出码】0 = 全部点在容差内；1 = 有点超差；2 = 文件读不了 / 没有数据 / 列号越界
 
+【规模】单遍流式：内存只与 --top 和误差分箱数有关，与点数无关。
+        实测 2^20 点全周扫描（1,048,576 行 × 2 文件，16 bit 角度码，注入 7 个 +5 错点）：
+          新版 2.9 s / 峰值工作集 15.3 MB（含解释器本身约 14 MB）；
+          同一组文件、同一判据，旧版"全读进 list 再排序"是 5.0 s / 550.1 MB。
+          加 --hist --top 16 --json 后 3.2 s / 15.3 MB —— 内存不随点数涨。
+        解析本身不是瓶颈（1M 行 re.split+float 约 1.1 s，加正则校验会翻到 1.9 s，
+        所以这里用 float() 抛异常来判断表头，不用正则）。
+
 【为什么要有这个脚本】
   "我看了一眼波形，差不多" 是本工程最常见的误判来源（见 skill/testbench-blindspot.md）。
   逐点比对时人眼只能看几十个点，而一个 12 bit 相位的象限折叠错误只在
@@ -34,12 +42,15 @@
 【失效条件】
   1) 两边有乱序/丢点：必须先做"第 k 个输出 ↔ 第 k 个输入"的对齐，否则误差没有意义；
   2) 参考值本身带系统偏置：逐点比对会一致地通过，偏置看不出来——要另加均值/无偏置判据；
-  3) 浮点且允许相对误差：本脚本按绝对差算，--tol 需自己换算成同一量纲。
+  3) 浮点且允许相对误差：本脚本按绝对差算，--tol 需自己换算成同一量纲；
+  4) 流式统计只保留"每个误差分箱的计数"与"最坏 N 点"：
+     要看全部分布请用 --hist，要逐点清单请自己导出——脚本不再把全部点存在内存里。
 """
 
 from __future__ import annotations
 
 import argparse
+import heapq
 import json
 import math
 import re
@@ -58,22 +69,90 @@ def _utf8_console() -> None:
             pass
 
 
-def read_rows(path: str) -> list[list[float]]:
-    rows: list[list[float]] = []
+def iter_rows(path: str):
+    """逐行产出解析好的数值行；表头/注释/空行直接跳过。
+
+    生成器而不是 list：100 万行的时候差别是"能不能跑"。
+    解析用 float() + 异常判断，而不是先跑正则：正则每条边都要匹配 2 个字段，
+    100 万行时比重排这些小堆操作还贵（实测见文件头的【规模】）。
+    """
     with open(path, "r", encoding="utf-8-sig", errors="replace") as f:
         for line in f:
             s = line.strip()
             if not s or s.startswith("#"):
                 continue
             parts = [p for p in re.split(r"[,\s]+", s) if p]
-            if not parts or not all(NUM.match(p) for p in parts):
+            if not parts:
+                continue
+            try:
+                yield [float(p) for p in parts]
+            except ValueError:
                 continue  # 表头 / 注释
-            rows.append([float(p) for p in parts])
-    return rows
 
 
 def pick(row: list[float], col: int) -> float:
     return row[col] if col >= 0 else row[len(row) + col]
+
+
+class Stats:
+    """单遍流式统计。
+
+    旧版把所有点存成 list 再排序求最坏值：2^20 点（本工程黄金模型的扫描规模）
+    光 list 就要几十 MB，还要再排一次序。这里改成"边读边算"：
+    计数/平方和/最大值是 O(1)，最坏 N 点用大小为 N 的小顶堆，分箱是字典。
+    """
+
+    __slots__ = ("tol", "top", "hist", "n", "bad", "sum_sq", "max_err",
+                 "bins", "worst_bad", "worst_all")
+
+    def __init__(self, tol: float, top: int, hist: bool) -> None:
+        self.tol = tol
+        self.top = max(1, top)
+        self.hist = hist
+        self.n = 0
+        self.bad = 0
+        self.sum_sq = 0.0
+        self.max_err = 0.0
+        self.bins: dict[str, int] = {}
+        self.worst_bad: list = []
+        self.worst_all: list = []
+
+    def feed(self, pid, gv: float, sv: float) -> None:
+        e = sv - gv
+        ae = abs(e)
+        self.n += 1
+        self.sum_sq += e * e
+        if ae > self.max_err:
+            self.max_err = ae
+        item = None
+        # 只有"比堆里最差的那个还差"才入堆：100 万点里通常只有几十点要进堆，
+        # 每点都 heappush 会让流式版反而比"全读进 list 再排序"慢一倍（实测过）。
+        if self.tol + 1e-12 < ae:
+            self.bad += 1
+            if len(self.worst_bad) < self.top or ae > self.worst_bad[0][0]:
+                item = (ae, self.n, pid, gv, sv, e)
+                heapq.heappush(self.worst_bad, item)
+                if len(self.worst_bad) > self.top:
+                    heapq.heappop(self.worst_bad)
+        if len(self.worst_all) < self.top or ae > self.worst_all[0][0]:
+            if item is None:
+                item = (ae, self.n, pid, gv, sv, e)
+            heapq.heappush(self.worst_all, item)
+            if len(self.worst_all) > self.top:
+                heapq.heappop(self.worst_all)
+        if self.hist:
+            unit = self.tol if self.tol > 0 else 1.0
+            k = int(ae / unit)
+            label = f"{k}L" if k < 4 else ">=4L"
+            self.bins[label] = self.bins.get(label, 0) + 1
+
+    def ordered(self, only_bad: bool):
+        """按误差从大到小返回 (点号, 参考, 实测, 误差)。"""
+        src = self.worst_bad if only_bad else self.worst_all
+        return [t[2:] for t in sorted(src, key=lambda t: (-t[0], t[1]))]
+
+    def rms(self) -> float:
+        return math.sqrt(self.sum_sq / self.n) if self.n else 0.0
 
 
 def _w(s: str) -> int:
@@ -95,25 +174,28 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--col-got", type=int, default=-1, help="实测文件取第几列，1 基；默认最后一列")
     ap.add_argument("--tol", type=float, default=0.0,
                     help="允许的最大绝对误差（默认 0，即要求逐位一致）")
-    ap.add_argument("--top", type=int, default=5, help="打印最坏的 N 个点（默认 5）")
+    ap.add_argument("--top", type=int, default=5,
+                    help="打印最坏的 N 个点（默认 5；内存占用与 N 成正比，与点数无关）")
     ap.add_argument("--hist", action="store_true", help="打印误差分布直方图")
     ap.add_argument("--json", help="把结果写成 JSON")
     ap.add_argument("-q", "--quiet", action="store_true")
     args = ap.parse_args(argv)
 
     try:
-        g_rows = read_rows(args.golden)
-        s_rows = read_rows(args.got)
+        it_g = iter_rows(args.golden)
+        it_s = iter_rows(args.got)
+        g0 = next(it_g, None)
+        s0 = next(it_s, None)
     except OSError as e:
         print(f"[ERROR] 读文件失败: {e}", file=sys.stderr)
         return 2
 
-    for name, rows, col in ((args.golden, g_rows, args.col_ref),
-                            (args.got, s_rows, args.col_got)):
-        if not rows:
+    for name, row, col in ((args.golden, g0, args.col_ref),
+                           (args.got, s0, args.col_got)):
+        if row is None:
             print(f"[ERROR] {name} 里没有任何数据行", file=sys.stderr)
             return 2
-        width = len(rows[0])
+        width = len(row)
         if col != -1 and not (1 <= col <= width):
             print(f"[ERROR] {name} 只有 {width} 列，--col 指定了 {col}", file=sys.stderr)
             return 2
@@ -124,57 +206,55 @@ def main(argv: list[str] | None = None) -> int:
     ci_ref = args.col_ref - 1 if args.col_ref > 0 else -1
     ci_got = args.col_got - 1 if args.col_got > 0 else -1
 
-    n = min(len(g_rows), len(s_rows))
-    if len(g_rows) != len(s_rows):
-        print(f"[WARN] 行数不等：参考 {len(g_rows)} 行，实测 {len(s_rows)} 行，只比前 {n} 行",
-              file=sys.stderr)
-
-    errs: list[tuple[float, float, float, float]] = []  # (点号, 参考, 实测, 误差)
-    for k in range(n):
-        gr, sr = g_rows[k], s_rows[k]
-        gv, sv = pick(gr, ci_ref), pick(sr, ci_got)
+    acc = Stats(tol=args.tol, top=args.top, hist=args.hist)
+    g, s, k = g0, s0, 0
+    while g is not None and s is not None:
+        gv, sv = pick(g, ci_ref), pick(s, ci_got)
         # 行内第 1 列若看起来像点号（两边都有且相等），就把它当点号
         pid: float = k
-        if len(gr) >= 2 and len(sr) >= 2 and gr[0] == sr[0]:
-            pid = int(gr[0]) if float(gr[0]).is_integer() else gr[0]
-        errs.append((pid, gv, sv, sv - gv))
+        if len(g) >= 2 and len(s) >= 2 and g[0] == s[0]:
+            pid = int(g[0]) if float(g[0]).is_integer() else g[0]
+        acc.feed(pid, gv, sv)
+        k += 1
+        g = next(it_g, None)
+        s = next(it_s, None)
 
-    abs_err = [abs(e[3]) for e in errs]
-    max_err = max(abs_err)
-    rms = math.sqrt(sum(e * e for e in abs_err) / len(abs_err))
-    bad = [e for e in errs if abs(e[3]) > args.tol + 1e-12]
-    # 有超差点就只展示超差点；全部通过时才展示"最坏的 N 个"供参考
-    worst = sorted(bad, key=lambda t: -abs(t[3]))[: max(1, args.top)] if bad \
-        else sorted(errs, key=lambda t: -abs(t[3]))[: max(1, args.top)]
+    # 两边行数不等：把剩下的数清楚报出来，绝不静默截断
+    extra_g = 0 if g is None else 1 + sum(1 for _ in it_g)
+    extra_s = 0 if s is None else 1 + sum(1 for _ in it_s)
+    if extra_g or extra_s:
+        print(f"[WARN] 行数不等：参考 {acc.n + extra_g} 行，实测 {acc.n + extra_s} 行，"
+              f"只比前 {acc.n} 行", file=sys.stderr)
 
-    passed = not bad
+    n = acc.n
+    max_err = acc.max_err
+    rms = acc.rms()
+    passed = acc.bad == 0
     status = "PASS" if passed else "FAIL"
+    # 有超差点就只展示超差点；全部通过时才展示"最坏的 N 个"供参考
+    worst = acc.ordered(only_bad=not passed)
 
     if not args.quiet:
         print(f"参考: {args.golden}")
         print(f"实测: {args.got}")
         print(f"点数: {n}   容差: {args.tol:g}   max|err| = {max_err:g}   RMS = {rms:.6g}")
-        if bad:
-            print(f"超差点数: {len(bad)} / {n}  ({100.0 * len(bad) / n:.2f}%)")
+        if not passed:
+            print(f"超差点数: {acc.bad} / {n}  ({100.0 * acc.bad / n:.2f}%)")
             print("\n最坏的点：")
             print(f"{rpad('点号', 10)}  {rpad('参考', 12)}  {rpad('实测', 12)}  {rpad('误差', 12)}")
             for pid, gv, sv, e in worst:
                 print(f"{rpad(str(pid), 10)}  {rpad(f'{gv:g}', 12)}  "
                       f"{rpad(f'{sv:g}', 12)}  {rpad(f'{e:g}', 12)}")
-        if args.hist:
-            print("\n误差分布（单位：容差倍数；容差为 0 时按 1 LSB 分箱）：")
-            unit = args.tol if args.tol > 0 else 1.0
-            bins: dict[str, int] = {}
-            for e in abs_err:
-                k = int(e / unit)
-                label = f"{k}L" if k < 4 else ">=4L"
-                bins[label] = bins.get(label, 0) + 1
-            for label in ("0L", "1L", "2L", "3L", ">=4L"):
-                if label in bins:
-                    bar = "#" * min(60, bins[label] * 60 // max(1, n))
-                    print(f"  {label:>4} : {bins[label]:>7}  {bar}")
 
-    if args.quiet and bad:
+    if args.hist:
+        print("\n误差分布（单位：容差倍数；容差为 0 时按 1 LSB 分箱）：")
+        for label in ("0L", "1L", "2L", "3L", ">=4L"):
+            if label in acc.bins:
+                cnt = acc.bins[label]
+                bar = "#" * min(60, cnt * 60 // max(1, n))
+                print(f"  {label:>4} : {cnt:>7}  {bar}")
+
+    if args.quiet and not passed:
         for pid, gv, sv, e in worst:
             print(f"[FAIL] 点 {pid:g}: 参考 {gv:g} 实测 {sv:g} 误差 {e:g}", file=sys.stderr)
 
@@ -185,7 +265,7 @@ def main(argv: list[str] | None = None) -> int:
             "tolerance": args.tol,
             "max_abs_err": max_err,
             "rms_err": rms,
-            "bad_count": len(bad),
+            "bad_count": acc.bad,
             "worst": [
                 {"index": pid, "golden": gv, "got": sv, "err": e}
                 for pid, gv, sv, e in worst
@@ -196,8 +276,8 @@ def main(argv: list[str] | None = None) -> int:
         if not args.quiet:
             print(f"JSON: {args.json}")
 
-    if not args.quiet:
-        print(f"\n{status}: {n - len(bad)}/{n} 点在容差内")
+    # -q 也要留一行判决：只剩退出码时，日志里看不出"红在哪、差多少"（P-16）。
+    print(f"\n{status}: {n - acc.bad}/{n} 点在容差内（max|err|={max_err:g}，RMS={rms:g}）")
     return 0 if passed else 1
 
 
