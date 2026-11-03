@@ -24,7 +24,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：激励寄存器改名后实例化没跟着改；或 `.din(din)` 里的 din 只声明未赋值。
 **修法**：补齐端口连接；把常量驱动改成真实激励；测试台加"输入必须变化"的断言。
 **验证**：注入 `.en(1'b1)` 后测试台必须 FAIL（本工程 `skill/examples/wiring/` 就是这个夹具）。
-**src**: 记录 1、`skill/testbench-blindspot.md` §3.1
+**src**: `docs/ai-collaboration-log.md` 记录 1（测试台空转）、`skill/testbench-blindspot.md` §3.1
 
 ### P-02 有符号右移写了 `>>`
 **触发**：负数段误差突然变大、角度在 0/360° 附近抖动。
@@ -33,7 +33,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：Verilog 的 `>>` 对无符号是补 0；综合后对有符号也常按逻辑右移处理。
 **修法**：显式 `>>>`，或先做符号扩展再移位；黄金模型里用 Python `>>`（同为算术右移）。
 **验证**：负半周逐点比对 `--tol 0`；RMS 回到 0.9375 LSB 量级。
-**src**: 记录 2、`skill/golden-model-bit-exact.md` §2
+**src**: `deliverables/design_report.md` §3.2 表第 2 行（`>>>` 对负数向下取整，RMS 0.597 → 0.3229 LSB）、`skill/golden-model-bit-exact.md` §2
 
 ### P-03 半 LSB 舍入写成"直接截断"
 **触发**：象限边界（45°/135°/225°/315°）附近整段差 1 码。
@@ -42,7 +42,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：RTL 用 `(x + (1<<(n-1))) >>> n`，模型用 `x >> n`，差半 LSB。
 **修法**：两边统一为 half-up；负数按向 -inf 方向舍入（与加法后截断一致）。
 **验证**：全周扫描 RMS 与最大误差同时入报告；边界点单独列表。
-**src**: 记录 7
+**src**: `deliverables/design_report.md` §3.2（半 LSB 四舍五入；1 LSB 是理论下限）、`skill/fixedpoint-width-safety.md` §3
 
 ### P-04 跨半量程（32768 附近）整段错
 **触发**：角度在一个电周期内跨过半量程时，输出跳变或符号翻转。
@@ -52,7 +52,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：偏移二进制/补码混用；差值运算没做符号扩展，负数被当成大正数。
 **修法**：差值统一 `$signed(a - b)` 后再判断；状态机对跨零点单独处理。
 **验证**：专门一条"跨半量程"用例必须进回归集（不能只靠随机）。
-**src**: 记录 12、`skill/fixedpoint-width-safety.md` §3
+**src**: `deliverables/design_report.md` §11.14.1（v70 `step_s` 跨 32768，`BADSTEP step=-65403`）、`skill/fixedpoint-width-safety.md` §3
 
 ### P-05 UVW 扇区截断，50% 角度点错但测试台全绿
 **触发**：用 UVW 做粗定位；角度只在一半的区间里对。
@@ -61,7 +61,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：扇区号位宽算少一位，或扇区映射表边界写错（把 6 扇区当 3 扇区）。
 **修法**：扇区数写成参数；映射表用 `case` 全覆盖 + `default` 报错。
 **验证**：扇区遍历用例 + 每个扇区边界 ±1 码。
-**src**: 记录 15、`skill/testbench-blindspot.md` §4
+**src**: `deliverables/design_report.md` §11.14.2（UVW 反向只剩 3 个扇区）、`skill/testbench-blindspot.md` §4
 
 ### P-06 调试信号恒为 1，掩盖了真实路径
 **触发**：上板/仿真时某个 `dbg_*` 信号一直为高，让你误判状态。
@@ -70,7 +70,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：调试信号接错层级（接了常量或未驱动的寄存器）。
 **修法**：调试输出必须是真实寄存器的组合，加 `ILA` 采样确认；不用的调试口在发布位流里删掉。
 **验证**：该信号的翻转次数应与理论值一致（例如 1 kHz 采样 → 每秒 1000 次）。
-**src**: 记录 21、`skill/testbench-blindspot.md` §3.2
+**src**: `skill/testbench-blindspot.md` §3.2（`dbg_adc_valid` 恒 1 的实例）
 
 ---
 
@@ -84,7 +84,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：把 `-max` 写成负数或写成 ± 对称区间，等于宣布数据在时钟沿之后才有效。
 **修法**：`-max = tCO_max + 走线_max`，`-min = tCO_min + 走线_min`；DDR 另写 `-clock_fall`。
 **验证**：负余量的路径必须能解释成"时钟沿之后到达"，否则模型错了。
-**src**: 记录 6、`skill/adc-source-sync-constraints.md`
+**src**: `docs/ai-collaboration-log.md` 记录 6（负余量是诚实建模）、`skill/adc-source-sync-constraints.md`
 
 ### P-08 约束的周期写小了，报告变好看但与硬件脱钩
 **触发**："随手写 10 ns"，而板上时钟是 20 ns。
@@ -93,7 +93,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：为了"先让它过"改约束，而不是改设计。
 **修法**：约束值必须来自器件手册/板卡原理图，并在 XDC 注释里写出处。
 **验证**：时钟周期表进报告 §5；任何与硬件不符的约束视为造假。
-**src**: 记录 6、`skill/adc-source-sync-constraints.md` §2
+**src**: `deliverables/design_report.md` §4.2（约束周期必须追到晶振/手册）、`skill/adc-source-sync-constraints.md` §2
 
 ### P-09 跨时钟域被 `set_clock_groups` 排除后"时序全绿"
 **触发**：加了 `-asynchronous` 之后 CDC 问题从报告里消失。
@@ -102,7 +102,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：约束只声明"不分析"，不保证功能；CMOS 上就是会亚稳态。
 **修法**：单 bit 两级同步器，多 bit 握手或格雷码；复位用异步置位同步释放。
 **验证**：CDC 报告 0 Critical；上板长时间跑（≥2 h）无错。
-**src**: 记录 33、`skill/adc-source-sync-constraints.md` §4
+**src**: `deliverables/design_report.md` §10.4（唯一跨域数据是抓包 FIFO）、`skill/adc-source-sync-constraints.md` §4
 
 ### P-10 报告/位流不是同一次构建（"数字对不上"）
 **触发**：报告里的资源与截图不一致；位流改了但报告没变。
@@ -111,7 +111,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：增量编译/多个 `_impl_vNN` 目录混用；手抄数字。
 **修法**：一次构建一个目录，报告与位流同目录同时间戳；报告数字一律由脚本从报告解析。
 **验证**：`check_impl_reports.py --dir <该次构建目录>` 的 JSON 里带 `file:line` 证据。
-**src**: 记录 71、`skill/vivado-report-autocollect.md`
+**src**: `docs/ai-collaboration-log.md` 记录 85（屏上常量停在 V47、位流已是 v54）、`skill/vivado-report-autocollect.md`
 
 ---
 
@@ -124,7 +124,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：Windows PowerShell 5 的默认输出编码是 GBK，而仓库是 UTF-8。
 **修法**：`-Encoding utf8`（PS7 用 `utf8NoBOM`）；或改用 Python 显式 `encoding="utf-8", newline="\n"`。
 **验证**：`git diff` 只显示改动行；`python tools/check_encoding.py`（有则跑）。
-**src**: 记录 64
+**src**: `docs/ai-collaboration-log.md` 记录 64（PowerShell 把中文写成 GBK）
 
 ### P-12 下载/烧写卡死，其实是被占用的 hw_server
 **触发**：`program_hw_devices` 长时间无输出；或报 "Labtools" 端口占用。
@@ -133,7 +133,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：上一次会话没退干净；USB-JTAG 被别的进程持有。
 **修法**：`taskkill /F /IM hw_server.exe`，重插 USB，必要时重启 Vivado。
 **验证**：`open_hw_manager` 后 `get_hw_targets` 能列出目标。
-**src**: 记录 42
+**src**: `docs/ai-collaboration-log.md` 记录 42（另一个 hw_server 挡住烧录）
 
 ### P-13 子代理"顺手改代码"或给出无法复核的结论
 **触发**：让子代理做审计/检查。
@@ -142,7 +142,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：任务描述没写"只读"；或子代理对结果做了合理但错误的推断。
 **修法**：任务里写死"禁止修改、必须给行号、不确定放存疑表"；结论回一手资料复核。
 **验证**：每条结论都能在原文里指到；误报数记下来（本工程 26 条里 3 条误报）。
-**src**: 记录 9/71/73、`skill/prompts/P4_subagent_audit.md`
+**src**: `docs/ai-collaboration-log.md` 记录 9（23 文件 / 6 子代理 / 26 缺陷）、记录 73（专门证伪的验证员）、`skill/prompts/P4_subagent_audit.md`
 
 ### P-14 文档承诺了没做的能力（"技能包 7 项"其实没有脚本）
 **触发**：写文档时把"计划做的"写成"已完成的"。
@@ -152,7 +152,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：文档由模型写、由人相信，缺少"文档→文件"的可执行对账。
 **修法**：每个可交付项配一个可运行命令；文档里写明该命令的期望输出。
 **验证**：命令在干净环境跑通，输出贴回文档。
-**src**: 本次技能包补充的直接动因
+**src**: 本次技能包补充的直接动因——补写之前 `docs/COMPLIANCE.md` 写“7 个技能文件”，而目录里只有 7 篇 .md，没有任何可执行资产
 
 ---
 
@@ -174,7 +174,7 @@ python skill\scripts\tb_wiring.py sim\tb_xxx.v --dut rtl\xxx.v --strict
 **根因**：用"看起来在检查"替代"逐点比对期望值"。
 **修法**：黄金模型逐点比对；恒真断言删掉；负对照注入必须能触发。
 **验证**：注入清单里每条都能让测试台变红。
-**src**: 记录 15、`skill/testbench-blindspot.md` §2
+**src**: `docs/ai-collaboration-log.md` 记录 47（三条“看起来 PASS 其实没测到”的断言）、记录 49（一条永远为真的断言）、`skill/testbench-blindspot.md` §2
 
 ### P-17 报告数字手抄，正文与图表不一致
 **触发**：报告由多个来源拼装。

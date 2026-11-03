@@ -157,13 +157,13 @@ python skill/scripts/check_impl_reports.py --dir skill/examples/reports_pass --j
 
 | 项 | 来源 |
 |---|---|
-| `check_impl_reports.py` | 报告数字靠手抄、正文与图表不一致（记录 71）；"时序没收敛但 CI 全绿" |
-| `check_vectors.py` | 随机抽 100 点看不见半 LSB 边界差（记录 7）；"极差很小"的骗人断言（记录 15） |
+| `check_impl_reports.py` | 报告数字靠手抄、正文与图表不一致（`docs/ai-collaboration-log.md` 记录 77：屏上数字的保质期）；"时序没收敛但 CI 全绿" |
+| `check_vectors.py` | 随机抽 100 点看不见半 LSB 边界差（`deliverables/design_report.md` §3.2）；"极差很小"的骗人断言（记录 47/49） |
 | `check_manifest.py` | 交付包改了文件没重打包，评审看到的是旧位流 |
 | `tb_wiring.py` | 空转测试台，20 分钟仿真 + 假 PASSED（记录 1） |
-| `skill_selftest.py` | 只验证"该过的过"会漏掉"该失败的没失败"（记录 15 的同一逻辑） |
-| `tb_skeleton.v` | 没 `$finish` 挂死、没超时保护静默 PASSED（记录 1/15） |
-| `fixedpoint_model.py` | Python `>>` 与 Verilog `>>>` 语义错位（记录 2）；半 LSB 舍入（记录 7） |
+| `skill_selftest.py` | 只验证"该过的过"会漏掉"该失败的没失败"（记录 47/49 的同一逻辑） |
+| `tb_skeleton.v` | 没 `$finish` 挂死、没超时保护静默 PASSED（记录 1；记录 47 的“看起来 PASS”） |
+| `fixedpoint_model.py` | Python `>>` 与 Verilog `>>>` 语义错位、半 LSB 舍入（`deliverables/design_report.md` §3.2 表，RMS 0.597 → 0.3229 LSB） |
 | `xdc_source_sync.xdc` | `set_input_delay` 写反导致负余量，被误当工具问题（记录 6） |
 | `run_vivado.tcl` | 手写文件清单漏文件；报告改名导致后处理脚本找不到 |
 | 提示词 P1–P5 | 86 条纠错记录（`docs/ai-collaboration-log.md`）里的通用部分 |
