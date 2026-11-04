@@ -191,7 +191,7 @@ add_text(0.8, 11.2, 9.9, 1.9, [
     "1  Analog front end \u2014 0.5 Vpp differential to 8 Vpp, 65 MSPS, offset binary.",
     "2  Deterministic latency \u2014 41.5 cycles, fixed by construction.",
     "3  Protocol integration \u2014 ABZ 1\u20131024\u00d7, UVW + virtual Z, SPI, 1 GbE UDP.",
-    "4  Verification \u2014 fixed-point model, 54 benches, sign-off, real turntable.",
+    "4  Verification \u2014 fixed-point model, 57 benches, sign-off, real turntable.",
 ], size=8.8)
 
 add_text(0.8, 13.35, 9.9, 0.4, [("WHY ONE ARTIX-7", True)], size=9.6, color=NAVY)
@@ -203,9 +203,9 @@ add_text(0.8, 13.85, 9.9, 1.3, [
 add_text(0.8, 15.3, 9.9, 0.4, [("DESIGN FLOW", True)], size=9.6, color=NAVY)
 rule(0.8, 15.18, 9.9)
 add_text(0.8, 15.8, 9.9, 1.5, [
-    ("Model \u2192 RTL \u2192 54 benches \u2192 sign-off \u2192 board", True),
+    ("Model \u2192 RTL \u2192 57 benches \u2192 sign-off \u2192 board", True),
     "Every number traces to a CSV, log or bitstream hash.",
-    "MIT-licensed repository \u00b7 263 evidence files \u00b7 283 SHA-256 lines.",
+    "MIT-licensed repository \u00b7 320 evidence files \u00b7 323 SHA-256 lines.",
 ], size=8.6)
 
 # ---------------- middle column ----------------
@@ -229,37 +229,37 @@ add_text(11.2, 15.45, 9.9, 3.0, [
     "Ten seconds of silence on the real turntable while 33/33 benches passed.",
     "Build-ID bisect: probe 0x0013 reduced the failure to one step (\u221265,403 instead of +133); tb_acc2 reproduces 0 \u2192 6 \u2192 12 counts over 3,000 \u00d7 +133 steps.",
     ("Five on-board criteria: ", True),
-    "Z = 12.00 Hz, 2,048 distinct counts, 719\u2013731 rpm, six UVW states, 60 s stream.",
+    "Z = 7.62\u20137.65 Hz, 2,048 distinct counts, 457\u2013459 rpm, six UVW states, 60 s stream.",
 ], size=8.2)
 
 # ---------------- right column ----------------
-add_text(24.95, 9.32, 8.2, 0.4, [("RESULT \u2014 V74 PRODUCTION BITSTREAM", True)], size=9.8, color=NAVY)
+add_text(24.95, 9.32, 8.2, 0.4, [("RESULT \u2014 V90 PRODUCTION BITSTREAM", True)], size=9.8, color=NAVY)
 rule(24.95, 9.24, 8.2)
 
 metrics = [("2,048", "pulses per rev"), ("16", "bit angle"),
-           ("719\u2013731", "rpm"), ("598,115", "frames in 60 s")]
+           ("457\u2013459", "rpm"), ("597,886", "frames in 60 s")]
 x = 24.7
 for num, lab in metrics:
     add_text(x, 9.78, 2.05, 0.75, [(num, True)], size=15.5, color=NAVY, spacing=0.9)
     add_text(x, 10.52, 2.05, 0.4, [lab], size=6.6, color=GREY, spacing=0.9)
     x += 2.12
 add_text(24.7, 11.05, 8.6, 0.75, [
-    "25.27 kHz electrical \u00b7 Z 12.00 Hz \u00b7 9,968 fps \u00b7 radius drift < 0.02%",
+    "15.63 kHz electrical \u00b7 Z 7.62\u20137.65 Hz \u00b7 9,964.8 fps \u00b7 radius drift < 0.02%",
 ], size=8.6)
 
 add_text(24.7, 12.15, 8.5, 0.4, [("IMPLEMENTATION", True)], size=9.2, color=NAVY)
 rule(24.7, 12.03, 8.5)
 add_text(24.7, 12.6, 8.5, 2.2, [
-    "10,926 LUT (52.53%) \u00b7 8,697 FF \u00b7 32/50 BRAM \u00b7 17 DSP",
-    "WNS +0.409 ns \u00b7 WHS +0.025 ns \u00b7 0 failing endpoints (24,625)",
-    "DRC 0 errors \u00b7 single clock, no MMCM \u00b7 1,512,664 B (build 0x0018)",
+    "10,978 LUT (52.78%) \u00b7 8,724 FF \u00b7 32/50 BRAM \u00b7 17 DSP",
+    "WNS +0.199 ns \u00b7 WHS +0.017 ns \u00b7 0 failing endpoints (24,691)",
+    "DRC 0 errors \u00b7 single clock, no MMCM \u00b7 1,504,220 B (build 0x0019)",
 ], size=8.4)
 
 add_text(24.7, 14.85, 8.5, 0.4, [("VERIFICATION", True)], size=9.2, color=NAVY)
 rule(24.7, 14.73, 8.5)
 add_text(24.7, 15.3, 8.5, 2.0, [
     "263 evidence files \u00b7 283 SHA-256 lines",
-    "54 benches \u00b7 final_verify ALL CHECKS PASSED",
+    "57 benches \u00b7 final_verify ALL CHECKS PASSED",
     "Technical report 20 pages \u00b7 full dossier 59 pages",
 ], size=8.4)
 

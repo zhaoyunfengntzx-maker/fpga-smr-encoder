@@ -154,7 +154,7 @@ intro = [
     "Optical encoders lose accuracy in dust, oil and vibration. Magnetic sensing is rugged, "
     "but the raw sin/cos bridge is never ideal: offset, gain mismatch, quadrature error and "
     "residual shift all fold into the angle.",
-    "Imported interpolation ASICs fix both the algorithm and the interface, yet multi-turn "
+    "Commercial interpolation ASICs fix both the algorithm and the interface, yet multi-turn "
     "Multi-turn counting needs a second chip and the calibration recipe stays opaque. This work puts the "
     "whole chain — acquisition, calibration, atan2, tracking and five output protocols — into "
     "one Artix-7.",
@@ -165,7 +165,7 @@ intro = [
     "•  Analog front end: 0.5 Vpp differential to 8 Vpp, 65 MSPS, offset binary.",
     "•  Real-time: deterministic 41.5-cycle pipeline, no MMCM, no CDC.",
     "•  Protocols: ABZ 1–1024×, UVW + virtual Z, SPI slave, 1 GbE UDP.",
-    "•  Validation: fixed-point model, 54 benches, build sign-off, real turntable.",
+    "•  Validation: fixed-point model, 57 benches, build sign-off, real turntable.",
 ]
 text(1.05, 4.85, 8.0, 7.9, intro, size=8.7, space_after=4.0, spacing=0.97)
 
@@ -195,16 +195,16 @@ text(1.05, 14.9, 8.0, 5.3, [
     "wide-base branch makes the 0↔5 sector identical forward and reverse.",
 ], size=8.3, space_after=4.0, spacing=0.96)
 
-section(9.6, 13.95, 11.2, "RESULT — V74 PRODUCTION BITSTREAM, REAL TURNTABLE")
+section(9.6, 13.95, 11.2, "RESULT — V90 PRODUCTION BITSTREAM, REAL TURNTABLE")
 metric(9.82, 14.85, 2.6, 1.85, "2,048", ["pulses / rev", "2,048 distinct counts"])
 metric(12.54, 14.85, 2.6, 1.85, "16 bit", ["angle resolution", "0.0055°/LSB"])
-metric(15.26, 14.85, 2.6, 1.85, "719–731", ["rpm, real turntable", "Z = 12.00 Hz"])
-metric(17.98, 14.85, 2.6, 1.85, "598,115", ["frames / 60 s", "9,968 fps"])
+metric(15.26, 14.85, 2.6, 1.85, "457–459", ["rpm, real turntable", "Z = 7.62–7.65 Hz"])
+metric(17.98, 14.85, 2.6, 1.85, "597,886", ["frames / 60 s", "9,964.8 fps"])
 text(9.85, 16.93, 10.7, 3.0, [
     [("Resources: ", {"bold": True}),
-     ("10,926 LUT (52.53%) · 8,697 FF · 32/50 BRAM · 17 DSP", {})],
+     ("10,978 LUT (52.78%) · 8,724 FF · 32/50 BRAM · 17 DSP", {})],
     [("Timing: ", {"bold": True}),
-     ("WNS +0.409 ns · WHS +0.025 ns · 0 failing endpoints (24,625)", {})],
+     ("WNS +0.199 ns · WHS +0.017 ns · 0 failing endpoints (24,691)", {})],
     [("On hardware: ", {"bold": True}),
      ("UVW six states uniform, 293 commutations/s; 60 s stream, radius drift < 0.02%", {})],
 ], size=8.4, space_after=3.2, spacing=0.96)

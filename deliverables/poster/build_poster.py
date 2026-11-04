@@ -114,7 +114,7 @@ text(1.0, 0.40, 19.2, 0.4,
      [[("2026 9th National College Student Embedded Chip & System Design Competition",
         {"size": 8.2, "color": RGBColor(0x9F, 0xB6, 0xCE)})]])
 text(1.0, 0.78, 19.4, 0.95,
-     [[("基于FPGA的细分编码器",
+     [[("FPGA Fine-Interpolation Encoder",
         {"size": 22, "bold": True, "color": WHITE})]])
 text(1.0, 1.78, 19.2, 0.8,
      [[("A 2,048-ppr magnetic encoder on one Artix-7: 16-bit on-chip interpolation, closed-form self-calibration, ABZ / UVW / SPI / UDP",
@@ -136,7 +136,7 @@ rect(1.0, 4.22, 8.8, 4.45)
 bullets(1.35, 4.42, 8.1, 4.05, [
     [("Optical encoders ", {}), ("lose accuracy", {"bold": True}),
      (" in dust, oil and vibration; magnetic sensing is rugged, but the raw sin/cos bridge is never ideal.", {})],
-    [("Imported interpolation ASICs ", {}), ("fix both the algorithm and the interface", {"bold": True}),
+    [("Commercial interpolation ASICs ", {}), ("fix both the algorithm and the interface", {"bold": True}),
      (": multi-turn counting needs a second chip, and the calibration recipe stays opaque.", {})],
     [("Goal: ", {}), ("2,048 ppr, 16-bit angle, sub-µs latency", {"bold": True}),
      (", with ABZ, UVW, SPI and Ethernet from one 50 MHz clock domain — no MMCM, no soft-core.", {})],
@@ -187,10 +187,10 @@ text(1.0, 12.49, 19.0, 0.4,
 
 outs = [
     (1.0, 3.55, "ABZ", "1…1024× interpolation\n65,536 edges/rev at 32×"),
-    (4.85, 3.55, "UVW + Z", "six-step commutation\nZ = 12.00 Hz at 720 rpm"),
+    (4.85, 3.55, "UVW + Z", "six-step commutation\nZ = 7.62–7.65 Hz, one per turn"),
     (8.7, 3.75, "SPI slave", "32-bit angle word\nregister map, 2 Mbaud"),
     (12.75, 3.6, "UDP / 1 GbE", "28,672-point captures\n9,968 fps streaming"),
-    (16.65, 3.35, "On-chip TFT UI", "1024×600 touch\n5 diagnostic pages"),
+    (16.65, 3.35, "On-chip TFT UI", "1024×600 touch\n4 diagnostic pages"),
 ]
 for x, w, title, sub in outs:
     rect(x, 13.15, w, 1.45, WHITE)
@@ -198,13 +198,13 @@ for x, w, title, sub in outs:
     text(x + 0.22, 13.70, w - 0.4, 0.8, [[(sub, {"size": 7.9, "color": MUTED})]])
 
 # ------------------------------------------------------------------ results
-section(1.0, 14.85, 19.0, "Board-verified results — v74 production bitstream")
+section(1.0, 14.85, 19.0, "Board-verified results — v90 production bitstream")
 
 tiles = [
     ("2,048", "pulses / rev", "2,048 distinct counts measured\nacross a full turn"),
-    ("25.27", "kHz electrical", "sin/cos at 720 rpm;\n≈495 samples per cycle"),
-    ("719–731", "rpm", "12.0–12.2 Hz mechanical,\nZ pulse at 12.00 Hz"),
-    ("598,115", "frames / 60 s", "9,968 fps Ethernet soak,\nradius drift < 0.02 %"),
+    ("15.63", "kHz electrical", "sin/cos at 458 rpm;\n≈800 samples per cycle"),
+    ("457–459", "rpm", "7.62–7.65 Hz mechanical,\none Z per turn"),
+    ("597,886", "frames / 60 s", "9,964.8 fps Ethernet soak,\nradius drift < 0.02 %"),
 ]
 for i, (num, unit, cap) in enumerate(tiles):
     x = 1.0 + i * 4.8
@@ -217,10 +217,10 @@ for i, (num, unit, cap) in enumerate(tiles):
 
 rect(1.0, 18.02, 10.4, 3.30, WHITE)
 rows = [
-    ("Timing, 50 MHz", "WNS +0.409 ns  ·  WHS +0.025 ns  ·  0 failing endpoints"),
-    ("Logic", "10,926 LUT (52.53 %)  ·  8,697 FF (20.91 %)  ·  17 DSP"),
+    ("Timing, 50 MHz", "WNS +0.199 ns  ·  WHS +0.017 ns  ·  0 failing endpoints (24,691)"),
+    ("Logic", "10,978 LUT (52.78 %)  ·  8,724 FF (20.97 %)  ·  17 DSP"),
     ("Memory", "32 / 50 BRAM  ·  single clock  ·  DRC 0 errors"),
-    ("Bitstream", "1,512,664 B  ·  SHA E4634907…DA2680  ·  build 0x0018"),
+    ("Bitstream", "1,504,220 B  ·  SHA A89512A5…F827125  ·  build 0x0019"),
     ("Latency", "41.5 cycles ≈ 830 ns, sample to angle (design budget)"),
 ]
 for i, (k, v) in enumerate(rows):
@@ -268,10 +268,10 @@ section(11.2, 21.60, 8.8, "Reproducibility & evidence")
 rect(11.2, 22.28, 8.8, 4.95)
 bullets(11.53, 22.45, 8.2, 4.6, [
     [("MIT-licensed repository", {"bold": True}),
-     (": RTL, constraints, host tools, testbenches and the full 59-page report.", {})],
-    [("263 evidence files, 283 SHA-256 lines", {"bold": True}),
+     (": RTL, constraints, host tools, testbenches and the full 29-page report.", {})],
+    [("320 evidence files, 323 SHA-256 lines", {"bold": True}),
      (" — every number here traces to a report, log or bitstream.", {})],
-    [("54 simulation benches", {"bold": True}),
+    [("57 simulation benches", {"bold": True}),
      (" plus one-command sign-off: final_verify.ps1 checks sources, timing, bitstream SHAs, documents.", {})],
     [("LLM-collaboration log and skills package", {"bold": True}),
      (" recording how the two deadlocks were found and fixed.", {})],
@@ -286,7 +286,7 @@ foot.shadow.inherit = False
 text(1.0, 28.12, 13.0, 1.3, [
     [("Independent Topic (Junior Group)   ·   XC7A35T-FGG484-2   ·   single 50 MHz clock domain",
       {"size": 8.0, "color": RGBColor(0xB9, 0xCB, 0xDD)})],
-    [("Technical report (15 pp) and design report (20 pp) ship with the entry.",
+    [("Technical report (17 pp) and design report (29 pp) ship with the entry.",
       {"size": 7.2, "color": RGBColor(0x8F, 0xA8, 0xC2)})],
 ], space_after=2)
 text(13.8, 28.12, 6.2, 1.0,
