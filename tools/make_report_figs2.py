@@ -317,11 +317,50 @@ def ui_map():
     save(fig, "fig_ui_map")
 
 
+def cordic_pipeline():
+    """Space-time diagram: 18 stages, one sample per clock."""
+    stages, clocks = 18, 21
+    fig, ax = plt.subplots(figsize=(6.4, 2.45))
+    ax.set_xlim(-1.2, clocks + 2.2)
+    ax.set_ylim(-2.1, 20.4)
+    ax.set_axis_off()
+
+    shades = ["#b9d3e4", "#dde9f2", "#f2f7fb"]
+    for k in range(3):
+        for i in range(stages):
+            t = i + k
+            if t > clocks - 1:
+                continue
+            ax.add_patch(plt.Rectangle((t - 0.42, i - 0.40), 0.84, 0.80,
+                                       facecolor=shades[k], edgecolor="#ffffff",
+                                       lw=0.7, zorder=2))
+            if k == 0 and i % 2 == 0:
+                ax.text(t, i, "%d" % i, fontsize=4.6, ha="center", va="center",
+                        color="#3d5468", zorder=3)
+
+    for x in range(0, clocks - 1, 5):
+        ax.plot([x, x], [-1.60, -1.30], color=INK, lw=0.6)
+        ax.text(x, -1.20, str(x), fontsize=6.4, ha="center", va="bottom", color=INK)
+    ax.plot([0, clocks - 1], [-1.60, -1.60], color=INK, lw=0.7)
+    ax.text(clocks + 0.2, -1.60, "时钟拍", fontsize=6.8, ha="left", va="center", color=INK)
+
+    ax.text(-0.95, stages / 2.0, "流水级 i", fontsize=6.8, rotation=90,
+            ha="center", va="center", color=INK)
+    ax.text(0.0, 19.4, "样点 n、n+1、n+2 在 18 级流水中交叠，每拍推进一级",
+            fontsize=7.0, color=INK, ha="left")
+    ax.text(0.0, 17.5, "吞吐 1 样点/拍 = 12.5 MSPS（50 MHz 时钟）",
+            fontsize=6.8, color="#2f6f8f", ha="left")
+    ax.text(0.0, 16.2, "延迟 18 级寄存 + 1 拍输出 = 19 拍 = 380 ns",
+            fontsize=6.8, color="#2f6f8f", ha="left")
+    save(fig, "fig_cordic_pipeline")
+
+
 if __name__ == "__main__":
     signal_chain()
     io_topology()
     calibrate_stages()
     cordic_stage()
+    cordic_pipeline()
     loop_stability()
     abz_timing()
     uvw_sectors()

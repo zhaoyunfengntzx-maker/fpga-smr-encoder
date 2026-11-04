@@ -255,6 +255,7 @@ _boardtest/_scratch/
 _pkg/
 .dsh-office-*/
 deliverables/submission/*.zip
+deliverables/submission/source_code/
 
 _cm.txt
 

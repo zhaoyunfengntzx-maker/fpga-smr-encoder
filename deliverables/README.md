@@ -29,7 +29,7 @@
 ```
 deliverables/
 ├── README.md                    ← 本文件：提交物清单 + 状态 + 写作规范
-├── design_report.docx/pdf       ★ 技术文档（《报告模版》骨架 + 五部分 + 附录）——27 页
+├── design_report.docx/pdf       ★ 技术文档（《报告模版》骨架 + 五部分 + 附录）——29 页
 ├── design_report.md                 详细工程版源文件（185,526 B）
 ├── design_report_full.pdf       ← 详细工程版 60 页（md2pdf 导出，答辩技术底稿）
 ├── technical_doc.docx/pdf       ★ 另一版技术文档（同模板骨架，17 页，精简可读）
@@ -64,7 +64,7 @@ deliverables/
 |---|---|---|---|
 | 1 | 作品名称 | 基于FPGA的细分编码器 | 🟢 全文统一，无别名 |
 | 2 | 演示视频（MP4/AVC/≤3 min/≤300 MB） | `video_script_v3.md` + `video/assets/` CG + `video/subs/` SRT；成片在 `video/` | 🔴 **未成片**：需真实转台 + 触摸屏 + 上位机同框实拍 |
-| 3 | 技术文档（PDF/≤50 MB/按模板） | `submission/design_report.pdf`（2,002,876 B）+ `submission/technical_doc.pdf`（988,465 B），二选一提交，建议用 design_report | ✅ 已按 v90 重导（2026-11-04，27 页）；零身份信息，见 §5 |
+| 3 | 技术文档（PDF/≤50 MB/按模板） | `submission/design_report.pdf`（2,010,758 B）+ `submission/technical_doc.pdf`（988,465 B），二选一提交，建议用 design_report | ✅ 已按 v90 重导（2026-11-04，29 页）；零身份信息，见 §5 |
 | 4 | 全部代码（RAR/≤200 MB） | `submission/source_code.zip`（**994 条目**，63.52 MB，含 `MANIFEST.sha256`）+ `make_rar.bat` | 🟡 **本机无 WinRAR/Rar.exe**，只能产出 ZIP；须在装有 WinRAR 的机器上执行 `make_rar.bat` 转 RAR |
 | 5 | 参赛作品承诺及使用授权书（PDF） | `submission/authorization_letter.pdf`（1 页 / 662,110 B） | 🟢 **已签署（2026-11-03）**：全体队员签名齐全；实名件只提交大赛系统 |
 | 6 | 作品海报（选填，PDF/PPT/≤50 MB） | `poster/poster_A4_EN.pdf`（104,803 B）、`poster/poster_amd_A4.pdf`（354,000 B）、`poster/poster_amd_official.pdf`（326,045 B） | 🟢 三版均已重建、零身份信息（海报图形未随 v90 重出，见遗留） |
@@ -123,7 +123,7 @@ cscript //nologo tools\pptx2pdf.vbs "C:\Users\zhaoy\Desktop\FPGA\deliverables\po
 & E:\Anaconda\python.exe tools\md2pdf.py deliverables\design_report.md
 ```
 
-当前体积（Test-Path 实测）：`design_report.pdf` 2,002,876 B（2.00 MB）；`technical_doc.pdf` 988,465 B；`design_report_full.pdf` 5,607,751 B；`submission/design_report.pdf` 2,002,876 B。
+当前体积（Test-Path 实测）：`design_report.pdf` 2,010,758 B（2.01 MB）；`technical_doc.pdf` 988,465 B；`design_report_full.pdf` 5,607,751 B；`submission/design_report.pdf` 2,010,758 B。
 
 ## 7. 本轮（v90）文档改写的遗留
 

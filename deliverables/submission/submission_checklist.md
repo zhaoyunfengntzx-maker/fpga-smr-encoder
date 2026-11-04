@@ -9,8 +9,8 @@
 | # | 项目 | 状态 | 文件 / 说明 |
 |---|---|---|---|
 | 1 | 演示视频（MP4 / AVC(H264) / ≤3 min / ≤300 MB） | **素材已实拍，待剪辑成片** | 实拍 `../../视频素材/`（16 段 / 10.05 GB / 4K，2026-11-04 凌晨）；脚本 `../video_script_v3.md`（9 镜 3:00、旁白 666 字 177.5 s、字幕 50 条 `../video/subs/narration_v3.srt`）；CG 素材 `../video/assets/` 7 段 2.4 MB；导出后须过 `tools/check_video.py`（H.264 / AAC / ≤180 s / ≤300 MiB） |
-| 2 | 技术文档（PDF / ≤50 MB / 按模板） | ✅ 完成（2026-11-04 按 v90 重导并经元数据清洗） | 主用 `design_report.pdf`（27 页 / 2,002,876 B）；备选 `technical_doc.pdf`（17 页 / 1,267,067 B，同骨架精简版）。两份 PDF 均按 v90 重导、全部身份元数据已清空（`dc:creator` / `author` / XMP），复检 `0 carry identity metadata` |
-| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 包已就绪，待转 RAR | `source_code.zip`（**63,337,377 B / 65.43 MB / 994 条目**：993 个内容文件 + `MANIFEST.sha256`，另有 57 个目录项；含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*` 与 `photo_*`、`submission/photos/` 4 张实物照片、全部 RTL（含 `rtl/eth`、`rtl/ddr3`）与 `model/` 黄金模型、`sim/logs` 与 `disp/logs` 逐台日志、`data/**/*.rpt` 全部综合/实现/时序报告、v90 两个交付位流、`skill/`（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包 + 夹具）、`data/*/README.md` 与 `SHA256SUMS.txt`；**2026-11-04 流式重打**，`MANIFEST.sha256` 993 行、zip 内逐条校验 993/993，`tools/verify_source_package.py` 8 项自检全 PASS）；本机未安装 WinRAR，已附 `make_rar.bat` |
+| 2 | 技术文档（PDF / ≤50 MB / 按模板） | ✅ 完成（2026-11-04 按 v90 重导并经元数据清洗） | 主用 `design_report.pdf`（29 页 / 2,010,758 B）；备选 `technical_doc.pdf`（17 页 / 1,267,067 B，同骨架精简版）。两份 PDF 均按 v90 重导、全部身份元数据已清空（`dc:creator` / `author` / XMP），复检 `0 carry identity metadata` |
+| 3 | 全部代码（RAR / ≤200 MB） | ⚠ 包已就绪，待转 RAR | `source_code.zip`（**63,337,377 B / 65.47 MB / 994 条目**：993 个内容文件 + `MANIFEST.sha256`，另有 57 个目录项；含 `design_report.docx/pdf`、`technical_doc.pdf`、三版海报、`fig_*` 与 `photo_*`、`submission/photos/` 4 张实物照片、全部 RTL（含 `rtl/eth`、`rtl/ddr3`）与 `model/` 黄金模型、`sim/logs` 与 `disp/logs` 逐台日志、`data/**/*.rpt` 全部综合/实现/时序报告、v90 两个交付位流、`skill/`（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包 + 夹具）、`data/*/README.md` 与 `SHA256SUMS.txt`；**2026-11-04 流式重打**，`MANIFEST.sha256` 993 行、zip 内逐条校验 993/993，`tools/verify_source_package.py` 8 项自检全 PASS）；本机未安装 WinRAR，已附 `make_rar.bat` |
 | 4 | 参赛作品承诺及使用授权书（PDF） | ✅ **已签署并归档（2026-11-03）** | `authorization_letter.pdf`（1 页 / 662,110 B / A4 595×842 pt / 扫描 2416×3612 px·RGB ≈292 dpi）；全体队员签名齐全，落款 2026-11-03；队伍编号与姓名以报名系统为准（实名件只交大赛系统，不进仓库匿名材料）。SHA-256 `6E6038F9D88FA747FBB718570DCC7FED19AAAEA05FCA55AD6E769071EA3D6004` |
 | 5 | GitHub 链接 | ✅ 已开源 | [https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)（MIT，`main` 默认分支，tag `v1.0.0`） |
 | 6 | 作品全貌图（JPG/PNG ≤10 MB ×1） | ✅ **已拍摄（2026-11-03 20:02）** | `photos/01_overview_full.jpg`（8064×6048 / 6.89 MB）：转台夹具 + 传感头 + 模拟板 + AD9238/FPGA + 7 寸屏 + 示波器 + 上位机同框 |
@@ -26,7 +26,7 @@
 
 | 项目 | 状态 | 文件 |
 |---|---|---|
-| 作品海报（PDF/PPT ≤50 MB） | ✅ 完成（三版，均匿名；**v74 期导出，未按 v90 重出**） | 提交用 A4 竖版 `poster_a4.pdf`（0.10 MB）；A4 横版 `poster_amd_a4.pdf`（0.34 MB）；AMD 官方模板版 `poster_amd_official.pdf`（0.31 MB）。生成脚本 `../poster/build_poster.py`、`build_poster_amd.py`、`build_amd_template.py` |
+| 作品海报（PDF/PPT ≤50 MB） | ✅ 完成（**最终版：2 页双语，v90 口径，含校名与队员**） | 提交用 `poster_v90_nfu.pdf`（2 页 / 0.75 MB）+ 可编辑源 `poster_v90_nfu.pptx`（3.90 MB）；P1 英文、P2 中文，均按 AMD 官方模板版式（33.87×19.05 cm，与模板尺寸完全一致）；脚本 `../poster/build_poster_v90_nfu.py`、排版修复 `../poster/fix_final_poster.py`。旧的三版（`poster_a4.pdf` / `poster_amd_a4.pdf` / `poster_amd_official.pdf`，v74 期图形、匿名）保留作备选 |
 
 ## 三、RAR 打包说明
 
@@ -62,10 +62,10 @@ rem 双击本目录的 make_rar.bat 即可（自动查找 WinRAR 并生成 sourc
 
 ## 六、已核对的合规项
 
-- 技术文档、海报正文均无学校/学院/指导教师/团队字样；仅有赛事名中的“全国大学生”。
-- 授权书 `authorization_letter.pdf` 是大赛要求的**实名文件**（队伍编号 + 队员姓名/签名），只提交给大赛系统，不进入技术文档、海报、仓库等匿名材料，因此与“零身份信息”要求不冲突。
+- 技术文档正文无学校/学院/指导教师/团队字样；仅有赛事名中的“全国大学生”。**海报例外**：按赛方说明“海报中可以添加学校自己队伍信息”，最终海报 `poster_v90_nfu` 显式署名“南京林业大学 / Nanjing Forestry University”与三名队员；需要匿名版时用 `poster_a4.pdf` / `poster_amd_a4.pdf` / `poster_amd_official.pdf`。
+- 授权书 `authorization_letter.pdf` 是大赛要求的**实名文件**（队伍编号 + 队员姓名/签名），只提交给大赛系统，不进入仓库匿名材料。
 - 文档中保留“正点原子达芬奇-lite”“HSEDA AD9238”等器件/开发板型号，属技术描述，不是身份信息。
-- 海报页脚已删除 Team/School/Advisor 占位，改为赛道、器件与时钟域说明。
+- 海报页脚统一为 “Copyright © 2026 Nanjing Forestry University · AMD FPGA Innovation Track”，无 Team/Advisor 占位。
 - 仓库目录名与文件名均为纯 ASCII（小写字母、数字、下划线），技能包位于 `skill/`；`README.md` 已附“推荐结构 → 实际目录”对照表。
 
 ## 七、指南 3.3.5 三件套对应
@@ -74,4 +74,4 @@ rem 双击本目录的 make_rar.bat 即可（自动查找 WinRAR 并生成 sourc
 |---|---|---|
 | 工程包：源码、仿真/验证结果、综合与实现报告、上板工程与实测对比、可复现构建脚本 | `source_code.zip`（rtl（含 eth/ddr3）/model/sim/constr/tools/host/_boardtest/docs/skill/deliverables，`MANIFEST.sha256` 993 行）+ 根 `README.md` 目录对照 + 附录 C；`tools/make_source_package.py` 重打、`tools/verify_source_package.py` 自检 | ✅ |
 | 技能包：`skill/`，每项写适用范围 / 使用方法 / 失效条件 | `skill/README.md`（9 节索引）+ 7 篇方法长文（六节模板）+ 19 项可执行资产：6 个校验脚本 / 7 个模板 / 5 篇提示词工作流 / 18 条踩坑清单（索引由脚本生成），全部带夹具与失败来源 | ✅ |
-| 设计报告：选题背景与创新点、原理与框图、软硬件划分与接口、优化前后对比、大模型协作、技能包提炼、复现说明 | `design_report.pdf`（模板版 27 页 / 2,002,876 B）含选题背景、3.3 优化对比、附录 A/B/C（附录 B 含可执行资产与自检证据）；详细版 `design_report_full.pdf` 60 页 | ✅ |
+| 设计报告：选题背景与创新点、原理与框图、软硬件划分与接口、优化前后对比、大模型协作、技能包提炼、复现说明 | `design_report.pdf`（模板版 29 页 / 2,010,758 B）含选题背景、3.3 优化对比、附录 A/B/C（附录 B 含可执行资产与自检证据）；详细版 `design_report_full.pdf` 60 页 | ✅ |
