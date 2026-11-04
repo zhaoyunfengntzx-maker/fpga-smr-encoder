@@ -14947,6 +14947,58 @@ CARD_W/CARD_H` 里定义，策略层只认编号；`tb_enc_disp_panel.v` §8b �
 
 ---
 
+### U-56 屏上字体整体换成楷体（v91，字库 + 工具链）
+
+**范围**：7 寸屏上**所有**文字（汉字 132 个 + 两档 ASCII）从黑体 / Arial 换成**楷体**（`C:\Windows\Fonts\simkai.ttf`）。这是一次**只动字形源**的改动：格尺寸、码位表、地址契约、`disp/*.v`、`rtl/*.v` 全部一字未改，字库仍是 147,456 bit（`lab` 186 码 × 16×16 + `val` 52 码 × 64×30）。
+
+**为什么要改生成器的三个数**（不是"换个字体路径"就完事）：
+
+| 参数 | 旧（黑体版） | 新（楷体版） | 理由 |
+|---|---|---|---|
+| 汉字字号 | `SIZE = 15` | **16** | 楷体笔画细、字面窄，15 px 会让半个字掉笔画 |
+| 汉字阈值 | `THRESHOLD = 60` | **45** | 16 px 反走样后取 45 的墨量 ≈ 28%，与黑体 15 px / 60 的观感最接近（25/30/35/40/45/60 全扫过一遍：32.3% / 31.1% / 29.9% / 28.9% / 28.0% / 25.5%） |
+| ASCII 阈值 | 110（默认） | **70** | 楷体细笔画在 110 上会掉笔画；`tools/font_raster.py` 的 `Raster(...)` 因此新增可选 `thr`，默认值仍是 110（别处行为不变） |
+
+`lab` 的 ASCII 还有两处跟着变：`box_h` 14 → 13、`y_off` 1 → 2、`refs` 从 `0123456789` 加进 `/` —— 楷体的 `/` 比数字高，只按数字定字号会让它顶到格子边框（`tb_font_rom` 的判据 [4a] 会红）。
+
+**顺手修掉一个让位流根本出不了的缺陷**：`tools/impl_disp.tcl` 只 glob 了 `rtl/*.v`，漏掉 `rtl/eth/*.v` ⇒ `synth_design` 报 `ERROR: [Synth 8-439] module 'eth_top' not found [rtl/enc_top.v:1731]`。`tools/impl_check.tcl` 本来就有这两条 glob，是这个脚本抄漏了。
+
+#### U-56.1 验证
+
+| 项 | 结果 |
+|---|---|
+| `python tools/make_cn_glyphs.py` | 132 字，墨量 **28.0%**（黑体 15 px/60 是 36.5%） |
+| `python tools/gen_font_rom.py` | `lab` **186 码** / `val` **52 码**，合计 **147,456 bit（18.00 KB，4.00 RAMB36）**——与改前逐位同容量 |
+| `disp/tb_font_rom.v` | **PASS**（186 字形非空 + 两两不同 + `lab` 首末行留白 + `val` 框外留白 + 数字同高 ±1 px + `val` 的 `0` 墨高 ≥ 44 px），0 errors |
+| `tools/impl_disp.tcl` | synth → opt → place → route → bit 全过：route 55 s、bitgen 12 s、DRC **0 Errors** |
+| 时序 | `All user specified timing constraints are met`：**WNS +0.216 / WHS +0.027 / WPWS 全过**，失败端点 **0** |
+| 资源 | LUT **17,111（82.26%）** / FF 11,596（27.88%）/ BRAM **45.5-50（91.00%）** / IOB 104 —— 与 v90 黑体版（17,090 / 45.5 / IOB 104）同档，LUT 只多 21 个 |
+| 位流 | `_disp_work/enc_top_disp.bit`（**1,688,397 B**），归档 `_impl_disp_v91_kaiti/enc_top_disp_v91_kaiti.bit` |
+| 上板 | 先烧 SRAM 逐页人工核对（用户确认"可以接受"），本轮再固化进 SPI Flash |
+
+| 版本 | Slice LUTs | BRAM | WNS |
+|---|---|---|---|
+| v90（黑体 / Arial，2026-11-04 00:36） | 17,090 | 45.5-50 | +0.221 |
+| **v91（楷体，U-56）** | **17,111** | 45.5-50 | **+0.216** |
+
+**WNS 漂移又复现一次**：只换了字形常量（LUT +21，网表结构等价），WNS 从 +0.221 走到 +0.216 —— 这是布局噪声的量级，不是"楷体拖慢了时序"。判据仍然是**失败端点是否为 0**。
+
+#### U-56.2 观感：能认，但别指望 16×16 能好看
+
+从 `disp/font_rom.v` 反解渲染（`python _kaiti_probe\render_rom.py`）与黑体版并排看（`_kaiti_probe/final_compare_4x.png`，左黑体 / 右楷体）：楷体骨架连通、字能认，但笔画明显更细，密字（置 / 输 / 触 / 断）在 1:1 下偏糊；`val` 平面的 48 px 大数字反而比黑体版清爽。
+
+**这是分辨率决定的，不是字体选错**：16×16 只有 256 个点，楷体的尖锋、粗细变化、顿笔全在这一格上留不住。试过的两条补救都不成立 —— 形态学闭运算（十字核先膨胀后腐蚀）会把「总 / 置 / 率」糊成实心块（`_kaiti_probe/tune.py` 的 `tune_5x.png` 第 2/4/6 行）；换华文楷体 STKaiti 只是墨量多 0.3 个百分点，碎得一样。**要真正好看的楷体，汉字格得放大到 24×24 以上，那是重排版式（64×38 格 → 42×25 格、文字层地址、命中区、八页版面全动），另算一轮**。
+
+#### U-56.3 隔离与回退
+
+改动只落在 `tools/make_cn_glyphs.py`、`tools/gen_font_rom.py`、`tools/font_raster.py`、`tools/impl_disp.tcl` 与两个生成物（`tools/cn_glyphs.py`、`disp/font_rom.v`），在分支 `kaiti-font` 上提交（1ba7e39），`main` 当时一行未动；核对通过后 `git merge --ff-only` 快进合入。回退三条路：
+
+1. `git revert 1ba7e39`（或 `git checkout <main 前一个提交> -- <上述 6 个文件>`）；
+2. 烧回黑体位流 `_impl_disp_v90/enc_top_disp_v90.bit`（1,688,245 B）；
+3. 只还原生成器再重跑两个生成脚本，即可回到黑体字库。
+
+---
+
 ## B2 以太网抓包通道（2026-10-18，编码器侧）
 
 **范围**：在 B1（`0x0700` 抓包寄存器 + UART dump）之上加一条以太网数据通道，

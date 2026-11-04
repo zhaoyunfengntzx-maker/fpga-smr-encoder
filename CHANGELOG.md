@@ -9,6 +9,14 @@
 
 ## [Unreleased]
 
+### 7 寸屏字体整体换成楷体（2026-11-04）
+
+- **两档字模全部改由楷体原生栅格化**：汉字 `simhei.ttf` 15 px / 阈值 60 → `simkai.ttf` 16 px / 阈值 45（`tools/make_cn_glyphs.py:148-151`，`tools/cn_glyphs.py` 随之重冻结，墨量 36.5% → 28.0%）；ASCII 两档（`lab` 11×14、`val` 30×48）字体同时换成 `simkai.ttf`，阈值 70（`tools/gen_font_rom.py` 的 `ASCII_SIZES`）。`tools/font_raster.py` 的 `Raster(...)` 增加可选 `thr` 参数（默认 110 = 旧行为不变）。
+- **容量与 RTL 不变**：`lab` 186 码（51 ASCII + 132 汉字 + 3 个只给标签层的 `○`/`k`/`z`）/ `val` 52 码，合计 **147,456 bit = 4.00 RAMB36**（黑体版 146,944 bit / 3.99），`disp/font_rom.v` 与 `disp/text_ram.v` 的地址契约一字未动 ⇒ `disp/*.v` 与 `rtl/` 零改动。
+- **两个真缺陷顺手修掉**：① 楷体 `/` 比数字高，只按 `0123456789` 定字号会顶到格边（`tb_font_rom` 判据 [4a] 红）⇒ `lab` ASCII 的 `box_h` 14 → 13、`y_off` 1 → 2、`refs` 加 `/`；② `tools/impl_disp.tcl` 只 glob `rtl/*.v`，漏了 `rtl/eth/`，`synth_design` 直接 `[Synth 8-439] module 'eth_top' not found`——该脚本此前**根本出不了位流**，现已补 glob（与 `impl_check.tcl` 一致）。
+- **验证**：`tb_font_rom` PASS（186 字形非空 + 两两不同 + 格边留白）；`tools/impl_disp.tcl` 全流程 route 55 s / bitgen 12 s、DRC 0 Errors；`impl_timing.rpt` 全部约束满足（WNS +0.216 / WHS +0.027 / 0 failing），`impl_util.rpt` LUT 17,111（82.26%）/ FF 11,596 / BRAM 45.5-50（91.00%）/ IOB 104——与黑体版同档。位流 `_disp_work/enc_top_disp.bit`（1,688,397 B），归档 `_impl_disp_v91_kaiti/`。
+- **已知限制**：16×16 只有 256 点，楷体的尖锋/粗细变化留不住，实机"能认但比黑体细"，密字（置/输/触/断）在 1:1 下偏糊。回退三条路见 `_kaiti_probe/README.md`（`git checkout main` / 还原 5 个文件 / 烧回 `_impl_disp_v90/enc_top_disp_v90.bit`）。
+
 ### 报告补强“细分算法 + FPGA 资源利用”（2026-11-04）
 
 - 新增图 9「CORDIC 17 级流水时空图」：按拍展示三个相邻样点在流水中交叠，说明吞吐 1 样点/拍 = 12.5 MSPS、延迟 19 拍 = 380 ns。
