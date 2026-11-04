@@ -31,6 +31,11 @@ file mkdir $OUTDIR
 #  glob would otherwise sweep them in (they live in disp/ so that
 #  tools/run_sim_disp.py owns them without disturbing the sim/ baseline).
 set src_rtl  [lsort [glob -nocomplain "$ROOT/rtl/*.v"]]
+#  rtl/eth/*.v is a subfolder, so the glob above misses it -- enc_top.v
+#  instantiates eth_top from there and synth_design would fail with
+#  "module 'eth_top' not found" without this line (tools/impl_check.tcl
+#  has the same two-glob pattern).
+set src_rtl  [concat $src_rtl [lsort [glob -nocomplain "$ROOT/rtl/eth/*.v"]]]
 set src_disp {}
 foreach f [lsort [glob -nocomplain "$ROOT/disp/*.v"]] {
     if {[string match "tb_*" [file tail $f]]} { continue }

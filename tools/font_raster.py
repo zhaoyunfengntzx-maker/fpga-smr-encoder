@@ -51,13 +51,14 @@ def pick_font():
 class Raster(object):
     """按固定字号栅格化一族字符，输出行位图。"""
 
-    def __init__(self, path=None, refs="0123456789ABZREVHWKNM", box=None):
+    def __init__(self, path=None, refs="0123456789ABZREVHWKNM", box=None, thr=110):
         self.path = path or pick_font()
         self.refs = refs
         self.box = box
         self.size = None
         self.font = None
         self.ascent = None
+        self.thr = thr            # 二值化阈值：楷体这类细笔画字体要调低，否则掉笔画
         self.ink_top0 = None      # '0' 的墨迹顶相对基线的偏移（负值），用来对基线
 
     # -- 内部：画一张灰度图，返回 (img, draw) --------------------------------
@@ -233,7 +234,7 @@ class Raster(object):
 
         px = img.load()
         out = []
-        thr = 110
+        thr = self.thr
         for y in range(cell_h):
             v = 0
             for x in range(cell_w):

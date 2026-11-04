@@ -678,13 +678,13 @@ for c, rows in CN_ART.items():
 #   30x48 的墨迹垂直居中在里面（y_off = 8）。
 ASCII_SIZES = [
     # lab：16x16 格里放 11x14 的正文 —— Arial Bold 在这个尺寸上笔画最稳。
-    dict(box_w=11, box_h=14, y_off=1, name="lab", row_w=16, fill_w=11,
-         font=r"C:\Windows\Fonts\ARIALBD.TTF"),
+    dict(box_w=11, box_h=13, y_off=2, name="lab", row_w=16, fill_w=11,
+         font=r"C:\Windows\Fonts\simkai.ttf", thr=70, refs="0123456789/"),
     # val：30x64 格里放 30x48 的大数字 —— Arial **Narrow** Bold 才能在
     #  cap 高 48 的同时把墨迹宽度压在 30 列以内（Arial Bold 会宽到 34 列，
     #  被逐字压扁后就出现"4 只有 41 px 高、1 被拉成 30 px 宽"的乱象）。
     dict(box_w=30, box_h=48, y_off=8, name="val", row_w=30, fill_w=30,
-         font=r"C:\Windows\Fonts\ARIALNB.TTF"),
+         font=r"C:\Windows\Fonts\simkai.ttf", thr=70),
 ]
 
 import os as _os
@@ -724,25 +724,27 @@ OUT = os.path.join(ROOT, "disp", "font_rom.v")
 _RASTER = {}
 
 
-def _raster(box_w, box_h, font=None):
-    """按 (box, 字体) 缓存 Raster。字体必须进 key —— 两个平面可能用不同字体，
-    共用一份缓存会让 val 平面偷偷用上 lab 的字号。"""
-    key = (box_w, box_h, font)
+def _raster(box_w, box_h, font=None, thr=110, refs=None):
+    """按 (box, 字体, 阈值, 参考字) 缓存 Raster。字体/阈值必须进 key ——
+    两个平面可能用不同字体与阈值，共用一份缓存会让 val 平面偷偷用上 lab 的字号。"""
+    key = (box_w, box_h, font, thr, refs)
     if key not in _RASTER:
-        _RASTER[key] = Raster(box=(box_w, box_h), path=font)
+        kw = {} if refs is None else {"refs": refs}
+        _RASTER[key] = Raster(box=(box_w, box_h), path=font, thr=thr, **kw)
     return _RASTER[key]
 
 
-def ascii_rows(ch, cell_h, y_off, row_w, box_w, box_h, fill_w=None, font=None):
+def ascii_rows(ch, cell_h, y_off, row_w, box_w, box_h, fill_w=None, font=None, thr=110,
+               refs=None):
     """ASCII 字的 cell_h 行位图：原生栅格化的点阵，左对齐放进 row_w 位的行里。
 
     ★ v58：不再 5x7 放大，改由 font_raster 按 box_w x box_h 原生栅格化。
     行位图宽度仍是 row_w，字形墨迹最大 box_w 列，右端补 0 —— RTL 的
     16/30 级移位寄存器照旧工作，宽度契约没变。
     """
-    rows = _raster(box_w, box_h, font).rows(ch, row_w, cell_h,
-                                            box_w=box_w, box_h=box_h,
-                                            y_off=y_off, x_off=0, fill_w=fill_w)
+    rows = _raster(box_w, box_h, font, thr, refs).rows(ch, row_w, cell_h,
+                                                       box_w=box_w, box_h=box_h,
+                                                       y_off=y_off, x_off=0, fill_w=fill_w)
     assert len(rows) == cell_h, "glyph %r: %d rows, want %d" % (ch, len(rows), cell_h)
     return rows
 
@@ -767,7 +769,7 @@ def rows_of(ch, plane):
         raise SystemExit("no ascii size config for plane %r" % plane["name"])
     return ascii_rows(ch, plane["cell_h"], cfg["y_off"], plane["row_w"],
                       cfg["box_w"], cfg["box_h"], cfg.get("fill_w"),
-                      cfg.get("font"))
+                      cfg.get("font"), cfg.get("thr", 110), cfg.get("refs"))
 
 
 def main():
