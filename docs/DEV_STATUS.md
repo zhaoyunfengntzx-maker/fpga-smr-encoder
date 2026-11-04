@@ -14974,7 +14974,8 @@ CARD_W/CARD_H` 里定义，策略层只认编号；`tb_enc_disp_panel.v` §8b �
 | 时序 | `All user specified timing constraints are met`：**WNS +0.216 / WHS +0.027 / WPWS 全过**，失败端点 **0** |
 | 资源 | LUT **17,111（82.26%）** / FF 11,596（27.88%）/ BRAM **45.5-50（91.00%）** / IOB 104 —— 与 v90 黑体版（17,090 / 45.5 / IOB 104）同档，LUT 只多 21 个 |
 | 位流 | `_disp_work/enc_top_disp.bit`（**1,688,397 B**），归档 `_impl_disp_v91_kaiti/enc_top_disp_v91_kaiti.bit` |
-| 上板 | 先烧 SRAM 逐页人工核对（用户确认"可以接受"），本轮再固化进 SPI Flash |
+| 上板 | 先烧 SRAM 逐页人工核对（用户确认"可以接受"），再固化进 SPI Flash：`FLASH_BIT=_disp_work/enc_top_disp.bit` 跑 `tools/program_flash.tcl` ⇒ mcs 4,748,471 B / `SPIx1` / erase+program+verify **44 s**、`Done pin status: HIGH`、`FLASH_OK`（日志 `_flash_work/program_flash_kaiti.log`） |
+| 重建（可复现性复核） | 用已提交的源码再跑一遍 `tools/impl_disp.tcl`：位流 **1,688,397 B**（字节数一致，SHA256 因布局种子不同而不同）、`setup WNS +0.216 / hold WHS +0.027 / 0 失败端点`、LUT **17,111** / FF 11,596 / BRAM 45.5-50 / IOB 104、DRC **0 Errors**、route 54 s、bitgen 10 s —— 与 11:32 那次逐项相同，说明这版字库可复现 |
 
 | 版本 | Slice LUTs | BRAM | WNS |
 |---|---|---|---|
