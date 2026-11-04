@@ -258,9 +258,9 @@ add_text(24.7, 12.6, 8.5, 2.2, [
 add_text(24.7, 14.85, 8.5, 0.4, [("VERIFICATION", True)], size=9.2, color=NAVY)
 rule(24.7, 14.73, 8.5)
 add_text(24.7, 15.3, 8.5, 2.0, [
-    "263 evidence files \u00b7 283 SHA-256 lines",
+    "320 evidence files \u00b7 323 SHA-256 lines",
     "57 benches \u00b7 final_verify ALL CHECKS PASSED",
-    "Technical report 20 pages \u00b7 full dossier 59 pages",
+    "Technical report 17 pages \u00b7 full dossier 29 pages",
 ], size=8.4)
 
 # ---------------- test platform under the photo ----------------
