@@ -65,7 +65,7 @@ deliverables/
 | 1 | 作品名称 | 基于FPGA的细分编码器 | 🟢 全文统一，无别名 |
 | 2 | 演示视频（MP4/AVC/≤3 min/≤300 MB） | `video_script_v3.md` + `video/assets/` CG + `video/subs/` SRT；成片在 `video/` | 🔴 **未成片**：需真实转台 + 触摸屏 + 上位机同框实拍 |
 | 3 | 技术文档（PDF/≤50 MB/按模板） | `submission/design_report.pdf`（2,010,758 B）+ `submission/technical_doc.pdf`（988,465 B），二选一提交，建议用 design_report | ✅ 已按 v90 重导（2026-11-04，29 页）；零身份信息，见 §5 |
-| 4 | 全部代码（RAR/≤200 MB） | `submission/source_code.zip`（**994 条目**，63.52 MB，含 `MANIFEST.sha256`）+ `make_rar.bat` | 🟡 **本机无 WinRAR/Rar.exe**，只能产出 ZIP；须在装有 WinRAR 的机器上执行 `make_rar.bat` 转 RAR |
+| 4 | 全部代码（RAR/≤200 MB） | `submission/source_code.zip`（**995 条目**，63.52 MB，含 `MANIFEST.sha256`）+ `make_rar.bat` | 🟡 **本机无 WinRAR/Rar.exe**，只能产出 ZIP；须在装有 WinRAR 的机器上执行 `make_rar.bat` 转 RAR |
 | 5 | 参赛作品承诺及使用授权书（PDF） | `submission/authorization_letter.pdf`（1 页 / 662,110 B） | 🟢 **已签署（2026-11-03）**：全体队员签名齐全；实名件只提交大赛系统 |
 | 6 | 作品海报（选填，PDF/PPT/≤50 MB） | `poster/poster_A4_EN.pdf`（104,803 B）、`poster/poster_amd_A4.pdf`（354,000 B）、`poster/poster_amd_official.pdf`（326,045 B） | 🟢 三版均已重建、零身份信息（海报图形未随 v90 重出，见遗留） |
 | 7 | GitHub 链接 | [https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder](https://github.com/zhaoyunfengntzx-maker/fpga-smr-encoder)（`main`，MIT） | 🟢 **已推送开源** |

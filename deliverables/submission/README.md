@@ -12,7 +12,7 @@
 | `poster_a4.pdf` | 作品海报（旧版，已被 `poster_v90_nfu` 取代） | A4 竖版 210×297 mm / 0.10 MB；匿名版，v74 期图形 |
 | `poster_amd_a4.pdf` | 作品海报（旧版 A4 横版备选） | 297×210 mm / 0.34 MB；AMD 版式，匿名，v74 期图形 |
 | `poster_amd_official.pdf` | 作品海报（旧版 AMD 官方模板版） | 16:9 / 0.31 MB；`poster/build_amd_template.py` 可重跑，v74 期图形 |
-| `source_code.zip` | 全部代码（必交，≤200 MB） | **65.47 MB / 994 条目**（993 个内容文件 + `MANIFEST.sha256`，另有 57 个目录项）；含 RTL（含 `rtl/eth`、`rtl/ddr3`）、约束、仿真与逐台日志、`model/` 黄金模型、上位机、技能包（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包）、设计报告与技术文档 PDF、海报、实物照片（`submission/photos/` 4 张 + 报告用缩放图）、v90 两个交付位流与全部 `.rpt`、证据索引与 SHA256 清单；根目录 `MANIFEST.sha256` 993 行，逐文件校验 993/993；`tools/verify_source_package.py` 一键复核（唯一未解析的 20 条链接指向文档化的 `.bit/.csv` 体积排除项） |
+| `source_code.zip` | 全部代码（必交，≤200 MB） | **65.53 MB / 995 条目**（993 个内容文件 + `MANIFEST.sha256`，另有 57 个目录项）；含 RTL（含 `rtl/eth`、`rtl/ddr3`）、约束、仿真与逐台日志、`model/` 黄金模型、上位机、技能包（7 篇长文 + 19 项可执行资产 + 通用 PYNQ 子包）、设计报告与技术文档 PDF、海报、实物照片（`submission/photos/` 4 张 + 报告用缩放图）、v90 两个交付位流与全部 `.rpt`、证据索引与 SHA256 清单；根目录 `MANIFEST.sha256` 994 行，逐文件校验 994/994；`tools/verify_source_package.py` 一键复核（唯一未解析的 20 条链接指向文档化的 `.bit/.csv` 体积排除项） |
 | `intro_and_keywords.md` | 作品简介 / 关键词 | **v90 口径已重写（2026-11-04）**：中性叙事、无厂商芯片型号、7 个关键词，可直接粘贴到提交系统 |
 | `photos/` | 作品全貌图（第 6 项）+ 开发板重要角度照片（第 7 项） | 2026-11-03 20:02 实拍 4 张，`01_overview_full` / `02_board_adc_frontend` / `03_board_front` / `04_board_screen`，均 ≤10 MB；逐张说明与屏上读数见 `photos/README.md` |
 | `authorization_letter.pdf` | 参赛作品承诺及使用授权书（必交） | **1 页 / 662,110 B**；2026-11-03 打印后全体队员签名、扫描（2416×3612 px / RGB / A4 / ≈292 dpi）；实名件，只交大赛系统，不进仓库匿名材料 |
